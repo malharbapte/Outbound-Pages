@@ -33,7 +33,10 @@
   .nopoint { pointer-events: none; }
 
   /* Nav */
-  .nav { z-index: 5; }
+  .sec.nav { position: sticky; top: 0; z-index: 50; transition: opacity .4s ease; }
+  .nav-bg { background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: box-shadow .3s ease; }
+  .nav.stuck .nav-bg { box-shadow: 0 6px 24px rgba(11, 10, 7, .08); }
+  html.scroll-locked .sec.nav { opacity: 0; pointer-events: none; } /* out of the way while the journey is locked */
   .navlink { transition: color .2s; }
   .navlink:hover { color: var(--green) !important; }
   .logo { z-index: 3; }
@@ -239,14 +242,14 @@
 <body>
 <main class="page" id="page">
 <div class="artboard ab1">
-  <header class="sec nav" style="height:215.79px" >
-    <div style="position:absolute;left:0px;top:0px;width:2376px;height:215.79px;background:#fff;"></div>
-    <a href="#" class="logo" style="position:absolute;left:387.41px;top:-74.72px"><img src="assets/outbound-logo.png" alt="Outbound RVs" style="width:516.38px;height:365.2px;display:block"></a>
-    <a class="t navlink" style="top:96.64px;left:1140.22px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">CARAVANS</a>
-    <a class="t navlink" style="top:96.64px;left:1347.91px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">SUPPORT</a>
-    <a class="t navlink" style="top:96.64px;left:1529.5px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">CONTACT</a>
-    <a class="t navlink" style="top:96.64px;left:1720.72px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">ABOUT</a>
-    <a class="t navlink" style="top:96.64px;left:1875.75px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">REVIEWS</a>
+  <header class="sec nav" style="height:160px" >
+    <div class="nav-bg" style="position:absolute;left:0px;top:0px;width:2376px;height:160px;"></div>
+    <a href="#" class="logo" style="position:absolute;left:380.3px;top:-62.2px"><img src="assets/outbound-logo.png" alt="Outbound RVs" style="width:402.8px;height:284.5px;display:block"></a>
+    <a class="t navlink" style="top:65.6px;left:1140.22px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">CARAVANS</a>
+    <a class="t navlink" style="top:65.6px;left:1347.91px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">SUPPORT</a>
+    <a class="t navlink" style="top:65.6px;left:1529.5px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">CONTACT</a>
+    <a class="t navlink" style="top:65.6px;left:1720.72px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">ABOUT</a>
+    <a class="t navlink" style="top:65.6px;left:1875.75px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">REVIEWS</a>
   </header>
   <section class="sec hero" style="height:1336.5px" style="overflow:hidden">
     <img src="assets/hero.jpg" alt="Wonderland RV caravan on an outback road" style="position:absolute;left:-172.09px;top:-53.28px;width:2565.74px;height:1443.24px;">
@@ -339,7 +342,7 @@
    </div>
   </section>
   <section class="sec beyond" style="height:1066.24px" id="after-journey">
-    <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1066.24px;background:#fff;"></div>
+    <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1066.24px;background:#fff;border-bottom:.25px solid #0b0a07;"></div>
     <h2 class="t" style="top:174.41px;left:395.64px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">BEYOND SALE</h2>
     <div class="bs-items" style="left:395.35px;top:355.41px"><div class="bs-item on" tabindex="0"><svg class="bs-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg><h3>FINANCE</h3><p class="bs-desc">The right caravan deserves a finance plan that feels just as considered. We’ll help you explore suitable options and guide you through the process clearly.</p></div><div class="bs-item" tabindex="0"><svg class="bs-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><h3>SERVICING</h3><p class="bs-desc">From your first 1,000 km service to annual servicing and general repairs, our experienced team will help keep your caravan ready for what comes next.</p></div><div class="bs-item" tabindex="0"><svg class="bs-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><h3>WARRANTY</h3><p class="bs-desc">Every new Wonderland RV comes with a three-year factory-backed warranty. If something needs attention, our team will help guide you through the process.</p></div></div>
     <svg class="shapes" style="z-index:4" width="2376" height="1066.24" viewBox="3528.15 11925.41 2376 1066.24" aria-hidden="true"><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/><polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/></svg>
@@ -500,6 +503,11 @@
     }));
     track.addEventListener('animationend', () => track.classList.remove('swap'));
   })();
+  // Sticky header gets a soft shadow once the page has scrolled.
+  const nav = document.querySelector('.nav');
+  const navShadow = () => nav.classList.toggle('stuck', scrollY > 4);
+  addEventListener('scroll', navShadow, { passive: true }); navShadow();
+
   // Beyond Sale panels: hovering (or focusing) a panel opens it; it stays open until another is hovered.
   (() => {
     const items = [...document.querySelectorAll('.bs-item')];

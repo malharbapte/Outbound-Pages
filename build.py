@@ -96,12 +96,14 @@ def btn(sec, x, y, w, h, label, tx, ty, href="#", tag="a"):
 ab1 = []
 
 # ---- Navigation --------------------------------------------------------------
-s = Section("header", "nav", AB1, 157.34, 373.13)
-s.box(3528.15, 157.34, 2376, 215.79, style="background:#fff;")
-s.add(f'<a href="#" class="logo" style="position:absolute;left:{r(s.lx(3915.56))}px;top:{r(s.ly(82.62))}px">'
-      f'<img src="assets/outbound-logo.png" alt="Outbound RVs" style="width:516.38px;height:365.2px;display:block"></a>')
+# Sleeker sticky header: 160 tall (was 215.79). Logo mark sits on the left margin, links centred vertically.
+NAV_H = 160
+s = Section("header", "nav", AB1, 157.34, 157.34 + NAV_H)
+s.box(3528.15, 157.34, 2376, NAV_H, cls="nav-bg")
+s.add(f'<a href="#" class="logo" style="position:absolute;left:380.3px;top:-62.2px">'
+      f'<img src="assets/outbound-logo.png" alt="Outbound RVs" style="width:402.8px;height:284.5px;display:block"></a>')
 for x, label in [(4668.37, "CARAVANS"), (4876.06, "SUPPORT"), (5057.65, "CONTACT"), (5248.87, "ABOUT"), (5403.9, "REVIEWS")]:
-    s.text(x, 276.78, label, size=24, weight=600, color="#000", tag="a", cls="navlink", attrs='href="#"')
+    s.text(x, 157.34 + 88.4, label, size=24, weight=600, color="#000", tag="a", cls="navlink", attrs='href="#"')
 ab1.append(s)
 
 # ---- Hero ----------------------------------------------------------------------
@@ -302,7 +304,7 @@ ab1.append(JourneyScroll())
 
 # ---- Beyond sale --------------------------------------------------------------------------
 s = Section("section", "beyond", AB1, 11925.41, 12991.65, 'id="after-journey"')
-s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;")
+s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;border-bottom:.25px solid #0b0a07;")  # divider before Stories
 s.text(3923.79, 12188.19, "BEYOND SALE", font="O", size=84, weight=700, color="#000", tag="h2")
 # Expanding panels (see samples/beyond-sale.html): hovering a panel widens it to show its description;
 # it stays open until another panel is hovered. Panels start on the upper third line of the section.

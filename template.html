@@ -33,7 +33,10 @@
   .nopoint { pointer-events: none; }
 
   /* Nav */
-  .nav { z-index: 5; }
+  .sec.nav { position: sticky; top: 0; z-index: 50; transition: opacity .4s ease; }
+  .nav-bg { background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: box-shadow .3s ease; }
+  .nav.stuck .nav-bg { box-shadow: 0 6px 24px rgba(11, 10, 7, .08); }
+  html.scroll-locked .sec.nav { opacity: 0; pointer-events: none; } /* out of the way while the journey is locked */
   .navlink { transition: color .2s; }
   .navlink:hover { color: var(--green) !important; }
   .logo { z-index: 3; }
@@ -325,6 +328,11 @@
     }));
     track.addEventListener('animationend', () => track.classList.remove('swap'));
   })();
+  // Sticky header gets a soft shadow once the page has scrolled.
+  const nav = document.querySelector('.nav');
+  const navShadow = () => nav.classList.toggle('stuck', scrollY > 4);
+  addEventListener('scroll', navShadow, { passive: true }); navShadow();
+
   // Beyond Sale panels: hovering (or focusing) a panel opens it; it stays open until another is hovered.
   (() => {
     const items = [...document.querySelectorAll('.bs-item')];
