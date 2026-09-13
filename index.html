@@ -132,8 +132,11 @@
   /* Ownership journey — locked "static scroll" stage (see samples/ownership.html) */
   html { scrollbar-gutter: stable; }
   html.scroll-locked { overflow: hidden; } /* stops any in-flight scroll while the journey is locked */
-  .journey-scroll { position: relative; z-index: 2; }
-  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transform-origin: 50% 0; }
+  /* The wrapper is white edge to edge and the stage clips to its box, so nothing outside the box shows,
+     even when the stage is scaled down to fit a short window. */
+  .journey-scroll { position: relative; z-index: 2; background: #fff; }
+  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transform-origin: 50% 0; overflow: hidden; transition: opacity .5s ease; }
+  .journey-stage.leaving { opacity: 0; }
   .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transition: opacity .7s ease; }
   .care-layer { opacity: 0; pointer-events: none; }
   .journey-stage.care .journey-layer { opacity: 0; }
@@ -152,8 +155,8 @@
   .step-text { width: 920px; padding-top: 7.77px; }
   .step-text h3 { margin: 0; font: 600 48px/57.6px var(--poppins); color: var(--bone); }
   .step-text p { margin: 19.56px 0 0; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
-  #after-journey { transition: opacity .8s ease; }
-  #after-journey.hidden { opacity: 0; }
+  #after-journey { transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+  #after-journey.hidden { opacity: 0; transform: translateY(40px); transition: none; }
 
   .stock-track.swap { animation: stock-swap .45s ease; }
   .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
@@ -545,7 +548,7 @@
       wrap.style.height = STAGE_H * scale + 'px';
     };
     const alignTop = () => Math.max(0, (innerHeight - wrap.getBoundingClientRect().height) / 2); // centre the stage
-    const snap = () => scrollTo({ top: scrollY + wrap.getBoundingClientRect().top - alignTop(), behavior: 'instant' });
+    const snap = () => scrollTo({ top: scrollY + wrap.getBoundingClientRect().top - alignTop(), behavior: 'auto' });
     const lock = startState => {
       locked = true; document.documentElement.classList.add('scroll-locked');
       state = startState; hold = 0; snap(); render(); busyUntil = performance.now() + 250;
@@ -553,12 +556,20 @@
     const unlock = () => { locked = false; document.documentElement.classList.remove('scroll-locked'); cooldownUntil = performance.now() + 700; };
 
     const exitDown = () => {
-      // Jump Beyond Sale into place and fade it in instead of scrolling it up from the bottom.
-      after.classList.add('hidden');
-      unlock();
-      scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'instant' });
-      requestAnimationFrame(() => after.classList.remove('hidden'));
-      busyUntil = performance.now() + 900;
+      // Fade "we care" out, then put Beyond Sale in place and fade it in instead of scrolling it up.
+      busyUntil = performance.now() + 1900;
+      stage.classList.add('leaving');
+      setTimeout(() => {
+        after.classList.add('hidden');
+        void after.offsetWidth; // apply the hidden state first so the fade always plays (Safari)
+        unlock();
+        busyUntil = performance.now() + 1300;
+        scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'auto' });
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          after.classList.remove('hidden');
+          stage.classList.remove('leaving');
+        }));
+      }, 500);
     };
     const step = dir => {
       if (dir > 0) {
