@@ -165,6 +165,7 @@
   .step-text p { margin: 19.56px 0 0; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
   #after-journey { transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2, .7, .2, 1); }
   #after-journey.hidden { opacity: 0; transform: translateY(40px); transition: none; }
+  #after-journey.fading-out { opacity: 0; transition: opacity .5s ease; }
 
   .stock-track.swap { animation: stock-swap .45s ease; }
   .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
@@ -385,10 +386,10 @@
         unlock();
         busyUntil = performance.now() + 1300;
         scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'auto' });
-        requestAnimationFrame(() => requestAnimationFrame(() => {
+        setTimeout(() => {
           after.classList.remove('hidden');
           stage.classList.remove('leaving');
-        }));
+        }, 30);
       }, 500);
     };
     const step = dir => {
@@ -429,16 +430,40 @@
       if (down || up) onIntent(down ? 1 : -1, e, true);
     }, { capture: true });
 
+    // Scrolling back up from Beyond Sale fades it out and fades "we care" back in, rather than scrolling.
+    const fadeBack = () => {
+      document.documentElement.classList.add('scroll-locked'); // stop the upward scroll where it is
+      scrollTo({ top: scrollY + wrap.getBoundingClientRect().bottom, behavior: 'auto' });
+      busyUntil = performance.now() + 1100;
+      after.classList.add('fading-out');
+      setTimeout(() => {
+        stage.classList.add('leaving');
+        void stage.offsetWidth;
+        lock(CARE);
+        busyUntil = performance.now() + 600;
+        setTimeout(() => {
+          stage.classList.remove('leaving');
+          after.classList.remove('fading-out');
+        }, 30);
+      }, 500);
+    };
+
     // Engage the lock when the stage reaches its place, from either direction.
-    let prevTop = wrap.getBoundingClientRect().top;
+    let prevTop = wrap.getBoundingClientRect().top, prevBottom = wrap.getBoundingClientRect().bottom;
     const watch = () => {
       const r = wrap.getBoundingClientRect(), target = alignTop();
+      if (!locked && performance.now() > cooldownUntil && performance.now() > busyUntil && prevBottom <= 1 && r.bottom > 1 && r.bottom < innerHeight) {
+        fadeBack();
+        prevTop = r.top; prevBottom = r.bottom;
+        return;
+      }
       if (!locked && performance.now() > cooldownUntil) {
         if (prevTop > target && r.top <= target && r.top > -r.height) lock(0);
         else if (prevTop < target && r.top >= target && r.top < innerHeight) lock(CARE);
       }
       if (!locked && r.bottom <= 0) after.classList.remove('hidden'); // reached some other way
       prevTop = wrap.getBoundingClientRect().top;
+      prevBottom = wrap.getBoundingClientRect().bottom;
     };
     addEventListener('scroll', watch, { passive: true });
     const loop = () => { watch(); requestAnimationFrame(loop); };

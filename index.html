@@ -165,6 +165,7 @@
   .step-text p { margin: 19.56px 0 0; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
   #after-journey { transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2, .7, .2, 1); }
   #after-journey.hidden { opacity: 0; transform: translateY(40px); transition: none; }
+  #after-journey.fading-out { opacity: 0; transition: opacity .5s ease; }
 
   .stock-track.swap { animation: stock-swap .45s ease; }
   .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
@@ -235,7 +236,7 @@
 <main class="page" id="page">
 <div class="artboard ab1">
   <header class="sec nav" style="height:215.79px" >
-    <div style="position:absolute;left:0px;top:0px;width:2376px;height:215.79px;background:#fff;border:1px solid #231f20;box-sizing:border-box;"></div>
+    <div style="position:absolute;left:0px;top:0px;width:2376px;height:215.79px;background:#fff;"></div>
     <a href="#" class="logo" style="position:absolute;left:387.41px;top:-74.72px"><img src="assets/outbound-logo.png" alt="Outbound RVs" style="width:516.38px;height:365.2px;display:block"></a>
     <a class="t navlink" style="top:96.64px;left:1140.22px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">CARAVANS</a>
     <a class="t navlink" style="top:96.64px;left:1347.91px;font-family:var(--poppins);font-size:24px;font-weight:600;line-height:28.8px;color:#000;" href="#">SUPPORT</a>
@@ -336,7 +337,7 @@
    </div>
   </section>
   <section class="sec beyond" style="height:1066.24px" id="after-journey">
-    <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1066.24px;background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;"></div>
+    <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1066.24px;background:#fff;"></div>
     <svg class="shapes" style="z-index:1" width="2376" height="1066.24" viewBox="3528.15 11925.41 2376 1066.24" aria-hidden="true"><rect fill="#f4f1ea" x="3613.01" y="12083.84" width="140.67" height="140.67" transform="translate(-7515.4758 6164.4059) rotate(-45.0001)"/><rect fill="#8b9b4d" x="3692.65" y="12083.84" width="140.67" height="140.67" transform="translate(-7492.1508 6220.7173) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4023.44 12154.17 3923.79 12054.53 3885.79 12092.53 3947.43 12154.17 3885.79 12215.82 3923.79 12253.82 4023.44 12154.17"/><polygon fill="#f4f1ea" points="3885.79 12092.53 3847.78 12054.53 3748.13 12154.17 3847.78 12253.82 3885.79 12215.82 3824.14 12154.17 3885.79 12092.53"/><rect fill="#8b9b4d" x="3842.2" y="12110.59" width="87.18" height="87.18" transform="translate(-7456.1841 6307.552) rotate(-45.0001)"/></svg>
     <h2 class="t" style="top:174.41px;left:536.12px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">BEYOND SALE</h2>
     <a href="#" class="service active">
@@ -579,10 +580,10 @@
         unlock();
         busyUntil = performance.now() + 1300;
         scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'auto' });
-        requestAnimationFrame(() => requestAnimationFrame(() => {
+        setTimeout(() => {
           after.classList.remove('hidden');
           stage.classList.remove('leaving');
-        }));
+        }, 30);
       }, 500);
     };
     const step = dir => {
@@ -623,16 +624,40 @@
       if (down || up) onIntent(down ? 1 : -1, e, true);
     }, { capture: true });
 
+    // Scrolling back up from Beyond Sale fades it out and fades "we care" back in, rather than scrolling.
+    const fadeBack = () => {
+      document.documentElement.classList.add('scroll-locked'); // stop the upward scroll where it is
+      scrollTo({ top: scrollY + wrap.getBoundingClientRect().bottom, behavior: 'auto' });
+      busyUntil = performance.now() + 1100;
+      after.classList.add('fading-out');
+      setTimeout(() => {
+        stage.classList.add('leaving');
+        void stage.offsetWidth;
+        lock(CARE);
+        busyUntil = performance.now() + 600;
+        setTimeout(() => {
+          stage.classList.remove('leaving');
+          after.classList.remove('fading-out');
+        }, 30);
+      }, 500);
+    };
+
     // Engage the lock when the stage reaches its place, from either direction.
-    let prevTop = wrap.getBoundingClientRect().top;
+    let prevTop = wrap.getBoundingClientRect().top, prevBottom = wrap.getBoundingClientRect().bottom;
     const watch = () => {
       const r = wrap.getBoundingClientRect(), target = alignTop();
+      if (!locked && performance.now() > cooldownUntil && performance.now() > busyUntil && prevBottom <= 1 && r.bottom > 1 && r.bottom < innerHeight) {
+        fadeBack();
+        prevTop = r.top; prevBottom = r.bottom;
+        return;
+      }
       if (!locked && performance.now() > cooldownUntil) {
         if (prevTop > target && r.top <= target && r.top > -r.height) lock(0);
         else if (prevTop < target && r.top >= target && r.top < innerHeight) lock(CARE);
       }
       if (!locked && r.bottom <= 0) after.classList.remove('hidden'); // reached some other way
       prevTop = wrap.getBoundingClientRect().top;
+      prevBottom = wrap.getBoundingClientRect().bottom;
     };
     addEventListener('scroll', watch, { passive: true });
     const loop = () => { watch(); requestAnimationFrame(loop); };

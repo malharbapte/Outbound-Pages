@@ -118,7 +118,7 @@ ab1 = []
 
 # ---- Navigation --------------------------------------------------------------
 s = Section("header", "nav", AB1, 157.34, 373.13)
-s.box(3528.15, 157.34, 2376, 215.79, style="background:#fff;border:1px solid #231f20;box-sizing:border-box;")
+s.box(3528.15, 157.34, 2376, 215.79, style="background:#fff;")
 s.add(f'<a href="#" class="logo" style="position:absolute;left:{r(s.lx(3915.56))}px;top:{r(s.ly(82.62))}px">'
       f'<img src="assets/outbound-logo.png" alt="Outbound RVs" style="width:516.38px;height:365.2px;display:block"></a>')
 for x, label in [(4668.37, "CARAVANS"), (4876.06, "SUPPORT"), (5057.65, "CONTACT"), (5248.87, "ABOUT"), (5403.9, "REVIEWS")]:
@@ -324,7 +324,7 @@ ab1.append(JourneyScroll())
 
 # ---- Beyond sale --------------------------------------------------------------------------
 s = Section("section", "beyond", AB1, 11925.41, 12991.65, 'id="after-journey"')
-s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;")
+s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;")
 s.svg('<rect fill="#f4f1ea" x="3613.01" y="12083.84" width="140.67" height="140.67" transform="translate(-7515.4758 6164.4059) rotate(-45.0001)"/>'
       '<rect fill="#8b9b4d" x="3692.65" y="12083.84" width="140.67" height="140.67" transform="translate(-7492.1508 6220.7173) rotate(-45.0001)"/>'
       '<polygon fill="#6b7a32" points="4023.44 12154.17 3923.79 12054.53 3885.79 12092.53 3947.43 12154.17 3885.79 12215.82 3923.79 12253.82 4023.44 12154.17"/>'
