@@ -250,7 +250,7 @@ ab1.append(s)
 TOP_Y, MERGE = 9359.63, (5463.43, 9711.08)
 BOT_Y = 2 * MERGE[1] - TOP_Y  # the stock path mirrors the custom path about the meeting diamond
 TOP_PATH = ("M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 "
-            "C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H5904.14")
+            "C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800")  # runs past the edge; the stage clips it
 BOT_PATH = (f"M3966.34 {r(BOT_Y)} H5049.2 C5049.2 {r(BOT_Y)} 5194.89 10076.19 5250.48 9963.88 "
             "C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08")
 
@@ -275,7 +275,6 @@ journey_steps = ([("custom", i + 1, XS[i], TOP_Y, *c) for i, c in enumerate(CUST
                  + [("stock", 4, *MERGE, *HANDOVER)])
 
 journey = Section("div", "journey-layer", AB1, 8796.01, 10360.79)
-journey.box(3528.27, 8796.01, 2375.75, 1564.77, style=f"background:{COL['black']};")
 journey.text(4047.09, 9035.77, "OWNERSHIP JOURNEY", font="O", size=84, weight=700, color=COL["bone"], tag="h2")
 journey.text(4047.09, 9100.07, "THE BEGINNING OF A EVERLASTING RELATIONSHIP", font="O", size=48, weight=300, color="#fff")
 journey.text(3923.79, 9264.98, "CUSTOM CARAVAN (9-12 MONTHS)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="custom"')
@@ -298,7 +297,6 @@ for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
                 f'<span class="step-num">{n}</span><div class="step-text"><h3>{title}</h3><p>{desc}</p></div></div>')
 
 care = Section("div", "care-layer", AB1, 10360.79, 11925.41)
-care.box(3528.27, 10360.79, 2375.75, 1564.77, style="background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;")
 care.svg('<rect fill="#f4f1ea" x="4645.81" y="10970.73" width="140.67" height="140.67" rx="33.79" transform="translate(-6425.8867 6568.6819) rotate(-45.0001)"/>', z=1)
 care.text(0, 11061.86, "we care", size=79.65, weight=600, color=COL["pink"], center=True, tag="h2")
 care.text(0, 11204.52, ["We understand the growing uncertainity in the Caravan industry, with a lot of companies ",
@@ -312,7 +310,12 @@ class JourneyScroll:
     cls = "journey-scroll"
 
     def render(self):
-        layer = lambda sec: (f'    <div class="layer {sec.cls}">\n' + "\n".join("      " + i for i in sec.items) + "\n    </div>")
+        def layer(sec):
+            # Content scales to fit the window height and centres; edge shapes stay pinned to the screen edges.
+            edge = lambda side: "".join(i for i in sec.items if f"edge-{side}" in i)
+            body = "\n".join("        " + i for i in sec.items if "edge-left" not in i and "edge-right" not in i)
+            return (f'    <div class="layer {sec.cls}">\n      <div class="layer-content">\n{body}\n      </div>\n'
+                    f'      <div class="layer-edge left">{edge("left")}</div><div class="layer-edge right">{edge("right")}</div>\n    </div>')
         return (f'  <section class="sec journey-scroll" id="journey" style="height:{r(STAGE_H)}px" aria-label="Ownership journey">\n'
                 f'   <div class="journey-stage" id="journey-stage">\n{layer(journey)}\n{layer(care)}\n   </div>\n  </section>')
 
@@ -370,8 +373,8 @@ sec["range"].svg('<polygon fill="#6b7a32" opacity=".4" points="4458.33 4621.05 3
                  '<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="4922.99 5700.13 5972.97 6750.12 6373.43 6349.66 5723.9 5700.13 6373.43 5050.6 5972.97 4650.15 4922.99 5700.13"/>', z=0, cls="shapes deco-back")
 sec["visit"].svg('<polygon fill="#6b7a32" opacity=".4" points="4922.99 9310.93 5972.97 10360.92 6373.43 9960.46 5723.9 9310.93 6373.43 8661.4 5972.97 8260.95 4922.99 9310.93"/>', z=0, cls="shapes deco-back")
 sec["stories"].svg('<polygon fill="#6b7a32" opacity=".4" points="5561.6 13460.7 5910.03 13809.13 6042.91 13676.24 5827.37 13460.7 6042.91 13245.16 5910.03 13112.28 5561.6 13460.7"/>', z=0, cls="shapes deco-back")
-care.svg('<polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/>'
-                '<polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/>', z=4)
+care.svg('<polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/>', z=4, cls="shapes edge-left")
+care.svg('<polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/>', z=4, cls="shapes edge-right")
 sec["beyond"].svg('<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/>'
                   '<polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/>', z=4)
 

@@ -135,9 +135,17 @@
   /* The wrapper is white edge to edge and the stage clips to its box, so nothing outside the box shows,
      even when the stage is scaled down to fit a short window. */
   .journey-scroll { position: relative; z-index: 2; background: #fff; }
-  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transform-origin: 50% 0; overflow: hidden; transition: opacity .5s ease; }
+  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; overflow: hidden; transition: opacity .5s ease; --s: 1; --tx: 0px; --ty: 0px; }
   .journey-stage.leaving { opacity: 0; }
-  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transition: opacity .7s ease; }
+  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; transition: opacity .7s ease; }
+  .journey-stage, .journey-stage * { cursor: none; } /* no cursor over the journey and we care */
+  .journey-layer { background: var(--black); }
+  .care-layer { background: #fff; }
+  .layer-content, .layer-edge { position: absolute; top: 0; width: 2376px; height: 1564.77px; }
+  .layer-content { left: 0; transform-origin: 0 0; transform: translate(var(--tx), var(--ty)) scale(var(--s)); }
+  .layer-edge { pointer-events: none; z-index: 4; }
+  .layer-edge.left { left: 0; transform-origin: 0 0; transform: translateY(var(--ty)) scale(var(--s)); }
+  .layer-edge.right { right: 0; transform-origin: 100% 0; transform: translateY(var(--ty)) scale(var(--s)); }
   .care-layer { opacity: 0; pointer-events: none; }
   .journey-stage.care .journey-layer { opacity: 0; }
   .journey-stage.care .care-layer { opacity: 1; transition-delay: .6s; pointer-events: auto; }
@@ -351,10 +359,13 @@
     if (wrap.getBoundingClientRect().bottom > 0) after.classList.add('hidden'); // fades in once the journey is done
 
     let locked = false, hold = 0, busyUntil = 0, lastWheel = 0, cooldownUntil = 0, lastAbs = 0, lastStepAt = 0;
+    // The stage always fills the window; its content scales to the window height and centres.
     const fit = () => {
-      const scale = Math.min(1, innerHeight / (STAGE_H * zoom()));
-      stage.style.transform = scale < 1 ? `scale(${scale})` : '';
-      wrap.style.height = STAGE_H * scale + 'px';
+      const vh = innerHeight / zoom(), s = Math.min(1, vh / STAGE_H);
+      wrap.style.height = vh + 'px';
+      stage.style.setProperty('--s', s);
+      stage.style.setProperty('--tx', (2376 - 2376 * s) / 2 + 'px');
+      stage.style.setProperty('--ty', (vh - STAGE_H * s) / 2 + 'px');
     };
     const alignTop = () => Math.max(0, (innerHeight - wrap.getBoundingClientRect().height) / 2); // centre the stage
     const snap = () => scrollTo({ top: scrollY + wrap.getBoundingClientRect().top - alignTop(), behavior: 'auto' });
