@@ -269,9 +269,11 @@ STOCK_STEPS = [
 HANDOVER = ("Handover", "We walk you through every feature before you hitch up and head off. This is where the journey really begins.")
 
 XS = [3966.34, 4335.63, 4704.92, 5074.2]
+# Stock diamonds: first lines up with custom 1, last with custom 4 (where the curve starts), middle halfway.
+STOCK_XS = [XS[0], (XS[0] + XS[3]) / 2, XS[3]]
 journey_steps = ([("custom", i + 1, XS[i], TOP_Y, *c) for i, c in enumerate(CUSTOM_STEPS)]
                  + [("custom", 5, *MERGE, *HANDOVER)]
-                 + [("stock", i + 1, XS[i], BOT_Y, *c) for i, c in enumerate(STOCK_STEPS)]
+                 + [("stock", i + 1, STOCK_XS[i], BOT_Y, *c) for i, c in enumerate(STOCK_STEPS)]
                  + [("stock", 4, *MERGE, *HANDOVER)])
 
 journey = Section("div", "journey-layer", AB1, 8796.01, 10360.79)
