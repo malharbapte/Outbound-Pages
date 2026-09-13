@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beyond Sale expanding panels sample | Outbound RVs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Section-only sample at the 2376px artboard width, zoomed to fit.
+     Section 2376 x 1066: thirds at x 792 / 1584 and y 355.4 / 710.8. Panels start on the upper third line. */
+  :root { --poppins: "Poppins", system-ui, sans-serif; --oswald: "Oswald", "Arial Narrow", sans-serif;
+          --black: #0b0a07; --bone: #f4f1ea; --green: #8b9b4d; --olive: #6b7a32; --orange: #ee964b;
+          --ease: cubic-bezier(.65, 0, .35, 1); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; }
+  body { font-family: var(--poppins); -webkit-font-smoothing: antialiased; color: var(--black); }
+  h2, h3, p { margin: 0; }
+  .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; padding: 120px 0 200px; }
+
+  .beyond { position: relative; height: 1066px; background: #fff; }
+  .head-icon { position: absolute; left: 0; top: 0; width: 2376px; height: 1066px; pointer-events: none; }
+  .beyond h2 { position: absolute; left: 536px; top: 174px; font: 700 84px/100.8px var(--oswald); }
+
+  .items { position: absolute; left: 395px; top: 355.4px; width: 1586px; height: 580px; display: flex; gap: 20px; }
+  .item { position: relative; flex: 1 1 0; min-width: 0; background: var(--bone); padding: 52px; overflow: hidden; cursor: default;
+          transition: flex-grow .75s var(--ease), background-color .5s ease, box-shadow .5s ease; }
+  .item.on { flex-grow: 4; background: #fff; box-shadow: inset 0 0 0 3px var(--olive); }
+
+  /* Icons: stroke only, one consistent set (24px grid, 1px stroke, round caps and joins) */
+  .icon { display: block; width: 96px; height: 96px; fill: none; stroke: var(--olive); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+
+  .item h3 { position: absolute; left: 52px; bottom: 52px; font: 700 48px/1.15 var(--poppins); color: #000; white-space: nowrap;
+             transform-origin: 0 100%; transform: rotate(-90deg) translate(0, 100%);
+             transition: transform .65s var(--ease), bottom .65s var(--ease), color .45s ease; }
+  .item.on h3 { transform: none; bottom: 318px; color: var(--olive); }
+  .desc { position: absolute; left: 52px; top: 290px; width: 860px; font: 400 32px/42px var(--poppins); color: var(--black);
+          opacity: 0; transform: translateY(16px); transition: opacity .3s ease, transform .3s ease; }
+  .item.on .desc { opacity: 1; transform: none; transition: opacity .5s ease .4s, transform .6s var(--ease) .4s; }
+
+  /* Thirds overlay */
+  .grid { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s; z-index: 9;
+    background:
+      linear-gradient(to right, transparent calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px),
+                                transparent calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)),
+      linear-gradient(to bottom, transparent calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px),
+                                 transparent calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)); }
+  body.show-grid .grid { opacity: 1; }
+  .grid-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 50; font: 600 14px/1 var(--poppins); letter-spacing: .06em; text-transform: uppercase;
+                 background: var(--black); color: var(--bone); border: 0; padding: 14px 18px; cursor: pointer; }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+
+<main class="page" id="page">
+  <section class="beyond">
+    <svg class="head-icon" viewBox="3528.15 11925.41 2376 1066" aria-hidden="true">
+      <rect fill="#f4f1ea" x="3613.01" y="12083.84" width="140.67" height="140.67" transform="translate(-7515.4758 6164.4059) rotate(-45.0001)"/>
+      <rect fill="#8b9b4d" x="3692.65" y="12083.84" width="140.67" height="140.67" transform="translate(-7492.1508 6220.7173) rotate(-45.0001)"/>
+      <polygon fill="#6b7a32" points="4023.44 12154.17 3923.79 12054.53 3885.79 12092.53 3947.43 12154.17 3885.79 12215.82 3923.79 12253.82 4023.44 12154.17"/>
+      <polygon fill="#f4f1ea" points="3885.79 12092.53 3847.78 12054.53 3748.13 12154.17 3847.78 12253.82 3885.79 12215.82 3824.14 12154.17 3885.79 12092.53"/>
+      <rect fill="#8b9b4d" x="3842.2" y="12110.59" width="87.18" height="87.18" transform="translate(-7456.1841 6307.552) rotate(-45.0001)"/>
+    </svg>
+    <h2>BEYOND SALE</h2>
+
+    <div class="items">
+      <div class="item on" tabindex="0">
+        <!-- Finance: coin with a dollar sign -->
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+        <h3>FINANCE</h3>
+        <p class="desc">The right caravan deserves a finance plan that feels just as considered. We’ll help you explore suitable options and guide you through the process clearly.</p>
+      </div>
+      <div class="item" tabindex="0">
+        <!-- Servicing: spanner -->
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <h3>SERVICING</h3>
+        <p class="desc">From your first 1,000 km service to annual servicing and general repairs, our experienced team will help keep your caravan ready for what comes next.</p>
+      </div>
+      <div class="item" tabindex="0">
+        <!-- Warranty: shield with a tick -->
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h3>WARRANTY</h3>
+        <p class="desc">Every new Wonderland RV comes with a three-year factory-backed warranty. If something needs attention, our team will help guide you through the process.</p>
+      </div>
+    </div>
+    <span class="grid" aria-hidden="true"></span>
+  </section>
+</main>
+
+<script>
+  const page = document.getElementById('page');
+  const fit = () => page.style.setProperty('--zoom', document.documentElement.clientWidth / 2376);
+  fit(); addEventListener('resize', fit);
+
+  // Hover (or keyboard focus) opens a panel; it stays open until another panel is hovered.
+  const items = [...document.querySelectorAll('.item')];
+  const open = el => items.forEach(i => i.classList.toggle('on', i === el));
+  items.forEach(el => { el.addEventListener('mouseenter', () => open(el)); el.addEventListener('focus', () => open(el)); });
+</script>
+</body>
+</html>

@@ -172,15 +172,19 @@
   @keyframes stock-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes stock-swap { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
-  /* We care / Beyond sale */
-  .service { display: contents; }
-  .icon-box { border: 4px solid var(--olive); z-index: 1; }
-  .service .svc-title { color: #000; transition: color .25s; }
-  .service .svc-desc { color: var(--silver); transition: color .25s; }
-  .service.active .svc-title, .service:hover .svc-title { color: var(--olive); }
-  .service.active .svc-desc, .service:hover .svc-desc { color: var(--black); }
-  .beyond:has(.service:not(.active):hover) .service.active .svc-title { color: #000; }
-  .beyond:has(.service:not(.active):hover) .service.active .svc-desc { color: var(--silver); }
+  /* Beyond sale — expanding panels */
+  .bs-items { position: absolute; z-index: 2; width: 1586px; height: 580px; display: flex; gap: 20px; --ease: cubic-bezier(.65, 0, .35, 1); }
+  .bs-item { position: relative; flex: 1 1 0; min-width: 0; background: var(--bone); padding: 52px; overflow: hidden; cursor: default;
+             transition: flex-grow .75s var(--ease), background-color .5s ease, box-shadow .5s ease; }
+  .bs-item.on { flex-grow: 4; background: #fff; box-shadow: inset 0 0 0 3px var(--olive); }
+  .bs-icon { display: block; width: 96px; height: 96px; fill: none; stroke: var(--olive); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+  .bs-item h3 { position: absolute; left: 52px; bottom: 52px; margin: 0; font: 700 48px/1.15 var(--poppins); color: #000; white-space: nowrap;
+                transform-origin: 0 100%; transform: rotate(-90deg) translate(0, 100%);
+                transition: transform .65s var(--ease), bottom .65s var(--ease), color .45s ease; }
+  .bs-item.on h3 { transform: none; bottom: 318px; color: var(--olive); }
+  .bs-desc { position: absolute; left: 52px; top: 290px; width: 860px; margin: 0; font: 400 32px/42px var(--poppins); color: var(--black);
+             opacity: 0; transform: translateY(16px); transition: opacity .3s ease, transform .3s ease; }
+  .bs-item.on .bs-desc { opacity: 1; transform: none; transition: opacity .5s ease .4s, transform .6s var(--ease) .4s; }
 
   /* Stories */
   .tile { box-sizing: border-box; }
@@ -273,7 +277,7 @@
     <h3 class="t nopoint" style="top:1134.78px;left:2003.24px;font-family:var(--poppins);font-size:72px;font-weight:600;line-height:86.4px;color:#fff;">XTR</h3>
     <p class="t nopoint" style="top:1222.49px;left:1975.37px;font-family:var(--poppins);font-size:24px;font-weight:300;line-height:28.8px;color:#fff;font-style:italic;">Extreme Offroad</p>
     <svg class="shapes" style="z-index:2" width="2376" height="1831.84" viewBox="3528.15 3168.16 2376 1831.84" aria-hidden="true"><path fill="#ee964b" d="M3745.53,3383.54l-217.39,217.39v112.94l330.33-330.33c36.61-36.61,36.61-95.97,0-132.58l-82.8-82.8h-112.94l82.8,82.8c54.03,54.03,54.8,77.78,0,132.58Z"/><polygon fill="#ee964b" points="5003.69 3448.68 5030.04 3474.86 5003.69 3503.42 5308.13 3503.42 5308.13 3448.68 5003.69 3448.68"/></svg>
-    <h2 class="t" style="top:59.66px;left:406.25px;font-family:var(--oswald);font-size:84px;font-weight:500;line-height:100.8px;color:#000;">The Wonderland RV Range</h2>
+    <h2 class="t" style="top:59.66px;left:395.64px;font-family:var(--oswald);font-size:84px;font-weight:500;line-height:100.8px;color:#000;">The Wonderland RV Range</h2>
     <p class="t z3" style="top:287.13px;left:1517.49px;font-family:var(--poppins);font-size:33.07px;font-weight:400;line-height:39.68px;color:#fff;">Full Composite</p>
     <p class="t" style="top:1429.6px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#284b63;">You can always customize the Van depending on your needs. The length and features <br>will vary depending on your customization.</p>
     <a class="btn" style="position:absolute;left:900.15px;top:1576.9px;width:574.93px;height:93.15px;padding-top:23.7px;" href="#">BUILD YOUR CARAVAN</a>
@@ -281,8 +285,7 @@
     <svg class="shapes deco-back" style="z-index:0" width="2376" height="1831.84" viewBox="3528.15 3168.16 2376 1831.84" aria-hidden="true"><polygon fill="#6b7a32" opacity=".4" points="4458.33 4621.05 3408.34 3571.06 3007.89 3971.52 3657.41 4621.05 3007.89 5270.58 3408.34 5671.03 4458.33 4621.05"/><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="4922.99 5700.13 5972.97 6750.12 6373.43 6349.66 5723.9 5700.13 6373.43 5050.6 5972.97 4650.15 4922.99 5700.13"/></svg>
   </section>
   <section class="sec drive" style="padding-top:592.05px" >
-    <svg class="shapes" style="z-index:1" width="2376" height="1430" viewBox="3528.15 5000 2376 1430" aria-hidden="true"><rect fill="#8b9b4d" x="3853.08" y="5184.2" width="140.92" height="140.92" transform="translate(-2566.4249 4313.4158) rotate(-45)"/></svg>
-    <h2 class="t" style="top:200.31px;left:522.8px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">DRIVE AWAY</h2>
+    <h2 class="t" style="top:200.31px;left:395.64px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">DRIVE AWAY</h2>
     <input class="search" type="search" placeholder="Search" style="left:395.35px;top:406.76px">
     <button class="filter" style="left:935.89px;top:406.76px">Filter</button>
     <p class="t" style="top:428.33px;left:1621.8px;font-family:var(--poppins);font-size:24px;font-weight:300;line-height:28.8px;color:#7a736a;">View</p>
@@ -291,8 +294,7 @@
   </section>
   <section class="sec visit" style="height:2366.01px" >
     <img src="assets/dealership.png" alt="Outbound RVs dealership at 58B Lara Way, Campbellfield" style="position:absolute;left:-12.34px;top:45.22px;width:2388.19px;height:1686.64px;">
-    <svg class="shapes" style="z-index:2" width="2376" height="2366.01" viewBox="3528.15 6430 2376 2366.01" aria-hidden="true"><g transform="translate(0 0)"><polygon fill="#6b7a32" points="4023.44 6665.6 3923.79 6565.95 3885.79 6603.95 3947.43 6665.6 3885.79 6727.24 3923.79 6765.24 4023.44 6665.6"/><polygon fill="#f4f1ea" points="3885.79 6603.95 3847.78 6565.95 3748.13 6665.6 3847.78 6765.24 3885.79 6727.24 3824.14 6665.6 3885.79 6603.95"/><rect fill="#8b9b4d" x="3842.2" y="6622.01" width="87.18" height="87.18" transform="translate(-3575.1691 4699.9807) rotate(-45.0001)"/></g></svg>
-    <h2 class="t" style="top:181.24px;left:518.94px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">COME SEE US</h2>
+    <h2 class="t" style="top:181.24px;left:395.64px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">COME SEE US</h2>
     <p class="t" style="top:1451.09px;left:395.64px;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#f4f1ea;">We are located at 58B Laraway, Campbellfeild VIC.<br>You are welcome to visit us </p>
     <a class="btn" style="position:absolute;left:393.5px;top:1573.33px;width:507.27px;height:93.15px;padding-top:23.7px;" href="#">Let Us know</a>
     <p class="t" style="top:1787.06px;left:395.64px;font-family:var(--poppins);font-size:36px;font-weight:700;line-height:43.2px;color:#0b0a07;">WE ARE OPEN ON :</p>
@@ -309,11 +311,11 @@
    <div class="journey-stage" id="journey-stage">
     <div class="layer journey-layer">
       <div class="layer-content">
-        <h2 class="t" style="top:151.39px;left:518.94px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#f4f1ea;">OWNERSHIP JOURNEY</h2>
-        <p class="t" style="top:253.56px;left:518.94px;font-family:var(--oswald);font-size:48px;font-weight:300;line-height:57.6px;color:#fff;">THE BEGINNING OF A EVERLASTING RELATIONSHIP</p>
+        <h2 class="t" style="top:151.39px;left:395.64px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#f4f1ea;">OWNERSHIP JOURNEY</h2>
+        <p class="t" style="top:253.56px;left:395.64px;font-family:var(--oswald);font-size:48px;font-weight:300;line-height:57.6px;color:#fff;">THE BEGINNING OF A EVERLASTING RELATIONSHIP</p>
         <p class="t path-label" style="top:423.37px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;" data-path="custom">CUSTOM CARAVAN (9-12 MONTHS)</p>
         <p class="t path-label" style="top:1343.36px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;" data-path="stock">STOCK VAN (1 MONTH)</p>
-        <svg class="shapes journey-svg" style="z-index:1" width="2376" height="1564.78" viewBox="3528.15 8796.01 2376 1564.78" aria-hidden="true"><g transform="translate(0 2370.22)"><polygon fill="#6b7a32" points="4023.44 6665.6 3923.79 6565.95 3885.79 6603.95 3947.43 6665.6 3885.79 6727.24 3923.79 6765.24 4023.44 6665.6"/><polygon fill="#f4f1ea" points="3885.79 6603.95 3847.78 6565.95 3748.13 6665.6 3847.78 6765.24 3885.79 6727.24 3824.14 6665.6 3885.79 6603.95"/><rect fill="#8b9b4d" x="3842.2" y="6622.01" width="87.18" height="87.18" transform="translate(-3575.1691 4699.9807) rotate(-45.0001)"/></g><path class="track track-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><path class="track" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><rect class="step-diamond d-custom" data-step="0" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="1" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4335.63 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="2" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4704.92 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="3" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5074.2 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="4" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5463.43 9711.08) rotate(45)"/><rect class="step-diamond d-stock" data-step="5" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="6" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4520.27 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="7" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5074.2 10062.53) rotate(45)"/></svg>
+        <svg class="shapes journey-svg" style="z-index:1" width="2376" height="1564.78" viewBox="3528.15 8796.01 2376 1564.78" aria-hidden="true"><path class="track track-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><path class="track" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><rect class="step-diamond d-custom" data-step="0" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="1" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4335.63 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="2" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4704.92 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="3" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5074.2 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="4" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5463.43 9711.08) rotate(45)"/><rect class="step-diamond d-stock" data-step="5" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="6" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4520.27 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="7" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5074.2 10062.53) rotate(45)"/></svg>
         <div class="step-panel" data-step="0" data-path="custom" data-x="3966.34" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">1</span><div class="step-text"><h3>Understanding your needs</h3><p>We sit down with you to learn how you travel, where you want to go and what matters most in a caravan.</p></div></div>
         <div class="step-panel" data-step="1" data-path="custom" data-x="4335.63" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">2</span><div class="step-text"><h3>Designing your layout</h3><p>Together we choose the model, floor plan and features, and lock in a build spec that suits your journey.</p></div></div>
         <div class="step-panel" data-step="2" data-path="custom" data-x="4704.92" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">3</span><div class="step-text"><h3>Confirming your build</h3><p>Your order is placed with Wonderland RV and your caravan is booked into the factory build schedule.</p></div></div>
@@ -338,27 +340,11 @@
   </section>
   <section class="sec beyond" style="height:1066.24px" id="after-journey">
     <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1066.24px;background:#fff;"></div>
-    <svg class="shapes" style="z-index:1" width="2376" height="1066.24" viewBox="3528.15 11925.41 2376 1066.24" aria-hidden="true"><rect fill="#f4f1ea" x="3613.01" y="12083.84" width="140.67" height="140.67" transform="translate(-7515.4758 6164.4059) rotate(-45.0001)"/><rect fill="#8b9b4d" x="3692.65" y="12083.84" width="140.67" height="140.67" transform="translate(-7492.1508 6220.7173) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4023.44 12154.17 3923.79 12054.53 3885.79 12092.53 3947.43 12154.17 3885.79 12215.82 3923.79 12253.82 4023.44 12154.17"/><polygon fill="#f4f1ea" points="3885.79 12092.53 3847.78 12054.53 3748.13 12154.17 3847.78 12253.82 3885.79 12215.82 3824.14 12154.17 3885.79 12092.53"/><rect fill="#8b9b4d" x="3842.2" y="12110.59" width="87.18" height="87.18" transform="translate(-7456.1841 6307.552) rotate(-45.0001)"/></svg>
-    <h2 class="t" style="top:174.41px;left:536.12px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">BEYOND SALE</h2>
-    <a href="#" class="service active">
-    <div class="icon-box" style="position:absolute;left:395.39px;top:442.4px;width:140.67px;height:140.67px;"></div>
-    <h3 class="t svc-title" style="top:622.42px;left:395.14px;font-family:var(--poppins);font-size:48px;font-weight:700;line-height:57.6px;">FINANCE</h3>
-    <p class="t svc-desc" style="top:711.17px;left:394.87px;font-family:var(--poppins);font-size:32px;font-weight:400;line-height:42px;">The right caravan deserves a <br>finance plan that feels just as <br>considered. We’ll help you <br>explore suitable options and <br>guide you through the <br>process clearly.</p>
-    </a>
-    <a href="#" class="service">
-    <div class="icon-box" style="position:absolute;left:936.54px;top:442.4px;width:140.67px;height:140.67px;"></div>
-    <h3 class="t svc-title" style="top:622.42px;left:935.3px;font-family:var(--poppins);font-size:48px;font-weight:700;line-height:57.6px;">SERVICING</h3>
-    <p class="t svc-desc" style="top:711.17px;left:935.17px;font-family:var(--poppins);font-size:32px;font-weight:400;line-height:42px;">From your first 1,000 km service <br>to annual servicing and <br>general repairs, our <br>experienced team will help <br>keep your caravan ready for <br>what comes next.</p>
-    </a>
-    <a href="#" class="service">
-    <div class="icon-box" style="position:absolute;left:1477.69px;top:442.4px;width:140.67px;height:140.67px;"></div>
-    <h3 class="t svc-title" style="top:622.42px;left:1475.2px;font-family:var(--poppins);font-size:48px;font-weight:700;line-height:57.6px;">WARRANTY</h3>
-    <p class="t svc-desc" style="top:711.17px;left:1475.06px;font-family:var(--poppins);font-size:32px;font-weight:400;line-height:42px;">Every new Wonderland RV <br>comes with a three-year <br>factory-backed warranty. If <br>something needs attention, our <br>team will help guide you <br>through the process.</p>
-    </a>
+    <h2 class="t" style="top:174.41px;left:395.64px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">BEYOND SALE</h2>
+    <div class="bs-items" style="left:395.35px;top:355.41px"><div class="bs-item on" tabindex="0"><svg class="bs-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg><h3>FINANCE</h3><p class="bs-desc">The right caravan deserves a finance plan that feels just as considered. We’ll help you explore suitable options and guide you through the process clearly.</p></div><div class="bs-item" tabindex="0"><svg class="bs-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><h3>SERVICING</h3><p class="bs-desc">From your first 1,000 km service to annual servicing and general repairs, our experienced team will help keep your caravan ready for what comes next.</p></div><div class="bs-item" tabindex="0"><svg class="bs-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><h3>WARRANTY</h3><p class="bs-desc">Every new Wonderland RV comes with a three-year factory-backed warranty. If something needs attention, our team will help guide you through the process.</p></div></div>
     <svg class="shapes" style="z-index:4" width="2376" height="1066.24" viewBox="3528.15 11925.41 2376 1066.24" aria-hidden="true"><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/><polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/></svg>
   </section>
   <section class="sec stories" style="height:2055.11px" >
-    <svg class="shapes" style="z-index:1" width="2376" height="2055.11" viewBox="3528.15 12991.65 2376 2055.11" aria-hidden="true"><g transform="translate(0 0)"><rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/><rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/><polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/><polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/><rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/></g></svg>
     <h2 class="t" style="top:249.62px;left:0;width:2376px;text-align:center;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#8e6673;">STORIES FROM OUR CUSTOMERS</h2>
     <div class="tile tile-white" style="position:absolute;left:0.12px;top:469.7px;width:791.96px;height:791.96px;"></div>
     <div class="tile" style="position:absolute;left:792.08px;top:469.7px;width:791.96px;height:791.96px;background:#f4f1ea;"></div>
@@ -388,7 +374,6 @@
     <a class="t link" style="top:927.28px;left:395.89px;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#6b7a32;" href="#">Know more, <br>About Us.</a>
   </section>
   <section class="sec contact" style="height:1288.18px" >
-    <svg class="shapes" style="z-index:1" width="2376" height="1288.18" viewBox="6788.78 1250 2376 1288.18" aria-hidden="true"><g transform="translate(2299.75 -11768.7)"><rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/><rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/><polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/><polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/><rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/></g></svg>
     <h2 class="t" style="top:49.43px;left:395.88px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">CONTACT US</h2>
     <p class="t" style="top:158.35px;left:395.88px;font-family:var(--oswald);font-size:48px;font-weight:300;line-height:57.6px;color:#000;">LET’S GET YOUR JOURNEY STARTED</p>
     <p class="t" style="top:312.84px;left:395.89px;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#6b7a32;">Fill in your details, and our <br>team will get in touch with <br>you shortly</p>
@@ -404,11 +389,11 @@
   </section>
   <section class="sec insta" style="height:799.59px" >
     <div style="position:absolute;left:-3.3px;top:0px;width:2379.31px;height:799.59px;background:#0b0a07;"></div>
-    <h2 class="t" style="top:122.77px;left:392.45px;font-family:var(--oswald);font-size:48px;font-weight:700;line-height:57.6px;color:#f4f1ea;">FOLLOW US ON INSTAGRAM</h2>
+    <h2 class="t" style="top:122.77px;left:395.88px;font-family:var(--oswald);font-size:48px;font-weight:700;line-height:57.6px;color:#f4f1ea;">FOLLOW US ON INSTAGRAM</h2>
     <div class="ig-track" style="left:-3.57px;top:250.28px"><a href="#" class="ig-tile" aria-label="Instagram post"></a><a href="#" class="ig-tile" aria-label="Instagram post"></a><a href="#" class="ig-tile" aria-label="Instagram post"></a><a href="#" class="ig-tile" aria-label="Instagram post"></a><a href="#" class="ig-tile" aria-label="Instagram post"></a><a href="#" class="ig-tile" aria-label="Instagram post"></a></div>
   </section>
   <section class="sec faq" style="height:859.04px" >
-    <h2 class="t" style="top:103.95px;left:391.54px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">FAQ’S</h2>
+    <h2 class="t" style="top:103.95px;left:395.88px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">FAQ’S</h2>
     <div class="faq-list" style="left:395.89px;top:283.81px"><details><summary>How do I tow?</summary><div class="answer">Answer :</div></details><details><summary>How can I claim warranty form?</summary><div class="answer">Answer :</div></details><details open><summary>What components are not covered under warranty?</summary><div class="answer">Answer :</div></details></div>
   </section>
   <footer class="sec footer" style="height:345.49px" style="overflow:hidden">
@@ -515,6 +500,13 @@
     }));
     track.addEventListener('animationend', () => track.classList.remove('swap'));
   })();
+  // Beyond Sale panels: hovering (or focusing) a panel opens it; it stays open until another is hovered.
+  (() => {
+    const items = [...document.querySelectorAll('.bs-item')];
+    const open = el => items.forEach(i => i.classList.toggle('on', i === el));
+    items.forEach(el => { el.addEventListener('mouseenter', () => open(el)); el.addEventListener('focus', () => open(el)); });
+  })();
+
   // Ownership journey — while the stage is locked the page stays still and each scroll moves one step.
   (() => {
     const wrap = document.getElementById('journey');

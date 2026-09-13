@@ -90,27 +90,6 @@ def btn(sec, x, y, w, h, label, tx, ty, href="#", tag="a"):
 
 
 # Reusable shape snippets (raw coordinates) ----------------------------------
-def heading_icon(dy):
-    """Olive chevron + bone chevron + green diamond, as used by COME SEE US etc. dy = offset from 6665.6."""
-    return (f'<g transform="translate(0 {r(dy)})">'
-            '<polygon fill="#6b7a32" points="4023.44 6665.6 3923.79 6565.95 3885.79 6603.95 3947.43 6665.6 3885.79 6727.24 3923.79 6765.24 4023.44 6665.6"/>'
-            '<polygon fill="#f4f1ea" points="3885.79 6603.95 3847.78 6565.95 3748.13 6665.6 3847.78 6765.24 3885.79 6727.24 3824.14 6665.6 3885.79 6603.95"/>'
-            '<rect fill="#8b9b4d" x="3842.2" y="6622.01" width="87.18" height="87.18" transform="translate(-3575.1691 4699.9807) rotate(-45.0001)"/>'
-            '</g>')
-
-
-def triple_chevron(dx, dy):
-    """The small green/bone chevron cluster above STORIES and CONTACT US."""
-    return (f'<g transform="translate({r(dx)} {r(dy)})">'
-            '<rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/>'
-            '<rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/>'
-            '<polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/>'
-            '<polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/>'
-            '<polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/>'
-            '<rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/>'
-            '</g>')
-
-
 # =============================================================================
 # ARTBOARD 1
 # =============================================================================
@@ -163,7 +142,7 @@ for cx, src, ix, iy, iw, ih, name, nx, sub, subx in cards:
     s.text(subx, 4413.45, sub, size=24, weight=300, italic=True, color="#fff", cls="nopoint")
 s.svg('<path fill="#ee964b" d="M3745.53,3383.54l-217.39,217.39v112.94l330.33-330.33c36.61-36.61,36.61-95.97,0-132.58l-82.8-82.8h-112.94l82.8,82.8c54.03,54.03,54.8,77.78,0,132.58Z"/>'
       '<polygon fill="#ee964b" points="5003.69 3448.68 5030.04 3474.86 5003.69 3503.42 5308.13 3503.42 5308.13 3448.68 5003.69 3448.68"/>', z=2)
-s.text(3934.40, 3316.19, "The Wonderland RV Range", font="O", size=84, weight=500, color="#000", tag="h2")
+s.text(3923.79, 3316.19, "The Wonderland RV Range", font="O", size=84, weight=500, color="#000", tag="h2")
 s.text(5045.64, 3486.71, "Full Composite", size=33.07, color="#fff", cls="z3")
 s.text(0, 4631.96, ["You can always customize the Van depending on your needs. The length and features ",
                     "will vary depending on your customization."], size=36, weight=600, color=COL["blue"], center=True)
@@ -173,8 +152,7 @@ ab1.append(s)
 
 # ---- Drive Away (stock) ------------------------------------------------------------------
 s = Section("section", "drive", AB1, 5000, 6430, flow_top=5592.05 - 5000)
-s.svg('<rect fill="#8b9b4d" x="3853.08" y="5184.2" width="140.92" height="140.92" transform="translate(-2566.4249 4313.4158) rotate(-45)"/>', z=1)
-s.text(4050.95, 5288.68, "DRIVE AWAY", font="O", size=84, weight=700, color="#000", tag="h2")
+s.text(3923.79, 5288.68, "DRIVE AWAY", font="O", size=84, weight=700, color="#000", tag="h2")
 s.add(f'<input class="search" type="search" placeholder="Search" style="left:{r(s.lx(3923.5))}px;top:{r(s.ly(5406.76))}px">')
 s.add(f'<button class="filter" style="left:{r(s.lx(4464.04))}px;top:{r(s.ly(5406.76))}px">Filter</button>')
 s.text(5149.95, 5451.13, "View", size=24, weight=300, color=COL["grey"])
@@ -228,8 +206,7 @@ ab1.append(s)
 # ---- Come see us -----------------------------------------------------------------------
 s = Section("section", "visit", AB1, 6430, 8796.01)
 s.img(3515.81, 6475.22, 3285 * .727, 2320 * .727, "dealership.png", "Outbound RVs dealership at 58B Lara Way, Campbellfield")
-s.svg(heading_icon(0), z=2)
-s.text(4047.09, 6699.61, "COME SEE US", font="O", size=84, weight=700, color="#000", tag="h2")
+s.text(3923.79, 6699.61, "COME SEE US", font="O", size=84, weight=700, color="#000", tag="h2")
 s.text(3923.79, 7915.29, ["We are located at 58B Laraway, Campbellfeild VIC.", "You are welcome to visit us "], size=36, weight=600, color=COL["bone"])
 btn(s, 3921.65, 8003.33, 507.27, 93.15, "Let Us know", 4071.5, 8061.23)
 s.text(3923.79, 8251.26, "WE ARE OPEN ON :", size=36, weight=700, color=COL["black"])
@@ -277,13 +254,12 @@ journey_steps = ([("custom", i + 1, XS[i], TOP_Y, *c) for i, c in enumerate(CUST
                  + [("stock", 4, *MERGE, *HANDOVER)])
 
 journey = Section("div", "journey-layer", AB1, 8796.01, 10360.79)
-journey.text(4047.09, 9035.77, "OWNERSHIP JOURNEY", font="O", size=84, weight=700, color=COL["bone"], tag="h2")
-journey.text(4047.09, 9100.07, "THE BEGINNING OF A EVERLASTING RELATIONSHIP", font="O", size=48, weight=300, color="#fff")
+journey.text(3923.79, 9035.77, "OWNERSHIP JOURNEY", font="O", size=84, weight=700, color=COL["bone"], tag="h2")
+journey.text(3923.79, 9100.07, "THE BEGINNING OF A EVERLASTING RELATIONSHIP", font="O", size=48, weight=300, color="#fff")
 journey.text(3923.79, 9264.98, "CUSTOM CARAVAN (9-12 MONTHS)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="custom"')
 journey.text(3923.79, 10184.97, "STOCK VAN (1 MONTH)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="stock"')
 
-svg = (heading_icon(9035.82 - 6665.6)
-       + f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
+svg = (f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
        + f'<path class="fill fill-custom" d="{TOP_PATH}"/><path class="fill fill-stock" d="{BOT_PATH}"/>')
 for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
     if path == "stock" and (x, y) == MERGE:
@@ -327,31 +303,29 @@ ab1.append(JourneyScroll())
 # ---- Beyond sale --------------------------------------------------------------------------
 s = Section("section", "beyond", AB1, 11925.41, 12991.65, 'id="after-journey"')
 s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;")
-s.svg('<rect fill="#f4f1ea" x="3613.01" y="12083.84" width="140.67" height="140.67" transform="translate(-7515.4758 6164.4059) rotate(-45.0001)"/>'
-      '<rect fill="#8b9b4d" x="3692.65" y="12083.84" width="140.67" height="140.67" transform="translate(-7492.1508 6220.7173) rotate(-45.0001)"/>'
-      '<polygon fill="#6b7a32" points="4023.44 12154.17 3923.79 12054.53 3885.79 12092.53 3947.43 12154.17 3885.79 12215.82 3923.79 12253.82 4023.44 12154.17"/>'
-      '<polygon fill="#f4f1ea" points="3885.79 12092.53 3847.78 12054.53 3748.13 12154.17 3847.78 12253.82 3885.79 12215.82 3824.14 12154.17 3885.79 12092.53"/>'
-      '<rect fill="#8b9b4d" x="3842.2" y="12110.59" width="87.18" height="87.18" transform="translate(-7456.1841 6307.552) rotate(-45.0001)"/>', z=1)
-s.text(4064.27, 12188.19, "BEYOND SALE", font="O", size=84, weight=700, color="#000", tag="h2")
+s.text(3923.79, 12188.19, "BEYOND SALE", font="O", size=84, weight=700, color="#000", tag="h2")
+# Expanding panels (see samples/beyond-sale.html): hovering a panel widens it to show its description;
+# it stays open until another panel is hovered. Panels start on the upper third line of the section.
+ICONS = {
+    "FINANCE": '<circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>',
+    "SERVICING": '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+    "WARRANTY": '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+}
 services = [
-    (3923.54, 3923.29, 3923.02, "FINANCE", ["The right caravan deserves a ", "finance plan that feels just as ", "considered. We’ll help you ",
-                                            "explore suitable options and ", "guide you through the ", "process clearly."]),
-    (4464.69, 4463.45, 4463.32, "SERVICING", ["From your first 1,000 km service ", "to annual servicing and ", "general repairs, our ",
-                                              "experienced team will help ", "keep your caravan ready for ", "what comes next."]),
-    (5005.84, 5003.35, 5003.21, "WARRANTY", ["Every new Wonderland RV ", "comes with a three-year ", "factory-backed warranty. If ",
-                                             "something needs attention, our ", "team will help guide you ", "through the process."]),
+    ("FINANCE", "The right caravan deserves a finance plan that feels just as considered. We’ll help you explore suitable options and guide you through the process clearly."),
+    ("SERVICING", "From your first 1,000 km service to annual servicing and general repairs, our experienced team will help keep your caravan ready for what comes next."),
+    ("WARRANTY", "Every new Wonderland RV comes with a three-year factory-backed warranty. If something needs attention, our team will help guide you through the process."),
 ]
-for i, (bx, hx, px, title, lines) in enumerate(services):
-    s.add(f'<a href="#" class="service{" active" if i == 0 else ""}">')
-    s.box(bx, 12367.81, 140.67, 140.67, cls="icon-box")
-    s.text(hx, 12593.43, title, size=48, weight=700, color=None, tag="h3", cls="svc-title")
-    s.text(px, 12668.78, lines, size=32, lh=42, color=None, cls="svc-desc")
-    s.add("</a>")
+panels = "".join(
+    f'<div class="bs-item{" on" if i == 0 else ""}" tabindex="0">'
+    f'<svg class="bs-icon" viewBox="0 0 24 24" aria-hidden="true">{ICONS[title]}</svg>'
+    f'<h3>{title}</h3><p class="bs-desc">{desc}</p></div>'
+    for i, (title, desc) in enumerate(services))
+s.add(f'<div class="bs-items" style="left:{r(s.lx(3923.5))}px;top:{r(s.ly(11925.41 + 1066.24 / 3))}px">{panels}</div>')
 ab1.append(s)
 
 # ---- Stories from our customers ------------------------------------------------------------------
 s = Section("section", "stories", AB1, 12991.65, 15046.76)
-s.svg(triple_chevron(0, 0), z=1)
 s.text(0, 13329.64, "STORIES FROM OUR CUSTOMERS", font="O", size=84, weight=700, color=COL["mauve"], center=True, tag="h2")
 tile = "position:absolute;box-sizing:border-box;width:791.96px;height:791.96px;"
 s.box(3528.27, 13461.35, 791.96, 791.96, cls="tile tile-white")
@@ -406,7 +380,6 @@ ab2.append(s)
 
 # ---- Contact us ---------------------------------------------------------------------
 s = Section("section", "contact", AB2, 1250, 2538.18)
-s.svg(triple_chevron(6887.06 - 4587.31, 1353.78 - 13122.48), z=1)
 s.text(7184.66, 1387.8, "CONTACT US", font="O", size=84, weight=700, color="#000", tag="h2")
 s.text(7184.66, 1458.85, "LET’S GET YOUR JOURNEY STARTED", font="O", size=48, weight=300, color="#000")
 s.text(7184.67, 1597.04, ["Fill in your details, and our ", "team will get in touch with ", "you shortly"], size=36, weight=600, color=COL["olive"])
@@ -437,14 +410,14 @@ ab2.append(s)
 # ---- Instagram ----------------------------------------------------------------------------
 s = Section("section", "insta", AB2, 2538.18, 3337.77)
 s.box(6785.48, 2538.18, 2379.31, 799.59, style=f"background:{COL['black']};")
-s.text(7181.23, 2711.45, "FOLLOW US ON INSTAGRAM", font="O", size=48, weight=700, color=COL["bone"], tag="h2")
+s.text(7184.66, 2711.45, "FOLLOW US ON INSTAGRAM", font="O", size=48, weight=700, color=COL["bone"], tag="h2")
 tiles = "".join('<a href="#" class="ig-tile" aria-label="Instagram post"></a>' for _ in range(6))
 s.add(f'<div class="ig-track" style="left:{r(s.lx(6785.21))}px;top:{r(s.ly(2788.46))}px">{tiles}</div>')
 ab2.append(s)
 
 # ---- FAQ ------------------------------------------------------------------------------------
 s = Section("section", "faq", AB2, 3337.77, 4196.81)
-s.text(7180.32, 3530.09, "FAQ’S", font="O", size=84, weight=700, color="#000", tag="h2")
+s.text(7184.66, 3530.09, "FAQ’S", font="O", size=84, weight=700, color="#000", tag="h2")
 asc, full = METRICS["P"]
 q_top = 3653.78 - ((42 - full * 32) / 2 + asc * 32)
 s.add(f'<div class="faq-list" style="left:{r(s.lx(7184.67))}px;top:{r(s.ly(q_top))}px">'
