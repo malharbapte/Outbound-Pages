@@ -22,7 +22,7 @@
   a { color: inherit; text-decoration: none; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-  .page { width: 2376px; zoom: var(--zoom, 1); overflow: hidden; }
+  .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; }
   .artboard { position: relative; width: 2376px; }
   .sec { position: relative; display: block; width: 2376px; margin: 0; }
   .deco { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
@@ -61,11 +61,77 @@
   .filter { width: 503.69px; background: #000; color: #e6e7e8; border: 0; text-align: left; cursor: pointer; }
   .view-toggle { position: absolute; display: flex; gap: 24.8px; }
   .view-toggle button { width: 75.84px; height: 74.99px; padding: 0; background: #fff; border: .25px solid var(--black); border-radius: 2.55px; cursor: pointer; overflow: hidden; }
-  .view-toggle button.on { outline: 3px solid var(--mauve); outline-offset: -1.5px; border-color: transparent; }
+  .view-toggle button.on { outline: 7px solid var(--mauve); outline-offset: -3.5px; border-color: transparent; }
   .view-toggle svg { display: block; width: 100%; height: 100%; }
-  .stock-track { position: absolute; display: flex; gap: 36.5px; }
-  .stock-card { width: 503.91px; height: 619.27px; background: #fff; border: .25px solid var(--black); flex: none; }
-  .stock-img { height: 368.27px; background: #d1d3d4; border-bottom: .25px solid var(--black); }
+  .view-toggle button:focus-visible:not(.on) { outline: 3px solid var(--olive); }
+
+  /* Stock panel (grey band). Sliding view keeps the artboard size; the other views grow the section. */
+  .stock-panel { position: relative; z-index: 1; margin-left: 1.85px; width: 2371.79px; background: var(--bone); }
+  .stock-panel .shadow-down { position: absolute; left: -2.24px; top: -.21px; width: 2376px; height: 37.79px; }
+  .stock-panel .shadow-up { position: absolute; left: -1.85px; bottom: 0; width: 2376px; height: 37.79px; z-index: 2; }
+  .stock-viewport { position: relative; z-index: 1; }
+  .stock-track { display: flex; gap: 36.59px; }
+  /* Stock card — landscape 4:3 on a thirds grid (825.69 x 619.27: columns every 275.23, rows every 206.42).
+     The whole card links to the van page. Other views reuse the same card scaled with zoom. */
+  .stock-card { position: relative; flex: none; width: 825.69px; height: 619.27px; display: grid; grid-template-columns: 550.46px 275.23px;
+                background: var(--black); color: var(--bone); overflow: hidden; transition: transform .3s ease, box-shadow .3s ease; }
+  .stock-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(11, 10, 7, .25); }
+  .stock-card:focus-visible { outline: 5px solid var(--green); outline-offset: 4px; }
+
+  .stock-photo { position: relative; overflow: hidden; }
+  .stock-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; user-select: none; -webkit-user-drag: none; }
+  .stock-card:hover .stock-photo img { transform: scale(1.05); }
+  .stock-photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(to bottom, rgba(11, 10, 7, 0), rgba(11, 10, 7, .88)); }
+  .stock-title { position: absolute; left: 34px; right: 24px; top: 412.85px; bottom: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+  .stock-layout { margin: 0; display: flex; align-items: center; gap: 12px; font: 600 18px/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--bone); }
+  .stock-layout::before { content: ""; width: 12px; height: 12px; background: var(--green); transform: rotate(45deg); }
+  .stock-name { margin: 12px 0 0; font: 700 80px/1 var(--oswald); letter-spacing: .01em; color: #fff; }
+  /* Same notched orange tag as "Full Composite" in the range section, mirrored to sit on the left. */
+  .stock-badge { position: absolute; left: 0; top: 26px; z-index: 2; background: #ee964b; color: #fff; font: 400 24px/1 var(--poppins);
+                 padding: 10px 38px 10px 22px; clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 50%, 100% 100%, 0 100%); }
+
+  .stock-rail { margin: 0; display: grid; grid-template-rows: repeat(3, 206.42px); }
+  .stock-rail .row { padding: 0 24px 0 30px; display: flex; flex-direction: column; justify-content: center; }
+  .stock-rail .row + .row { border-top: 1px solid rgba(244, 241, 234, .16); }
+  .stock-rail dt { font: 400 14px/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--silver); }
+  .stock-rail dd { margin: 10px 0 0; font-family: var(--oswald); font-weight: 500; line-height: 1; white-space: nowrap; color: var(--bone); }
+  .stock-rail dd small { margin-left: 6px; font: 500 .3em/1 var(--poppins); letter-spacing: .04em; color: var(--silver); }
+  .stock-rail .r1 { background: rgba(139, 155, 77, .12); }
+  .stock-rail .r1 dt { font-size: 16px; font-weight: 600; color: var(--green); }
+  .stock-rail .r1 dd, .stock-rail .r2 dd { font-size: 66px; }
+  .stock-rail .r3 { flex-direction: row; align-items: center; }
+  .stock-rail .r3 > div { flex: 1; }
+  .stock-rail .length { padding-left: 22px; border-left: 1px solid rgba(244, 241, 234, .16); }
+  .stock-rail .sleeps dd { font-size: 38px; color: #d9d5cc; }
+  .stock-rail .length dd { font-size: 30px; color: var(--silver); }
+  .stock-rail .r3 dt { font-size: 13px; }
+
+  /* View 1 — sliding cards */
+  .stock-panel[data-view="slide"] { height: 832.44px; }
+  .stock-panel[data-view="slide"] .stock-viewport { overflow: hidden; margin-left: -1.85px; width: 2376px; padding: 106.57px 0 0 93.91px; cursor: grab; touch-action: pan-y; }
+  .stock-panel[data-view="slide"] .stock-viewport.dragging { cursor: grabbing; }
+  .stock-panel[data-view="slide"] .stock-track { will-change: transform; }
+
+  /* Progress line sits on the bottom edge of the grey band. */
+  .stock-progress { position: absolute; left: -1.85px; bottom: 0; width: 2376px; height: 18px; background: #d1d3d4; overflow: hidden; z-index: 3; }
+  .stock-progress span { display: block; height: 100%; background: var(--olive); transform-origin: left center; transform: scaleX(0); }
+  .stock-panel:not([data-view="slide"]) .stock-progress { display: none; }
+  .stock-panel:not([data-view="slide"]) .clone { display: none; }
+
+  /* View 2 — two columns (card scaled to fill half the content width) */
+  .stock-panel[data-view="cols"] { padding: 106.57px 92.06px 143px; }
+  .stock-panel[data-view="cols"] .stock-track { display: grid; grid-template-columns: repeat(2, max-content); justify-content: space-between; row-gap: 60px; }
+  .stock-panel[data-view="cols"] .stock-card { zoom: 1.30263; }
+
+  /* View 3 — grid, three across */
+  .stock-panel[data-view="grid"] { padding: 106.57px 92.06px 143px; }
+  .stock-panel[data-view="grid"] .stock-track { display: grid; grid-template-columns: repeat(3, max-content); justify-content: space-between; row-gap: 36.59px; }
+  .stock-panel[data-view="grid"] .stock-card { zoom: .85363; }
+
+  .stock-track.swap { animation: stock-swap .45s ease; }
+  .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
+  @keyframes stock-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes stock-swap { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
   /* We care / Beyond sale */
   .service { display: contents; }
@@ -135,9 +201,87 @@
 <script>
   // Scale the 2376px artboard to the window width.
   const page = document.getElementById('page');
-  const fit = () => page.style.setProperty('--zoom', document.documentElement.clientWidth / 2376);
+  const zoom = () => document.documentElement.clientWidth / 2376;
+  const fit = () => page.style.setProperty('--zoom', zoom());
   fit();
   addEventListener('resize', fit);
+
+  // Drive Away — continuous card slider with a progress line, plus three layout views.
+  (() => {
+    const panel = document.querySelector('.stock-panel');
+    const viewport = panel.querySelector('.stock-viewport');
+    const track = panel.querySelector('.stock-track');
+    const bar = panel.querySelector('.stock-progress span');
+    const originals = [...track.children];
+    const SET_WIDTH = originals.length * (825.69 + 36.59); // one full lap, in artboard px
+    const SPEED = 70;                                       // artboard px per second
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // A second copy of the cards makes the loop seamless.
+    originals.forEach(card => {
+      const copy = card.cloneNode(true);
+      copy.classList.add('clone');
+      copy.setAttribute('aria-hidden', 'true');
+      copy.tabIndex = -1;
+      track.append(copy);
+    });
+
+    let offset = 0, last = null, hovering = false, drag = null, moved = false;
+    const isSlide = () => panel.dataset.view === 'slide';
+
+    const render = () => {
+      offset = ((offset % SET_WIDTH) + SET_WIDTH) % SET_WIDTH;
+      track.style.transform = `translateX(${-offset}px)`;
+      bar.style.transform = `scaleX(${offset / SET_WIDTH})`;
+    };
+
+    const tick = now => {
+      if (isSlide()) {
+        if (last !== null && !hovering && !drag && !reduced) offset += SPEED * (now - last) / 1000;
+        render();
+      }
+      last = now;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    viewport.addEventListener('pointerenter', () => hovering = true);
+    viewport.addEventListener('pointerleave', () => hovering = false);
+    viewport.addEventListener('focusin', () => hovering = true);
+    viewport.addEventListener('focusout', () => hovering = false);
+
+    // Drag to move the cards manually.
+    viewport.addEventListener('pointerdown', e => {
+      if (!isSlide() || e.button !== 0) return;
+      drag = { x: e.clientX, start: offset }; moved = false;
+    });
+    addEventListener('pointermove', e => {
+      if (!drag) return;
+      const dx = (e.clientX - drag.x) / zoom();
+      if (Math.abs(dx) > 4 && !moved) { moved = true; viewport.classList.add('dragging'); viewport.setPointerCapture?.(e.pointerId); }
+      if (moved) offset = drag.start - dx;
+    });
+    addEventListener('pointerup', () => { drag = null; viewport.classList.remove('dragging'); });
+    viewport.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; } }, true);
+
+    // Horizontal trackpad scroll also moves the cards; vertical scroll still scrolls the page.
+    viewport.addEventListener('wheel', e => {
+      if (!isSlide() || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      offset += e.deltaX / zoom();
+    }, { passive: false });
+
+    // View switcher.
+    const buttons = document.querySelectorAll('.view-toggle button');
+    buttons.forEach(btn => btn.addEventListener('click', () => {
+      if (panel.dataset.view === btn.dataset.view) return;
+      buttons.forEach(b => { b.classList.toggle('on', b === btn); b.setAttribute('aria-pressed', b === btn); });
+      panel.dataset.view = btn.dataset.view;
+      if (!isSlide()) track.style.transform = '';
+      track.classList.remove('swap'); void track.offsetWidth; track.classList.add('swap');
+    }));
+    track.addEventListener('animationend', () => track.classList.remove('swap'));
+  })();
 </script>
 </body>
 </html>

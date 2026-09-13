@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Side specs card sample | Outbound RVs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --poppins: "Poppins", system-ui, sans-serif;
+    --oswald: "Oswald", "Arial Narrow", sans-serif;
+    --black: #0b0a07; --bone: #f4f1ea; --green: #8b9b4d; --olive: #6b7a32;
+    --grey: #7a736a; --mauve: #8e6673; --orange: #ee964b; --silver: #bcbec0; --stone: #d1d3d4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; }
+  body { font-family: var(--poppins); -webkit-font-smoothing: antialiased; color: var(--black); }
+  a { color: inherit; text-decoration: none; }
+  dl, dd, h2, h3, p { margin: 0; }
+
+  .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; padding-bottom: 160px; }
+  .top { padding: 120px 395.35px 40px; }
+  .top h1 { margin: 0; font: 700 84px/1 var(--oswald); }
+  .top p { margin-top: 18px; font: 300 32px/1.4 var(--poppins); color: var(--grey); }
+
+  .sample { margin-top: 110px; }
+  .intro { display: flex; align-items: center; gap: 40px; padding: 0 395.35px 60px; }
+  .num { flex: none; width: 110px; height: 100px; display: grid; place-items: center; font: 700 48px var(--oswald); color: var(--bone); position: relative; isolation: isolate; }
+  .num::before { content: ""; position: absolute; inset: 14px; background: var(--green); transform: rotate(45deg); z-index: -1; }
+  .intro h2 { font: 700 64px/1 var(--oswald); }
+  .intro p { margin-top: 10px; font: 300 30px/1.35 var(--poppins); color: var(--grey); }
+
+  /* Bone band with the same shadows and bottom progress line as the homepage. */
+  .band { position: relative; height: 832.44px; background: var(--bone); overflow: hidden; }
+  .band::before, .band::after { content: ""; position: absolute; left: 0; right: 0; height: 37.79px; opacity: .4; mix-blend-mode: multiply; pointer-events: none; }
+  .band::before { top: 0; background: linear-gradient(#231f20 3%, #fff); }
+  .band::after { bottom: 0; background: linear-gradient(#fff, #231f20 97%); }
+  .track { display: flex; gap: 36.59px; padding: 106.57px 0 0 93.91px; }
+  .progress { position: absolute; left: 0; bottom: 0; width: 100%; height: 18px; background: var(--stone); z-index: 2; }
+  .progress span { display: block; width: 36%; height: 100%; background: var(--olive); }
+
+  .card { position: relative; flex: none; width: 503.91px; height: 619.27px; overflow: hidden; }
+  .card img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; transition: transform .5s ease; }
+  .card:hover img { transform: scale(1.04); }
+  .card .cta::before { content: ""; position: absolute; inset: 0; z-index: 3; }
+
+  /* Orange notched tag, as in "Full Composite" on the range section. */
+  .badge { position: absolute; right: 0; top: 24px; z-index: 4; background: var(--orange); color: #fff; font: 400 24px/1 var(--poppins);
+           padding: 10px 20px 10px 38px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 20px 50%); }
+
+  /* ---- 1. Night Diamond ---------------------------------------------------------------- */
+  .c1 { background: var(--black); color: var(--bone); display: flex; flex-direction: column; transition: transform .3s; }
+  .c1:hover { transform: translateY(-8px); }
+  .c1 .media { position: relative; height: 290px; display: flex; align-items: flex-end; justify-content: center; padding: 0 30px 34px; }
+  .c1 .diamond { position: absolute; left: 50%; top: 50%; width: 200px; height: 200px; background: var(--olive); opacity: .55; transform: translate(-50%, -58%) rotate(45deg); transition: transform .5s ease; }
+  .c1:hover .diamond { transform: translate(-50%, -58%) rotate(135deg); }
+  .c1 .media img { position: relative; height: auto; max-height: 210px; }
+  .c1 .body { padding: 6px 30px 0; flex: 1; }
+  .c1 .layout { display: flex; align-items: center; gap: 12px; font: 600 18px/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+  .c1 .layout::before { content: ""; width: 12px; height: 12px; background: var(--green); transform: rotate(45deg); }
+  .c1 h3 { margin-top: 10px; font: 700 60px/1 var(--oswald); letter-spacing: .01em; }
+  .c1 dl { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid rgba(244, 241, 234, .18); }
+  .c1 dl div { padding: 12px 0 12px; border-bottom: 1px solid rgba(244, 241, 234, .18); }
+  .c1 dl div:nth-child(even) { padding-left: 24px; border-left: 1px solid rgba(244, 241, 234, .18); }
+  .c1 dt { font: 400 15px/1 var(--poppins); letter-spacing: .1em; text-transform: uppercase; color: var(--silver); }
+  .c1 dd { margin-top: 6px; font: 500 30px/1 var(--oswald); color: var(--bone); }
+  .c1 .cta { display: flex; align-items: center; justify-content: center; gap: 14px; height: 66px; background: var(--green); color: var(--bone);
+             font: 600 22px/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; transition: background .2s; }
+  .c1 .cta::after { content: ""; width: 11px; height: 11px; border-top: 3px solid currentColor; border-right: 3px solid currentColor; transform: rotate(45deg); }
+  .c1:hover .cta { background: var(--olive); }
+
+  /* ---- 2. Spec Ticket -------------------------------------------------------------------- */
+  .c2 { background: #fff; padding: 30px 30px 0; display: flex; flex-direction: column; box-shadow: 0 1px 0 rgba(11, 10, 7, .25); }
+  .c2 .layout { font: 500 18px/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--grey); }
+  .c2 h3 { margin-top: 12px; font: 700 80px/.95 var(--oswald); color: var(--black); }
+  .c2 .rule { display: block; width: 64px; height: 7px; margin-top: 16px; background: var(--green); transition: width .4s ease; }
+  .c2:hover .rule { width: 160px; }
+  .c2 .media { height: 212px; margin: 4px -6px 0; }
+  .c2 .perf { position: relative; height: 32px; margin: 0 -30px; }
+  .c2 .perf::before { content: ""; position: absolute; left: 30px; right: 30px; top: 50%; border-top: 3px dashed var(--silver); }
+  .c2 .perf::after { content: ""; position: absolute; inset: 0; background:
+      radial-gradient(circle at 0 50%, var(--bone) 16px, transparent 17px),
+      radial-gradient(circle at 100% 50%, var(--bone) 16px, transparent 17px); }
+  .c2 dl { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 34px; margin-top: 12px; }
+  .c2 dl div { display: flex; align-items: baseline; gap: 8px; }
+  .c2 dt { font: 400 21px/1.6 var(--poppins); color: var(--grey); }
+  .c2 .dots { flex: 1; border-bottom: 2px dotted var(--silver); transform: translateY(-5px); }
+  .c2 dd { font: 600 24px/1.6 var(--poppins); color: var(--black); white-space: nowrap; }
+  .c2 .cta { margin-top: auto; display: flex; align-items: center; gap: 16px; height: 66px; font: 600 22px/1 var(--poppins); color: var(--olive); border-top: 1px solid var(--stone); margin-left: -30px; margin-right: -30px; padding: 0 30px; }
+  .c2 .cta::after { content: ""; flex: none; width: 46px; height: 3px; background: currentColor; transition: width .3s; clip-path: none; }
+  .c2:hover .cta::after { width: 90px; }
+
+  /* ---- 3. Watermark Stats ---------------------------------------------------------------- */
+  .c3 { background: #fff; display: flex; flex-direction: column; border-bottom: 10px solid var(--green); }
+  .c3 .media { position: relative; height: 372px; background: linear-gradient(180deg, #fff 0%, var(--stone) 100%); overflow: hidden; }
+  .c3 .watermark { position: absolute; left: 20px; top: 6px; font: 700 150px/1 var(--oswald); color: transparent; -webkit-text-stroke: 2px rgba(11, 10, 7, .2); letter-spacing: .01em; white-space: nowrap; transition: transform .6s ease; }
+  .c3:hover .watermark { transform: translateX(-24px); }
+  .c3 .media img { position: absolute; left: 0; bottom: 36px; height: 220px; padding: 0 28px; }
+  .c3 .pill { position: absolute; left: 0; bottom: 0; z-index: 2; background: var(--black); color: var(--bone); font: 500 18px/1 var(--poppins); letter-spacing: .1em; text-transform: uppercase; padding: 12px 20px; }
+  .c3 .head { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px 0; }
+  .c3 h3 { font: 700 44px/1 var(--oswald); color: var(--black); }
+  .c3 .cta { flex: none; width: 58px; height: 58px; display: grid; place-items: center; }
+  .c3 .arrow { width: 42px; height: 42px; background: var(--green); transform: rotate(45deg); display: grid; place-items: center; transition: background .2s, transform .35s ease; }
+  .c3 .arrow::after { content: ""; width: 12px; height: 12px; border-top: 3px solid var(--bone); border-right: 3px solid var(--bone); margin: 4px 4px 0 0; }
+  .c3:hover .arrow { background: var(--olive); transform: rotate(225deg); }
+  .c3:hover .arrow::after { transform: rotate(180deg); }
+  .c3 dl { display: grid; grid-template-columns: 1.15fr 1.15fr 1fr .8fr; margin: auto 28px 22px; }
+  .c3 dl div + div { padding-left: 14px; border-left: 2px solid var(--stone); }
+  .c3 dd { font: 500 36px/1 var(--oswald); color: var(--black); white-space: nowrap; }
+  .c3 dd small { font: 500 15px var(--poppins); margin-left: 3px; color: var(--grey); }
+  .c3 dt { margin-top: 8px; font: 500 15px/1 var(--poppins); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
+
+  .band { height: 880px; }
+  .track { padding-top: 104px; }
+
+  .side { width: 503.91px; height: 671.88px; display: grid; grid-template-columns: 335.94px 167.97px; background: var(--black); color: var(--bone);
+          transition: transform .3s ease, box-shadow .3s ease; }
+  .side:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(11, 10, 7, .25); }
+
+  /* Left two-thirds: photo as large as possible, name on the lower third line */
+  .side .photo { position: relative; overflow: hidden; }
+  .side .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .side:hover .photo img { transform: scale(1.05); }
+  .side .photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 50%; background: linear-gradient(to bottom, rgba(11, 10, 7, 0), rgba(11, 10, 7, .88)); }
+  .side .title { position: absolute; left: 28px; right: 20px; top: 447.92px; bottom: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+  .side .layout { display: flex; align-items: center; gap: 12px; font: 600 17px/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--bone); }
+  .side .layout::before { content: ""; width: 12px; height: 12px; background: var(--green); transform: rotate(45deg); }
+  .side h3 { margin-top: 12px; font: 700 66px/1 var(--oswald); letter-spacing: .01em; color: #fff; }
+  .side .badge { top: 24px; right: auto; left: 0; padding: 10px 38px 10px 20px; clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 50%, 100% 100%, 0 100%); }
+
+  /* Right third: specs, one thirds-row each — ATM, then Tare, then Sleeps + Length */
+  .side .rail { margin: 0; display: grid; grid-template-rows: repeat(3, 223.96px); }
+  .side .row { padding: 0 16px 0 20px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+  .side .row + .row { border-top: 1px solid rgba(244, 241, 234, .16); }
+  .side dt { font: 400 13px/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--silver); }
+  .side dd { margin: 8px 0 0; font-family: var(--oswald); font-weight: 500; line-height: 1; white-space: nowrap; color: var(--bone); }
+  .side dd small { display: block; margin-top: 6px; font: 500 15px/1 var(--poppins); letter-spacing: .04em; color: var(--silver); }
+  .side .atm dt { font-size: 15px; font-weight: 600; color: var(--green); }
+  .side .atm dd { font-size: 56px; }
+  .side .r1 { background: rgba(139, 155, 77, .12); box-shadow: inset 4px 0 0 var(--green); }
+  .side .tare dd { font-size: 40px; }
+  .side .tare dd small { font-size: 14px; }
+  .side .sleeps dd { font-size: 30px; color: #d9d5cc; }
+  .side .length dd { font-size: 24px; color: var(--silver); }
+  .side .sleeps dt, .side .length dt { font-size: 12px; }
+
+  /* Thirds overlay */
+  .side .grid { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; transition: opacity .25s;
+    background:
+      linear-gradient(to right, transparent calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% + 1px), transparent calc(33.333% + 1px),
+                                transparent calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% + 1px), transparent calc(66.666% + 1px)),
+      linear-gradient(to bottom, transparent calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% + 1px), transparent calc(33.333% + 1px),
+                                 transparent calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% + 1px), transparent calc(66.666% + 1px)); }
+  body.show-grid .side .grid { opacity: 1; }
+  .grid-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 50; font: 600 14px/1 var(--poppins); letter-spacing: .06em; text-transform: uppercase;
+                 background: var(--black); color: var(--bone); border: 0; padding: 14px 18px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+  .grid-toggle::before { content: ""; width: 10px; height: 10px; border: 2px solid var(--orange); transform: rotate(45deg); }
+  body.show-grid .grid-toggle::before { background: var(--orange); }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+<main class="page" id="page">
+  <header class="top">
+    <h1>SIDE SPECS — CARD SAMPLE</h1>
+    <p>Built from option 3 with your changes. The photos are placeholders until the interior photos are ready. Use the button at the bottom right to show the thirds grid.</p>
+  </header>
+  
+  <section class="sample">
+    <div class="intro">
+      <span class="num">3B</span>
+      <div><h2>Side Specs — Portrait 3:4</h2><p>The photo and name fill the left two-thirds, and the specs take the right third. Each spec row is one third of the card height: ATM, then Tare, then Sleeps and Length.</p></div>
+    </div>
+    <div class="band">
+      <div class="track"><a class="card side" href="#"><div class="photo"><img src="../assets/range-amaroo.jpg" alt="" style="object-position:50% 62%"><div class="title"><p class="layout">Couples Layout</p><h3>AMAROO</h3></div></div><dl class="rail"><div class="row r1"><div class="atm"><dt>ATM</dt><dd>3,300<small>kg</small></dd></div></div><div class="row r2"><div class="tare"><dt>Tare</dt><dd>2,500<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>16'6"</dd></div></div></dl><span class="grid" aria-hidden="true"></span></a><a class="card side" href="#"><div class="photo"><img src="../assets/range-hornet.jpg" alt="" style="object-position:50% 64%"><div class="title"><p class="layout">Couples Layout</p><h3>HORNET</h3></div></div><dl class="rail"><div class="row r1"><div class="atm"><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div class="tare"><dt>Tare</dt><dd>2,650<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl><span class="grid" aria-hidden="true"></span></a><a class="card side" href="#"><div class="photo"><img src="../assets/range-solara.jpg" alt="" style="object-position:45% 70%"><span class="badge">Composite</span><div class="title"><p class="layout">Couples Layout</p><h3>SOLARA</h3></div></div><dl class="rail"><div class="row r1"><div class="atm"><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div class="tare"><dt>Tare</dt><dd>2,580<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl><span class="grid" aria-hidden="true"></span></a><a class="card side" href="#"><div class="photo"><img src="../assets/range-xtr.jpg" alt="" style="object-position:40% 60%"><div class="title"><p class="layout">Family Layout</p><h3>XTR</h3></div></div><dl class="rail"><div class="row r1"><div class="atm"><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div class="tare"><dt>Tare</dt><dd>2,950<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>5</dd></div><div class="length"><dt>Length</dt><dd>20'6"</dd></div></div></dl><span class="grid" aria-hidden="true"></span></a></div>
+      <div class="progress"><span></span></div>
+    </div>
+  </section>
+</main>
+<script>
+  const page = document.getElementById('page');
+  const fit = () => page.style.setProperty('--zoom', document.documentElement.clientWidth / 2376);
+  fit();
+  addEventListener('resize', fit);
+</script>
+</body>
+</html>

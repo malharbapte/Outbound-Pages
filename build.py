@@ -23,8 +23,9 @@ def r(n):
 
 
 class Section:
-    def __init__(self, tag, cls, ab, y0, y1, extra=""):
+    def __init__(self, tag, cls, ab, y0, y1, extra="", flow_top=None):
         self.tag, self.cls, self.ab, self.y0, self.y1, self.extra = tag, cls, ab, y0, y1, extra
+        self.flow_top = flow_top  # when set, the section grows with in-flow content below this offset
         self.items = []
 
     def lx(self, x):
@@ -38,8 +39,9 @@ class Section:
 
     def render(self):
         h = self.y1 - self.y0
+        size = f"padding-top:{r(self.flow_top)}px" if self.flow_top is not None else f"height:{r(h)}px"
         body = "\n".join("    " + i for i in self.items)
-        return (f'  <{self.tag} class="sec {self.cls}" style="height:{r(h)}px" {self.extra}>\n'
+        return (f'  <{self.tag} class="sec {self.cls}" style="{size}" {self.extra}>\n'
                 f"{body}\n  </{self.tag}>")
 
     # ---- helpers -------------------------------------------------------
@@ -170,22 +172,57 @@ s.box(3527.76, 4950.43, 2376, 37.79, cls="shadow-down")
 ab1.append(s)
 
 # ---- Drive Away (stock) ------------------------------------------------------------------
-s = Section("section", "drive", AB1, 5000, 6430)
+s = Section("section", "drive", AB1, 5000, 6430, flow_top=5592.05 - 5000)
 s.svg('<rect fill="#8b9b4d" x="3853.08" y="5184.2" width="140.92" height="140.92" transform="translate(-2566.4249 4313.4158) rotate(-45)"/>', z=1)
 s.text(4050.95, 5288.68, "DRIVE AWAY", font="O", size=84, weight=700, color="#000", tag="h2")
 s.add(f'<input class="search" type="search" placeholder="Search" style="left:{r(s.lx(3923.5))}px;top:{r(s.ly(5406.76))}px">')
 s.add(f'<button class="filter" style="left:{r(s.lx(4464.04))}px;top:{r(s.ly(5406.76))}px">Filter</button>')
 s.text(5149.95, 5451.13, "View", size=24, weight=300, color=COL["grey"])
-s.add(f'<div class="view-toggle" style="left:{r(s.lx(5230.53))}px;top:{r(s.ly(5406.76))}px">'
-      '<button class="on" aria-label="Wide cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#8b9b4d" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button>'
-      '<button aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button>'
-      '<button aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button>'
+s.add(f'<div class="view-toggle" role="group" aria-label="Stock view" style="left:{r(s.lx(5230.53))}px;top:{r(s.ly(5406.76))}px">'
+      '<button class="on" data-view="slide" aria-pressed="true" aria-label="Sliding cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#8b9b4d" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button>'
+      '<button data-view="cols" aria-pressed="false" aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button>'
+      '<button data-view="grid" aria-pressed="false" aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button>'
       '</div>')
-s.box(3530, 5592.05, 2371.79, 832.44, style=f"background:{COL['bone']};")
-s.box(3527.76, 5591.84, 2376, 37.79, cls="shadow-down")
-s.box(3528.15, 6386.69, 2376, 37.79, cls="shadow-up")
-cards_html = "".join('<article class="stock-card"><div class="stock-img"></div><div class="stock-body"></div></article>' for _ in range(5))
-s.add(f'<div class="stock-track" style="left:{r(s.lx(3622.06))}px;top:{r(s.ly(5698.62))}px">{cards_html}</div>')
+
+# Placeholder stock list until the real stock feed is supplied.
+# Photos are range shots standing in for the interior images.
+PHOTO = {"AMAROO": ("range-amaroo.jpg", "50% 62%"), "HORNET": ("range-hornet.jpg", "50% 64%"),
+         "SOLARA": ("range-solara.jpg", "45% 70%"), "XTR": ("range-xtr.jpg", "40% 60%")}
+# (range, layout, length, ATM kg, Tare kg, sleeps)
+STOCK = [
+    ("AMAROO", "Couples", "16'6\"", "3,300", "2,500", 2),
+    ("HORNET", "Couples", "18'6\"", "3,500", "2,650", 2),
+    ("SOLARA", "Couples", "18'6\"", "3,500", "2,580", 2),
+    ("XTR", "Family", "20'6\"", "3,800", "2,950", 5),
+    ("AMAROO", "Family", "19'6\"", "3,500", "2,780", 4),
+    ("HORNET", "Family", "20'6\"", "3,800", "2,950", 5),
+    ("SOLARA", "Family", "21'6\"", "3,800", "2,890", 4),
+    ("XTR", "Couples", "19'6\"", "3,500", "2,700", 2),
+]
+
+
+def stock_card(name, layout, length, atm, tare, sleeps):
+    """Landscape 4:3 card on a thirds grid: photo + name in the left two-thirds, specs in the right third."""
+    img, focus = PHOTO[name]
+    badge = '<span class="stock-badge">Composite</span>' if name == "SOLARA" else ""
+    return (f'<a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV {name.title()}, {layout.lower()} layout">'
+            f'<div class="stock-photo"><img src="assets/{img}" alt="" draggable="false" style="object-position:{focus}">{badge}'
+            f'<div class="stock-title"><p class="stock-layout">{layout} Layout</p><h3 class="stock-name">{name}</h3></div></div>'
+            f'<dl class="stock-rail">'
+            f'<div class="row r1"><div><dt>ATM</dt><dd>{atm}<small>kg</small></dd></div></div>'
+            f'<div class="row r2"><div><dt>Tare</dt><dd>{tare}<small>kg</small></dd></div></div>'
+            f'<div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>{sleeps}</dd></div>'
+            f'<div class="length"><dt>Length</dt><dd>{length}</dd></div></div>'
+            f'</dl></a>')
+
+
+cards_html = "".join(stock_card(*row) for row in STOCK)
+s.add('<div class="stock-panel" data-view="slide">'
+      '<div class="shadow-down"></div>'
+      f'<div class="stock-viewport"><div class="stock-track">{cards_html}</div></div>'
+      '<div class="stock-progress" aria-hidden="true"><span></span></div>'
+      '<div class="shadow-up"></div>'
+      '</div>')
 ab1.append(s)
 
 # ---- Come see us -----------------------------------------------------------------------
@@ -288,16 +325,17 @@ s.text(4540.4, 14641.06, "Image to be added.", size=32, color=COL["mauve"])
 s.text(5363.59, 14641.06, "Image to be added.", size=32, color=COL["mauve"])
 ab1.append(s)
 
-# Page-level decorative chevrons for artboard 1 (behind = z0, in front = z4)
+# Decorative chevrons for artboard 1, attached to the section they start in (z0 behind, z4 in front)
 AB1_TOP, AB1_BOTTOM = 157.34, 15046.76
-ab1_back = ('<polygon fill="#6b7a32" opacity=".4" points="4458.33 4621.05 3408.34 3571.06 3007.89 3971.52 3657.41 4621.05 3007.89 5270.58 3408.34 5671.03 4458.33 4621.05"/>'
-            '<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="4922.99 5700.13 5972.97 6750.12 6373.43 6349.66 5723.9 5700.13 6373.43 5050.6 5972.97 4650.15 4922.99 5700.13"/>'
-            '<polygon fill="#6b7a32" opacity=".4" points="4922.99 9310.93 5972.97 10360.92 6373.43 9960.46 5723.9 9310.93 6373.43 8661.4 5972.97 8260.95 4922.99 9310.93"/>'
-            '<polygon fill="#6b7a32" opacity=".4" points="5561.6 13460.7 5910.03 13809.13 6042.91 13676.24 5827.37 13460.7 6042.91 13245.16 5910.03 13112.28 5561.6 13460.7"/>')
-ab1_front = ('<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/>'
-             '<polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/>'
-             '<polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/>'
-             '<polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/>')
+sec = {x.cls: x for x in ab1}
+sec["range"].svg('<polygon fill="#6b7a32" opacity=".4" points="4458.33 4621.05 3408.34 3571.06 3007.89 3971.52 3657.41 4621.05 3007.89 5270.58 3408.34 5671.03 4458.33 4621.05"/>'
+                 '<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="4922.99 5700.13 5972.97 6750.12 6373.43 6349.66 5723.9 5700.13 6373.43 5050.6 5972.97 4650.15 4922.99 5700.13"/>', z=0, cls="shapes deco-back")
+sec["visit"].svg('<polygon fill="#6b7a32" opacity=".4" points="4922.99 9310.93 5972.97 10360.92 6373.43 9960.46 5723.9 9310.93 6373.43 8661.4 5972.97 8260.95 4922.99 9310.93"/>', z=0, cls="shapes deco-back")
+sec["stories"].svg('<polygon fill="#6b7a32" opacity=".4" points="5561.6 13460.7 5910.03 13809.13 6042.91 13676.24 5827.37 13460.7 6042.91 13245.16 5910.03 13112.28 5561.6 13460.7"/>', z=0, cls="shapes deco-back")
+sec["care"].svg('<polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/>'
+                '<polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/>', z=4)
+sec["beyond"].svg('<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/>'
+                  '<polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/>', z=4)
 
 # =============================================================================
 # ARTBOARD 2 (continues below artboard 1)
@@ -410,7 +448,8 @@ def layer(ab, top, bottom, content, z):
 
 def artboard(name, sections, back, front, ab, top, bottom):
     parts = [f'<div class="artboard {name}">']
-    parts.append("  " + layer(ab, top, bottom, back, 0))
+    if back:
+        parts.append("  " + layer(ab, top, bottom, back, 0))
     parts += [sec.render() for sec in sections]
     if front:
         parts.append("  " + layer(ab, top, bottom, front, 4))
@@ -419,7 +458,7 @@ def artboard(name, sections, back, front, ab, top, bottom):
 
 
 html = open("template.html").read()
-html = html.replace("{{ARTBOARD_1}}", artboard("ab1", ab1, ab1_back, ab1_front, AB1, AB1_TOP, AB1_BOTTOM))
+html = html.replace("{{ARTBOARD_1}}", artboard("ab1", ab1, "", "", AB1, AB1_TOP, AB1_BOTTOM))
 html = html.replace("{{ARTBOARD_2}}", artboard("ab2", ab2, ab2_back, "", AB2, AB2_TOP, AB2_BOTTOM))
 open("index.html", "w").write(html)
 print("index.html written")

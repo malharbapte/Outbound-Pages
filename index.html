@@ -22,7 +22,7 @@
   a { color: inherit; text-decoration: none; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-  .page { width: 2376px; zoom: var(--zoom, 1); overflow: hidden; }
+  .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; }
   .artboard { position: relative; width: 2376px; }
   .sec { position: relative; display: block; width: 2376px; margin: 0; }
   .deco { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
@@ -61,11 +61,77 @@
   .filter { width: 503.69px; background: #000; color: #e6e7e8; border: 0; text-align: left; cursor: pointer; }
   .view-toggle { position: absolute; display: flex; gap: 24.8px; }
   .view-toggle button { width: 75.84px; height: 74.99px; padding: 0; background: #fff; border: .25px solid var(--black); border-radius: 2.55px; cursor: pointer; overflow: hidden; }
-  .view-toggle button.on { outline: 3px solid var(--mauve); outline-offset: -1.5px; border-color: transparent; }
+  .view-toggle button.on { outline: 7px solid var(--mauve); outline-offset: -3.5px; border-color: transparent; }
   .view-toggle svg { display: block; width: 100%; height: 100%; }
-  .stock-track { position: absolute; display: flex; gap: 36.5px; }
-  .stock-card { width: 503.91px; height: 619.27px; background: #fff; border: .25px solid var(--black); flex: none; }
-  .stock-img { height: 368.27px; background: #d1d3d4; border-bottom: .25px solid var(--black); }
+  .view-toggle button:focus-visible:not(.on) { outline: 3px solid var(--olive); }
+
+  /* Stock panel (grey band). Sliding view keeps the artboard size; the other views grow the section. */
+  .stock-panel { position: relative; z-index: 1; margin-left: 1.85px; width: 2371.79px; background: var(--bone); }
+  .stock-panel .shadow-down { position: absolute; left: -2.24px; top: -.21px; width: 2376px; height: 37.79px; }
+  .stock-panel .shadow-up { position: absolute; left: -1.85px; bottom: 0; width: 2376px; height: 37.79px; z-index: 2; }
+  .stock-viewport { position: relative; z-index: 1; }
+  .stock-track { display: flex; gap: 36.59px; }
+  /* Stock card — landscape 4:3 on a thirds grid (825.69 x 619.27: columns every 275.23, rows every 206.42).
+     The whole card links to the van page. Other views reuse the same card scaled with zoom. */
+  .stock-card { position: relative; flex: none; width: 825.69px; height: 619.27px; display: grid; grid-template-columns: 550.46px 275.23px;
+                background: var(--black); color: var(--bone); overflow: hidden; transition: transform .3s ease, box-shadow .3s ease; }
+  .stock-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(11, 10, 7, .25); }
+  .stock-card:focus-visible { outline: 5px solid var(--green); outline-offset: 4px; }
+
+  .stock-photo { position: relative; overflow: hidden; }
+  .stock-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; user-select: none; -webkit-user-drag: none; }
+  .stock-card:hover .stock-photo img { transform: scale(1.05); }
+  .stock-photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(to bottom, rgba(11, 10, 7, 0), rgba(11, 10, 7, .88)); }
+  .stock-title { position: absolute; left: 34px; right: 24px; top: 412.85px; bottom: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+  .stock-layout { margin: 0; display: flex; align-items: center; gap: 12px; font: 600 18px/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--bone); }
+  .stock-layout::before { content: ""; width: 12px; height: 12px; background: var(--green); transform: rotate(45deg); }
+  .stock-name { margin: 12px 0 0; font: 700 80px/1 var(--oswald); letter-spacing: .01em; color: #fff; }
+  /* Same notched orange tag as "Full Composite" in the range section, mirrored to sit on the left. */
+  .stock-badge { position: absolute; left: 0; top: 26px; z-index: 2; background: #ee964b; color: #fff; font: 400 24px/1 var(--poppins);
+                 padding: 10px 38px 10px 22px; clip-path: polygon(0 0, 100% 0, calc(100% - 20px) 50%, 100% 100%, 0 100%); }
+
+  .stock-rail { margin: 0; display: grid; grid-template-rows: repeat(3, 206.42px); }
+  .stock-rail .row { padding: 0 24px 0 30px; display: flex; flex-direction: column; justify-content: center; }
+  .stock-rail .row + .row { border-top: 1px solid rgba(244, 241, 234, .16); }
+  .stock-rail dt { font: 400 14px/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--silver); }
+  .stock-rail dd { margin: 10px 0 0; font-family: var(--oswald); font-weight: 500; line-height: 1; white-space: nowrap; color: var(--bone); }
+  .stock-rail dd small { margin-left: 6px; font: 500 .3em/1 var(--poppins); letter-spacing: .04em; color: var(--silver); }
+  .stock-rail .r1 { background: rgba(139, 155, 77, .12); }
+  .stock-rail .r1 dt { font-size: 16px; font-weight: 600; color: var(--green); }
+  .stock-rail .r1 dd, .stock-rail .r2 dd { font-size: 66px; }
+  .stock-rail .r3 { flex-direction: row; align-items: center; }
+  .stock-rail .r3 > div { flex: 1; }
+  .stock-rail .length { padding-left: 22px; border-left: 1px solid rgba(244, 241, 234, .16); }
+  .stock-rail .sleeps dd { font-size: 38px; color: #d9d5cc; }
+  .stock-rail .length dd { font-size: 30px; color: var(--silver); }
+  .stock-rail .r3 dt { font-size: 13px; }
+
+  /* View 1 — sliding cards */
+  .stock-panel[data-view="slide"] { height: 832.44px; }
+  .stock-panel[data-view="slide"] .stock-viewport { overflow: hidden; margin-left: -1.85px; width: 2376px; padding: 106.57px 0 0 93.91px; cursor: grab; touch-action: pan-y; }
+  .stock-panel[data-view="slide"] .stock-viewport.dragging { cursor: grabbing; }
+  .stock-panel[data-view="slide"] .stock-track { will-change: transform; }
+
+  /* Progress line sits on the bottom edge of the grey band. */
+  .stock-progress { position: absolute; left: -1.85px; bottom: 0; width: 2376px; height: 18px; background: #d1d3d4; overflow: hidden; z-index: 3; }
+  .stock-progress span { display: block; height: 100%; background: var(--olive); transform-origin: left center; transform: scaleX(0); }
+  .stock-panel:not([data-view="slide"]) .stock-progress { display: none; }
+  .stock-panel:not([data-view="slide"]) .clone { display: none; }
+
+  /* View 2 — two columns (card scaled to fill half the content width) */
+  .stock-panel[data-view="cols"] { padding: 106.57px 92.06px 143px; }
+  .stock-panel[data-view="cols"] .stock-track { display: grid; grid-template-columns: repeat(2, max-content); justify-content: space-between; row-gap: 60px; }
+  .stock-panel[data-view="cols"] .stock-card { zoom: 1.30263; }
+
+  /* View 3 — grid, three across */
+  .stock-panel[data-view="grid"] { padding: 106.57px 92.06px 143px; }
+  .stock-panel[data-view="grid"] .stock-track { display: grid; grid-template-columns: repeat(3, max-content); justify-content: space-between; row-gap: 36.59px; }
+  .stock-panel[data-view="grid"] .stock-card { zoom: .85363; }
+
+  .stock-track.swap { animation: stock-swap .45s ease; }
+  .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
+  @keyframes stock-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes stock-swap { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 
   /* We care / Beyond sale */
   .service { display: contents; }
@@ -130,7 +196,6 @@
 <body>
 <main class="page" id="page">
 <div class="artboard ab1">
-  <svg class="deco" style="z-index:0" width="2376" height="14889.42" viewBox="3528.15 157.34 2376 14889.42" aria-hidden="true"><polygon fill="#6b7a32" opacity=".4" points="4458.33 4621.05 3408.34 3571.06 3007.89 3971.52 3657.41 4621.05 3007.89 5270.58 3408.34 5671.03 4458.33 4621.05"/><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="4922.99 5700.13 5972.97 6750.12 6373.43 6349.66 5723.9 5700.13 6373.43 5050.6 5972.97 4650.15 4922.99 5700.13"/><polygon fill="#6b7a32" opacity=".4" points="4922.99 9310.93 5972.97 10360.92 6373.43 9960.46 5723.9 9310.93 6373.43 8661.4 5972.97 8260.95 4922.99 9310.93"/><polygon fill="#6b7a32" opacity=".4" points="5561.6 13460.7 5910.03 13809.13 6042.91 13676.24 5827.37 13460.7 6042.91 13245.16 5910.03 13112.28 5561.6 13460.7"/></svg>
   <header class="sec nav" style="height:215.79px" >
     <div style="position:absolute;left:0px;top:0px;width:2376px;height:215.79px;background:#fff;border:1px solid #231f20;box-sizing:border-box;"></div>
     <a href="#" class="logo" style="position:absolute;left:387.41px;top:-74.72px"><img src="assets/outbound-logo.png" alt="Outbound RVs" style="width:516.38px;height:365.2px;display:block"></a>
@@ -174,18 +239,16 @@
     <p class="t" style="top:1429.6px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#284b63;">You can always customize the Van depending on your needs. The length and features <br>will vary depending on your customization.</p>
     <a class="btn" style="position:absolute;left:900.15px;top:1576.9px;width:574.93px;height:93.15px;padding-top:23.7px;" href="#">BUILD YOUR CARAVAN</a>
     <div class="shadow-down" style="position:absolute;left:-0.39px;top:1782.27px;width:2376px;height:37.79px;"></div>
+    <svg class="shapes deco-back" style="z-index:0" width="2376" height="1831.84" viewBox="3528.15 3168.16 2376 1831.84" aria-hidden="true"><polygon fill="#6b7a32" opacity=".4" points="4458.33 4621.05 3408.34 3571.06 3007.89 3971.52 3657.41 4621.05 3007.89 5270.58 3408.34 5671.03 4458.33 4621.05"/><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="4922.99 5700.13 5972.97 6750.12 6373.43 6349.66 5723.9 5700.13 6373.43 5050.6 5972.97 4650.15 4922.99 5700.13"/></svg>
   </section>
-  <section class="sec drive" style="height:1430px" >
+  <section class="sec drive" style="padding-top:592.05px" >
     <svg class="shapes" style="z-index:1" width="2376" height="1430" viewBox="3528.15 5000 2376 1430" aria-hidden="true"><rect fill="#8b9b4d" x="3853.08" y="5184.2" width="140.92" height="140.92" transform="translate(-2566.4249 4313.4158) rotate(-45)"/></svg>
     <h2 class="t" style="top:200.31px;left:522.8px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">DRIVE AWAY</h2>
     <input class="search" type="search" placeholder="Search" style="left:395.35px;top:406.76px">
     <button class="filter" style="left:935.89px;top:406.76px">Filter</button>
     <p class="t" style="top:428.33px;left:1621.8px;font-family:var(--poppins);font-size:24px;font-weight:300;line-height:28.8px;color:#7a736a;">View</p>
-    <div class="view-toggle" style="left:1702.38px;top:406.76px"><button class="on" aria-label="Wide cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#8b9b4d" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button><button aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button><button aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button></div>
-    <div style="position:absolute;left:1.85px;top:592.05px;width:2371.79px;height:832.44px;background:#f4f1ea;"></div>
-    <div class="shadow-down" style="position:absolute;left:-0.39px;top:591.84px;width:2376px;height:37.79px;"></div>
-    <div class="shadow-up" style="position:absolute;left:0px;top:1386.69px;width:2376px;height:37.79px;"></div>
-    <div class="stock-track" style="left:93.91px;top:698.62px"><article class="stock-card"><div class="stock-img"></div><div class="stock-body"></div></article><article class="stock-card"><div class="stock-img"></div><div class="stock-body"></div></article><article class="stock-card"><div class="stock-img"></div><div class="stock-body"></div></article><article class="stock-card"><div class="stock-img"></div><div class="stock-body"></div></article><article class="stock-card"><div class="stock-img"></div><div class="stock-body"></div></article></div>
+    <div class="view-toggle" role="group" aria-label="Stock view" style="left:1702.38px;top:406.76px"><button class="on" data-view="slide" aria-pressed="true" aria-label="Sliding cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#8b9b4d" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button><button data-view="cols" aria-pressed="false" aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button><button data-view="grid" aria-pressed="false" aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button></div>
+    <div class="stock-panel" data-view="slide"><div class="shadow-down"></div><div class="stock-viewport"><div class="stock-track"><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Amaroo, couples layout"><div class="stock-photo"><img src="assets/range-amaroo.jpg" alt="" draggable="false" style="object-position:50% 62%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">AMAROO</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,300<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,500<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>16'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Hornet, couples layout"><div class="stock-photo"><img src="assets/range-hornet.jpg" alt="" draggable="false" style="object-position:50% 64%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">HORNET</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,650<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Solara, couples layout"><div class="stock-photo"><img src="assets/range-solara.jpg" alt="" draggable="false" style="object-position:45% 70%"><span class="stock-badge">Composite</span><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">SOLARA</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,580<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Xtr, family layout"><div class="stock-photo"><img src="assets/range-xtr.jpg" alt="" draggable="false" style="object-position:40% 60%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">XTR</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,950<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>5</dd></div><div class="length"><dt>Length</dt><dd>20'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Amaroo, family layout"><div class="stock-photo"><img src="assets/range-amaroo.jpg" alt="" draggable="false" style="object-position:50% 62%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">AMAROO</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,780<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>4</dd></div><div class="length"><dt>Length</dt><dd>19'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Hornet, family layout"><div class="stock-photo"><img src="assets/range-hornet.jpg" alt="" draggable="false" style="object-position:50% 64%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">HORNET</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,950<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>5</dd></div><div class="length"><dt>Length</dt><dd>20'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Solara, family layout"><div class="stock-photo"><img src="assets/range-solara.jpg" alt="" draggable="false" style="object-position:45% 70%"><span class="stock-badge">Composite</span><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">SOLARA</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,890<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>4</dd></div><div class="length"><dt>Length</dt><dd>21'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Xtr, couples layout"><div class="stock-photo"><img src="assets/range-xtr.jpg" alt="" draggable="false" style="object-position:40% 60%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">XTR</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,700<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>19'6"</dd></div></div></dl></a></div></div><div class="stock-progress" aria-hidden="true"><span></span></div><div class="shadow-up"></div></div>
   </section>
   <section class="sec visit" style="height:2366.01px" >
     <img src="assets/dealership.png" alt="Outbound RVs dealership at 58B Lara Way, Campbellfield" style="position:absolute;left:-12.34px;top:45.22px;width:2388.19px;height:1686.64px;">
@@ -201,6 +264,7 @@
     <svg class="shapes" style="z-index:1" width="2376" height="2366.01" viewBox="3528.15 6430 2376 2366.01" aria-hidden="true"><rect fill="#284b63" x="3839.58" y="8465.45" width="50.99" height="50.99" transform="translate(-4871.9499 5219.9602) rotate(-45)"/></svg>
     <p class="t" style="top:2018.46px;left:395.64px;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#284b63;">We are closed on Sundays, and we acknowledge your patience. However, you can still <br>reach out to us through the contact Us form.</p>
     <a class="btn" style="position:absolute;left:393.5px;top:2151.59px;width:507.27px;height:93.15px;padding-top:23.69px;" href="#">Fill the form</a>
+    <svg class="shapes deco-back" style="z-index:0" width="2376" height="2366.01" viewBox="3528.15 6430 2376 2366.01" aria-hidden="true"><polygon fill="#6b7a32" opacity=".4" points="4922.99 9310.93 5972.97 10360.92 6373.43 9960.46 5723.9 9310.93 6373.43 8661.4 5972.97 8260.95 4922.99 9310.93"/></svg>
   </section>
   <section class="sec journey" style="height:1564.78px" >
     <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1564.77px;background:#0b0a07;"></div>
@@ -217,6 +281,7 @@
     <svg class="shapes" style="z-index:1" width="2376" height="1564.62" viewBox="3528.15 10360.79 2376 1564.62" aria-hidden="true"><rect fill="#f4f1ea" x="4645.81" y="10970.73" width="140.67" height="140.67" rx="33.79" transform="translate(-6425.8867 6568.6819) rotate(-45.0001)"/></svg>
     <h2 class="t" style="top:625.4px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:79.65px;font-weight:600;line-height:95.58px;color:#d5aca9;">we care</h2>
     <p class="t" style="top:809.53px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:36px;font-weight:300;line-height:43.2px;color:#d5aca9;">We understand the growing uncertainity in the Caravan industry, with a lot of companies <br>going under. We assure you your money is safe with us. We ensure that by :</p>
+    <svg class="shapes" style="z-index:4" width="2376" height="1564.62" viewBox="3528.15 10360.79 2376 1564.62" aria-hidden="true"><polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/><polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/></svg>
   </section>
   <section class="sec beyond" style="height:1066.24px" >
     <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1066.24px;background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;"></div>
@@ -237,6 +302,7 @@
     <h3 class="t svc-title" style="top:622.42px;left:1475.2px;font-family:var(--poppins);font-size:48px;font-weight:700;line-height:57.6px;">WARRANTY</h3>
     <p class="t svc-desc" style="top:711.17px;left:1475.06px;font-family:var(--poppins);font-size:32px;font-weight:400;line-height:42px;">Every new Wonderland RV <br>comes with a three-year <br>factory-backed warranty. If <br>something needs attention, our <br>team will help guide you <br>through the process.</p>
     </a>
+    <svg class="shapes" style="z-index:4" width="2376" height="1066.24" viewBox="3528.15 11925.41 2376 1066.24" aria-hidden="true"><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/><polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/></svg>
   </section>
   <section class="sec stories" style="height:2055.11px" >
     <svg class="shapes" style="z-index:1" width="2376" height="2055.11" viewBox="3528.15 12991.65 2376 2055.11" aria-hidden="true"><g transform="translate(0 0)"><rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/><rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/><polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/><polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/><rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/></g></svg>
@@ -253,8 +319,8 @@
     <p class="t" style="top:825.35px;left:207.01px;font-family:var(--poppins);font-size:32px;font-weight:400;line-height:38.4px;color:#8e6673;">Image to be added.</p>
     <p class="t" style="top:1619.01px;left:1012.25px;font-family:var(--poppins);font-size:32px;font-weight:400;line-height:38.4px;color:#8e6673;">Image to be added.</p>
     <p class="t" style="top:1619.01px;left:1835.44px;font-family:var(--poppins);font-size:32px;font-weight:400;line-height:38.4px;color:#8e6673;">Image to be added.</p>
+    <svg class="shapes deco-back" style="z-index:0" width="2376" height="2055.11" viewBox="3528.15 12991.65 2376 2055.11" aria-hidden="true"><polygon fill="#6b7a32" opacity=".4" points="5561.6 13460.7 5910.03 13809.13 6042.91 13676.24 5827.37 13460.7 6042.91 13245.16 5910.03 13112.28 5561.6 13460.7"/></svg>
   </section>
-  <svg class="deco" style="z-index:4" width="2376" height="14889.42" viewBox="3528.15 157.34 2376 14889.42" aria-hidden="true"><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/><polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/><polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/><polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/></svg>
 </div>
 <div class="artboard ab2">
   <svg class="deco" style="z-index:0" width="2376" height="4384.96" viewBox="6788.78 157.34 2376 4384.96" aria-hidden="true"><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="8484.97 1235.97 9347.81 2098.82 9676.9 1769.74 9143.13 1235.97 9676.9 702.21 9347.81 373.13 8484.97 1235.97"/></svg>
@@ -315,9 +381,87 @@
 <script>
   // Scale the 2376px artboard to the window width.
   const page = document.getElementById('page');
-  const fit = () => page.style.setProperty('--zoom', document.documentElement.clientWidth / 2376);
+  const zoom = () => document.documentElement.clientWidth / 2376;
+  const fit = () => page.style.setProperty('--zoom', zoom());
   fit();
   addEventListener('resize', fit);
+
+  // Drive Away — continuous card slider with a progress line, plus three layout views.
+  (() => {
+    const panel = document.querySelector('.stock-panel');
+    const viewport = panel.querySelector('.stock-viewport');
+    const track = panel.querySelector('.stock-track');
+    const bar = panel.querySelector('.stock-progress span');
+    const originals = [...track.children];
+    const SET_WIDTH = originals.length * (825.69 + 36.59); // one full lap, in artboard px
+    const SPEED = 70;                                       // artboard px per second
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // A second copy of the cards makes the loop seamless.
+    originals.forEach(card => {
+      const copy = card.cloneNode(true);
+      copy.classList.add('clone');
+      copy.setAttribute('aria-hidden', 'true');
+      copy.tabIndex = -1;
+      track.append(copy);
+    });
+
+    let offset = 0, last = null, hovering = false, drag = null, moved = false;
+    const isSlide = () => panel.dataset.view === 'slide';
+
+    const render = () => {
+      offset = ((offset % SET_WIDTH) + SET_WIDTH) % SET_WIDTH;
+      track.style.transform = `translateX(${-offset}px)`;
+      bar.style.transform = `scaleX(${offset / SET_WIDTH})`;
+    };
+
+    const tick = now => {
+      if (isSlide()) {
+        if (last !== null && !hovering && !drag && !reduced) offset += SPEED * (now - last) / 1000;
+        render();
+      }
+      last = now;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    viewport.addEventListener('pointerenter', () => hovering = true);
+    viewport.addEventListener('pointerleave', () => hovering = false);
+    viewport.addEventListener('focusin', () => hovering = true);
+    viewport.addEventListener('focusout', () => hovering = false);
+
+    // Drag to move the cards manually.
+    viewport.addEventListener('pointerdown', e => {
+      if (!isSlide() || e.button !== 0) return;
+      drag = { x: e.clientX, start: offset }; moved = false;
+    });
+    addEventListener('pointermove', e => {
+      if (!drag) return;
+      const dx = (e.clientX - drag.x) / zoom();
+      if (Math.abs(dx) > 4 && !moved) { moved = true; viewport.classList.add('dragging'); viewport.setPointerCapture?.(e.pointerId); }
+      if (moved) offset = drag.start - dx;
+    });
+    addEventListener('pointerup', () => { drag = null; viewport.classList.remove('dragging'); });
+    viewport.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; } }, true);
+
+    // Horizontal trackpad scroll also moves the cards; vertical scroll still scrolls the page.
+    viewport.addEventListener('wheel', e => {
+      if (!isSlide() || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      offset += e.deltaX / zoom();
+    }, { passive: false });
+
+    // View switcher.
+    const buttons = document.querySelectorAll('.view-toggle button');
+    buttons.forEach(btn => btn.addEventListener('click', () => {
+      if (panel.dataset.view === btn.dataset.view) return;
+      buttons.forEach(b => { b.classList.toggle('on', b === btn); b.setAttribute('aria-pressed', b === btn); });
+      panel.dataset.view = btn.dataset.view;
+      if (!isSlide()) track.style.transform = '';
+      track.classList.remove('swap'); void track.offsetWidth; track.classList.add('swap');
+    }));
+    track.addEventListener('animationend', () => track.classList.remove('swap'));
+  })();
 </script>
 </body>
 </html>
