@@ -304,7 +304,7 @@ ab1.append(JourneyScroll())
 
 # ---- Beyond sale --------------------------------------------------------------------------
 s = Section("section", "beyond", AB1, 11925.41, 12991.65, 'id="after-journey"')
-s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;border-bottom:.25px solid #0b0a07;")  # divider before Stories
+s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;")
 s.text(3923.79, 12188.19, "BEYOND SALE", font="O", size=84, weight=700, color="#000", tag="h2")
 # Expanding panels (see samples/beyond-sale.html): hovering a panel widens it to show its description;
 # it stays open until another panel is hovered. Panels start on the upper third line of the section.
@@ -328,6 +328,13 @@ ab1.append(s)
 
 # ---- Stories from our customers ------------------------------------------------------------------
 s = Section("section", "stories", AB1, 12991.65, 15046.76)
+# Diamond cluster marking the break between Beyond Sale and Stories (kept on purpose).
+s.svg('<rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/>'
+      '<rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/>'
+      '<polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/>'
+      '<polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/>'
+      '<polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/>'
+      '<rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/>', z=1)
 s.text(0, 13329.64, "STORIES FROM OUR CUSTOMERS", font="O", size=84, weight=700, color=COL["mauve"], center=True, tag="h2")
 tile = "position:absolute;box-sizing:border-box;width:791.96px;height:791.96px;"
 s.box(3528.27, 13461.35, 791.96, 791.96, cls="tile tile-white")
