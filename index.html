@@ -128,6 +128,33 @@
   .stock-panel[data-view="grid"] .stock-track { display: grid; grid-template-columns: repeat(3, max-content); justify-content: space-between; row-gap: 36.59px; }
   .stock-panel[data-view="grid"] .stock-card { zoom: .85363; }
 
+
+  /* Ownership journey — locked "static scroll" stage (see samples/ownership.html) */
+  html { scrollbar-gutter: stable; }
+  html.scroll-locked { overflow: hidden; } /* stops any in-flight scroll while the journey is locked */
+  .journey-scroll { position: relative; z-index: 2; }
+  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transform-origin: 50% 0; }
+  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transition: opacity .7s ease; }
+  .care-layer { opacity: 0; pointer-events: none; }
+  .journey-stage.care .journey-layer { opacity: 0; }
+  .journey-stage.care .care-layer { opacity: 1; transition-delay: .6s; pointer-events: auto; }
+  .journey-svg .track { fill: none; stroke: rgba(244, 241, 234, .28); stroke-width: 4; }
+  .journey-svg .fill { fill: none; stroke: #fff; stroke-width: 4; transition: stroke-dashoffset .8s cubic-bezier(.65, 0, .35, 1); }
+  .journey-svg .step-diamond { fill: var(--bone); transition: fill .45s ease, opacity .45s ease; }
+  .journey-svg .step-diamond.done { fill: var(--green); }
+  .journey-stage[data-phase="custom"] .d-stock, .journey-stage[data-phase="custom"] .track-stock { opacity: .35; }
+  .path-label { transition: opacity .45s ease; }
+  .journey-stage[data-phase="custom"] .path-label[data-path="stock"],
+  .journey-stage[data-phase="stock"] .path-label[data-path="custom"] { opacity: .4; }
+  .step-panel { position: absolute; z-index: 4; display: flex; gap: 34.08px; opacity: 0; transition: opacity .45s ease; pointer-events: none; }
+  .step-panel.on { opacity: 1; transition-delay: .35s; }
+  .step-num { flex: none; width: 71.22px; height: 71.22px; background: var(--pink); color: var(--black); display: grid; place-items: center; font: 700 40px/1 var(--oswald); }
+  .step-text { width: 920px; padding-top: 7.77px; }
+  .step-text h3 { margin: 0; font: 600 48px/57.6px var(--poppins); color: var(--bone); }
+  .step-text p { margin: 19.56px 0 0; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
+  #after-journey { transition: opacity .8s ease; }
+  #after-journey.hidden { opacity: 0; }
+
   .stock-track.swap { animation: stock-swap .45s ease; }
   .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
   @keyframes stock-fade { from { opacity: 0; } to { opacity: 1; } }
@@ -266,24 +293,35 @@
     <a class="btn" style="position:absolute;left:393.5px;top:2151.59px;width:507.27px;height:93.15px;padding-top:23.69px;" href="#">Fill the form</a>
     <svg class="shapes deco-back" style="z-index:0" width="2376" height="2366.01" viewBox="3528.15 6430 2376 2366.01" aria-hidden="true"><polygon fill="#6b7a32" opacity=".4" points="4922.99 9310.93 5972.97 10360.92 6373.43 9960.46 5723.9 9310.93 6373.43 8661.4 5972.97 8260.95 4922.99 9310.93"/></svg>
   </section>
-  <section class="sec journey" style="height:1564.78px" >
-    <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1564.77px;background:#0b0a07;"></div>
-    <svg class="shapes" style="z-index:1" width="2376" height="1564.78" viewBox="3528.15 8796.01 2376 1564.78" aria-hidden="true"><g transform="translate(0 2370.22)"><polygon fill="#6b7a32" points="4023.44 6665.6 3923.79 6565.95 3885.79 6603.95 3947.43 6665.6 3885.79 6727.24 3923.79 6765.24 4023.44 6665.6"/><polygon fill="#f4f1ea" points="3885.79 6603.95 3847.78 6565.95 3748.13 6665.6 3847.78 6765.24 3885.79 6727.24 3824.14 6665.6 3885.79 6603.95"/><rect fill="#8b9b4d" x="3842.2" y="6622.01" width="87.18" height="87.18" transform="translate(-3575.1691 4699.9807) rotate(-45.0001)"/></g><line stroke="#8b9b4d" stroke-width="4" x1="3966.34" y1="9605.52" x2="3966.34" y2="9391.86"/><path fill="none" stroke="#fff" stroke-width="4" d="M4005.59,9359.63h1043.61s145.69-13.66,201.28,98.65c55.6,112.31,80.29,253.19,182.47,252.8h471.19"/><rect fill="#8b9b4d" x="3936.28" y="9329.58" width="60.11" height="60.11" transform="translate(-5456.5486 5546.0063) rotate(-45)"/><rect fill="#f4f1ea" x="4305.57" y="9329.58" width="60.11" height="60.11" transform="translate(-5348.3869 5807.1315) rotate(-45)"/><rect fill="#f4f1ea" x="4674.86" y="9329.58" width="60.11" height="60.11" transform="translate(-5240.2251 6068.2567) rotate(-45)"/><rect fill="#f4f1ea" x="5044.14" y="9329.58" width="60.11" height="60.11" transform="translate(-5132.0634 6329.3818) rotate(-45)"/><rect fill="#f4f1ea" x="5433.37" y="9681.02" width="60.11" height="60.11" transform="translate(-5266.5735 6707.5398) rotate(-45)"/><rect fill="#d5aca9" x="3932.78" y="9605.52" width="71.22" height="71.22"/><polyline fill="#fff" points="5124.74 10051.97 5419.07 9757.64 5386.38 9724.95 5092.05 10019.28"/><polygon fill="#fff" points="4472.13 10042.75 3999.3 10042.75 4022.21 10065.86 3999.3 10088.98 4472.13 10088.98 4449.01 10065.86 4472.13 10042.75"/><polygon fill="#fff" points="5043.11 10042.75 4544.49 10042.75 4567.4 10065.86 4544.49 10088.98 5043.11 10088.98 5020 10065.86 5043.11 10042.75"/><path fill="#8c9c4d" d="M3986.54,10042.75l-20.2-20.2-43.32,43.32,43.32,43.32,20.2-20.2,23.11-23.11-23.11-23.11ZM3967.71,10088.98l-1.37,1.37-24.48-24.48,24.48-24.48,1.370,1.37,23.11,23.11-23.11,23.11Z"/><path fill="#8c9c4d" d="M4527.58,10042.75l-20.2-20.2-43.32,43.32,43.32,43.32,20.2-20.2,23.11-23.11-23.11-23.11ZM4508.74,10088.98l-1.37,1.37-24.48-24.48,24.48-24.48,1.37,1.37,23.11,23.11-23.11,23.11Z"/><path fill="#8c9c4d" d="M5098.21,10042.75l-20.2-20.2-43.32,43.32,43.32,43.32,20.2-20.2,23.11-23.11-23.11-23.11ZM5079.38,10088.98l-1.37,1.37-24.48-24.48,24.48-24.48,1.37,1.37,23.11,23.11-23.11,23.11Z"/></svg>
-    <h2 class="t" style="top:151.39px;left:518.94px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#f4f1ea;">OWNERSHIP JOURNEY</h2>
-    <p class="t" style="top:253.56px;left:518.94px;font-family:var(--oswald);font-size:48px;font-weight:300;line-height:57.6px;color:#fff;">THE BEGINNING OF A EVERLASTING RELATIONSHIP</p>
-    <p class="t" style="top:423.37px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;">CUSTOM CARAVAN (9-12 MONTHS)</p>
-    <h3 class="t" style="top:817.28px;left:509.93px;font-family:var(--poppins);font-size:48px;font-weight:600;line-height:57.6px;color:#f4f1ea;">Understanding your needs</h3>
-    <p class="t" style="top:894.44px;left:509.92px;font-family:var(--poppins);font-size:36px;font-weight:300;line-height:43.2px;color:#f4f1ea;">We are closed on Sundays, and we acknowledge your <br>patience. However, you can still reach out to us <br>through the contact Us form.</p>
-    <p class="t" style="top:1343.36px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;">STOCK VAN (1 MONTH)</p>
+  <section class="sec journey-scroll" id="journey" style="height:1564.77px" aria-label="Ownership journey">
+   <div class="journey-stage" id="journey-stage">
+    <div class="layer journey-layer">
+      <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1564.77px;background:#0b0a07;"></div>
+      <h2 class="t" style="top:151.39px;left:518.94px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#f4f1ea;">OWNERSHIP JOURNEY</h2>
+      <p class="t" style="top:253.56px;left:518.94px;font-family:var(--oswald);font-size:48px;font-weight:300;line-height:57.6px;color:#fff;">THE BEGINNING OF A EVERLASTING RELATIONSHIP</p>
+      <p class="t path-label" style="top:423.37px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;" data-path="custom">CUSTOM CARAVAN (9-12 MONTHS)</p>
+      <p class="t path-label" style="top:1343.36px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;" data-path="stock">STOCK VAN (1 MONTH)</p>
+      <svg class="shapes journey-svg" style="z-index:1" width="2376" height="1564.78" viewBox="3528.15 8796.01 2376 1564.78" aria-hidden="true"><g transform="translate(0 2370.22)"><polygon fill="#6b7a32" points="4023.44 6665.6 3923.79 6565.95 3885.79 6603.95 3947.43 6665.6 3885.79 6727.24 3923.79 6765.24 4023.44 6665.6"/><polygon fill="#f4f1ea" points="3885.79 6603.95 3847.78 6565.95 3748.13 6665.6 3847.78 6765.24 3885.79 6727.24 3824.14 6665.6 3885.79 6603.95"/><rect fill="#8b9b4d" x="3842.2" y="6622.01" width="87.18" height="87.18" transform="translate(-3575.1691 4699.9807) rotate(-45.0001)"/></g><path class="track track-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><path class="track" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H5904.14"/><path class="fill fill-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H5904.14"/><path class="fill fill-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><rect class="step-diamond d-custom" data-step="0" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="1" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4335.63 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="2" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4704.92 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="3" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5074.2 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="4" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5463.43 9711.08) rotate(45)"/><rect class="step-diamond d-stock" data-step="5" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="6" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4335.63 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="7" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4704.92 10062.53) rotate(45)"/></svg>
+      <div class="step-panel" data-step="0" data-path="custom" data-x="3966.34" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">1</span><div class="step-text"><h3>Understanding your needs</h3><p>We sit down with you to learn how you travel, where you want to go and what matters most in a caravan.</p></div></div>
+      <div class="step-panel" data-step="1" data-path="custom" data-x="4335.63" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">2</span><div class="step-text"><h3>Designing your layout</h3><p>Together we choose the model, floor plan and features, and lock in a build spec that suits your journey.</p></div></div>
+      <div class="step-panel" data-step="2" data-path="custom" data-x="4704.92" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">3</span><div class="step-text"><h3>Confirming your build</h3><p>Your order is placed with Wonderland RV and your caravan is booked into the factory build schedule.</p></div></div>
+      <div class="step-panel" data-step="3" data-path="custom" data-x="5074.2" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">4</span><div class="step-text"><h3>Built for you</h3><p>Your caravan is built to your spec, with updates from our team along the way.</p></div></div>
+      <div class="step-panel" data-step="4" data-path="custom" data-x="5463.43" data-y="9711.08" style="left:404.63px;top:809.51px"><span class="step-num">5</span><div class="step-text"><h3>Handover</h3><p>We walk you through every feature before you hitch up and head off. This is where the journey really begins.</p></div></div>
+      <div class="step-panel" data-step="5" data-path="stock" data-x="3966.34" data-y="10062.53" style="left:404.63px;top:809.51px"><span class="step-num">1</span><div class="step-text"><h3>Understanding your needs</h3><p>Tell us how you like to travel and we match you with the vans we have in stock.</p></div></div>
+      <div class="step-panel" data-step="6" data-path="stock" data-x="4335.63" data-y="10062.53" style="left:404.63px;top:809.51px"><span class="step-num">2</span><div class="step-text"><h3>Choosing your van</h3><p>Walk through it in person at our Campbellfield yard, or take a virtual tour.</p></div></div>
+      <div class="step-panel" data-step="7" data-path="stock" data-x="4704.92" data-y="10062.53" style="left:404.63px;top:809.51px"><span class="step-num">3</span><div class="step-text"><h3>Finance and paperwork</h3><p>We help with finance, registration and pre-delivery checks so everything is ready.</p></div></div>
+      <div class="step-panel" data-step="8" data-path="stock" data-x="5463.43" data-y="9711.08" style="left:404.63px;top:809.51px"><span class="step-num">4</span><div class="step-text"><h3>Handover</h3><p>We walk you through every feature before you hitch up and head off. This is where the journey really begins.</p></div></div>
+    </div>
+    <div class="layer care-layer">
+      <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1564.77px;background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;"></div>
+      <svg class="shapes" style="z-index:1" width="2376" height="1564.62" viewBox="3528.15 10360.79 2376 1564.62" aria-hidden="true"><rect fill="#f4f1ea" x="4645.81" y="10970.73" width="140.67" height="140.67" rx="33.79" transform="translate(-6425.8867 6568.6819) rotate(-45.0001)"/></svg>
+      <h2 class="t" style="top:625.4px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:79.65px;font-weight:600;line-height:95.58px;color:#d5aca9;">we care</h2>
+      <p class="t" style="top:809.53px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:36px;font-weight:300;line-height:43.2px;color:#d5aca9;">We understand the growing uncertainity in the Caravan industry, with a lot of companies <br>going under. We assure you your money is safe with us. We ensure that by :</p>
+      <svg class="shapes" style="z-index:4" width="2376" height="1564.62" viewBox="3528.15 10360.79 2376 1564.62" aria-hidden="true"><polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/><polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/></svg>
+    </div>
+   </div>
   </section>
-  <section class="sec care" style="height:1564.62px" >
-    <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1564.77px;background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;"></div>
-    <svg class="shapes" style="z-index:1" width="2376" height="1564.62" viewBox="3528.15 10360.79 2376 1564.62" aria-hidden="true"><rect fill="#f4f1ea" x="4645.81" y="10970.73" width="140.67" height="140.67" rx="33.79" transform="translate(-6425.8867 6568.6819) rotate(-45.0001)"/></svg>
-    <h2 class="t" style="top:625.4px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:79.65px;font-weight:600;line-height:95.58px;color:#d5aca9;">we care</h2>
-    <p class="t" style="top:809.53px;left:0;width:2376px;text-align:center;font-family:var(--poppins);font-size:36px;font-weight:300;line-height:43.2px;color:#d5aca9;">We understand the growing uncertainity in the Caravan industry, with a lot of companies <br>going under. We assure you your money is safe with us. We ensure that by :</p>
-    <svg class="shapes" style="z-index:4" width="2376" height="1564.62" viewBox="3528.15 10360.79 2376 1564.62" aria-hidden="true"><polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/><polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/></svg>
-  </section>
-  <section class="sec beyond" style="height:1066.24px" >
+  <section class="sec beyond" style="height:1066.24px" id="after-journey">
     <div style="position:absolute;left:0.12px;top:0px;width:2375.75px;height:1066.24px;background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;"></div>
     <svg class="shapes" style="z-index:1" width="2376" height="1066.24" viewBox="3528.15 11925.41 2376 1066.24" aria-hidden="true"><rect fill="#f4f1ea" x="3613.01" y="12083.84" width="140.67" height="140.67" transform="translate(-7515.4758 6164.4059) rotate(-45.0001)"/><rect fill="#8b9b4d" x="3692.65" y="12083.84" width="140.67" height="140.67" transform="translate(-7492.1508 6220.7173) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4023.44 12154.17 3923.79 12054.53 3885.79 12092.53 3947.43 12154.17 3885.79 12215.82 3923.79 12253.82 4023.44 12154.17"/><polygon fill="#f4f1ea" points="3885.79 12092.53 3847.78 12054.53 3748.13 12154.17 3847.78 12253.82 3885.79 12215.82 3824.14 12154.17 3885.79 12092.53"/><rect fill="#8b9b4d" x="3842.2" y="12110.59" width="87.18" height="87.18" transform="translate(-7456.1841 6307.552) rotate(-45.0001)"/></svg>
     <h2 class="t" style="top:174.41px;left:536.12px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">BEYOND SALE</h2>
@@ -461,6 +499,121 @@
       track.classList.remove('swap'); void track.offsetWidth; track.classList.add('swap');
     }));
     track.addEventListener('animationend', () => track.classList.remove('swap'));
+  })();
+  // Ownership journey — while the stage is locked the page stays still and each scroll moves one step.
+  (() => {
+    const wrap = document.getElementById('journey');
+    if (!wrap) return;
+    const stage = document.getElementById('journey-stage');
+    const after = document.getElementById('after-journey');
+    const STAGE_H = 1564.77, CARE_HOLD = 3; // extra scrolls spent on "we care" before the next section
+    const panels = [...stage.querySelectorAll('.step-panel')];
+    const STEPS = panels.map(p => ({ path: p.dataset.path, x: +p.dataset.x, y: +p.dataset.y }));
+    const CARE = STEPS.length, CUSTOM_LAST = STEPS.findIndex(s => s.path === 'stock') - 1;
+    const diamonds = STEPS.map((_, k) => stage.querySelector(`.step-diamond[data-step="${k}"]`));
+    const fills = { custom: stage.querySelector('.fill-custom'), stock: stage.querySelector('.fill-stock') };
+
+    // Line length up to each diamond, so the white line stops exactly there.
+    const lenAt = (path, x, y) => {
+      let best = 0, bestD = Infinity;
+      for (let l = 0, L = path.getTotalLength(); l <= L; l += 2) {
+        const p = path.getPointAtLength(l), d = Math.hypot(p.x - x, p.y - y);
+        if (d < bestD) { bestD = d; best = l; }
+      }
+      return best;
+    };
+    const stops = STEPS.map(s => lenAt(fills[s.path], s.x, s.y));
+    Object.values(fills).forEach(f => { f.total = f.getTotalLength(); f.style.strokeDasharray = f.total; f.style.strokeDashoffset = f.total; });
+
+    let state = 0;
+    const render = () => {
+      const k = Math.min(state, CARE - 1), phase = STEPS[k].path;
+      stage.dataset.phase = phase;
+      stage.classList.toggle('care', state === CARE);
+      panels.forEach((p, i) => p.classList.toggle('on', i === k && state < CARE));
+      diamonds.forEach((d, i) => d && d.classList.toggle('done', phase === 'stock' ? (STEPS[i].path === 'custom' || i <= k) : i <= k));
+      fills.custom.style.strokeDashoffset = fills.custom.total - (phase === 'custom' ? stops[k] : (k === CARE - 1 ? fills.custom.total : stops[CUSTOM_LAST]));
+      fills.stock.style.strokeDashoffset = fills.stock.total - (phase === 'stock' ? stops[k] : 0);
+    };
+    render();
+    if (wrap.getBoundingClientRect().bottom > 0) after.classList.add('hidden'); // fades in once the journey is done
+
+    let locked = false, hold = 0, busyUntil = 0, lastWheel = 0, cooldownUntil = 0, lastAbs = 0, lastStepAt = 0;
+    const fit = () => {
+      const scale = Math.min(1, innerHeight / (STAGE_H * zoom()));
+      stage.style.transform = scale < 1 ? `scale(${scale})` : '';
+      wrap.style.height = STAGE_H * scale + 'px';
+    };
+    const alignTop = () => Math.max(0, (innerHeight - wrap.getBoundingClientRect().height) / 2); // centre the stage
+    const snap = () => scrollTo({ top: scrollY + wrap.getBoundingClientRect().top - alignTop(), behavior: 'instant' });
+    const lock = startState => {
+      locked = true; document.documentElement.classList.add('scroll-locked');
+      state = startState; hold = 0; snap(); render(); busyUntil = performance.now() + 250;
+    };
+    const unlock = () => { locked = false; document.documentElement.classList.remove('scroll-locked'); cooldownUntil = performance.now() + 700; };
+
+    const exitDown = () => {
+      // Jump Beyond Sale into place and fade it in instead of scrolling it up from the bottom.
+      after.classList.add('hidden');
+      unlock();
+      scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'instant' });
+      requestAnimationFrame(() => after.classList.remove('hidden'));
+      busyUntil = performance.now() + 900;
+    };
+    const step = dir => {
+      if (dir > 0) {
+        if (state < CARE) { state++; render(); if (state === CARE) hold = 0; }
+        else if (hold < CARE_HOLD) hold++;
+        else exitDown();
+      } else {
+        if (state === CARE && hold > 0) hold--;
+        else if (state > 0) { state--; render(); }
+        else { unlock(); return; }
+      }
+      busyUntil = performance.now() + 420;
+    };
+    const onIntent = (dir, e, isNew) => {
+      const now = performance.now();
+      if (!locked) { if (now < busyUntil) e?.preventDefault(); return; } // swallow momentum after the fade-in
+      if (dir < 0 && state === 0 && isNew && now >= busyUntil) { unlock(); return; } // release upward
+      e?.preventDefault();
+      if (isNew && now >= busyUntil) step(dir);
+    };
+
+    // One push of the wheel or trackpad is one scroll, wherever the cursor is. Momentum sends a stream of
+    // events, so a new push is a pause OR the deltas growing again after fading out.
+    document.addEventListener('wheel', e => {
+      if (!e.deltaY || e.target.closest?.('.stock-viewport')) return;
+      const now = performance.now(), abs = Math.abs(e.deltaY);
+      const isNew = now - lastWheel > 120 || (abs > lastAbs * 1.5 && abs > 6 && now - lastStepAt > 260) || (abs > 25 && now - lastStepAt > 1100);
+      lastWheel = now; lastAbs = abs;
+      const before = state + hold;
+      onIntent(Math.sign(e.deltaY), e, isNew);
+      if (state + hold !== before) lastStepAt = now;
+    }, { passive: false, capture: true });
+    document.addEventListener('keydown', e => {
+      if (e.target.closest('input, textarea, select')) return;
+      const down = ['ArrowDown', 'PageDown'].includes(e.key) || (e.key === ' ' && !e.shiftKey);
+      const up = ['ArrowUp', 'PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey);
+      if (down || up) onIntent(down ? 1 : -1, e, true);
+    }, { capture: true });
+
+    // Engage the lock when the stage reaches its place, from either direction.
+    let prevTop = wrap.getBoundingClientRect().top;
+    const watch = () => {
+      const r = wrap.getBoundingClientRect(), target = alignTop();
+      if (!locked && performance.now() > cooldownUntil) {
+        if (prevTop > target && r.top <= target && r.top > -r.height) lock(0);
+        else if (prevTop < target && r.top >= target && r.top < innerHeight) lock(CARE);
+      }
+      if (!locked && r.bottom <= 0) after.classList.remove('hidden'); // reached some other way
+      prevTop = wrap.getBoundingClientRect().top;
+    };
+    addEventListener('scroll', watch, { passive: true });
+    const loop = () => { watch(); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+    addEventListener('resize', () => { fit(); if (locked) snap(); });
+    fit();
   })();
 </script>
 </body>

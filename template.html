@@ -128,6 +128,33 @@
   .stock-panel[data-view="grid"] .stock-track { display: grid; grid-template-columns: repeat(3, max-content); justify-content: space-between; row-gap: 36.59px; }
   .stock-panel[data-view="grid"] .stock-card { zoom: .85363; }
 
+
+  /* Ownership journey — locked "static scroll" stage (see samples/ownership.html) */
+  html { scrollbar-gutter: stable; }
+  html.scroll-locked { overflow: hidden; } /* stops any in-flight scroll while the journey is locked */
+  .journey-scroll { position: relative; z-index: 2; }
+  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transform-origin: 50% 0; }
+  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transition: opacity .7s ease; }
+  .care-layer { opacity: 0; pointer-events: none; }
+  .journey-stage.care .journey-layer { opacity: 0; }
+  .journey-stage.care .care-layer { opacity: 1; transition-delay: .6s; pointer-events: auto; }
+  .journey-svg .track { fill: none; stroke: rgba(244, 241, 234, .28); stroke-width: 4; }
+  .journey-svg .fill { fill: none; stroke: #fff; stroke-width: 4; transition: stroke-dashoffset .8s cubic-bezier(.65, 0, .35, 1); }
+  .journey-svg .step-diamond { fill: var(--bone); transition: fill .45s ease, opacity .45s ease; }
+  .journey-svg .step-diamond.done { fill: var(--green); }
+  .journey-stage[data-phase="custom"] .d-stock, .journey-stage[data-phase="custom"] .track-stock { opacity: .35; }
+  .path-label { transition: opacity .45s ease; }
+  .journey-stage[data-phase="custom"] .path-label[data-path="stock"],
+  .journey-stage[data-phase="stock"] .path-label[data-path="custom"] { opacity: .4; }
+  .step-panel { position: absolute; z-index: 4; display: flex; gap: 34.08px; opacity: 0; transition: opacity .45s ease; pointer-events: none; }
+  .step-panel.on { opacity: 1; transition-delay: .35s; }
+  .step-num { flex: none; width: 71.22px; height: 71.22px; background: var(--pink); color: var(--black); display: grid; place-items: center; font: 700 40px/1 var(--oswald); }
+  .step-text { width: 920px; padding-top: 7.77px; }
+  .step-text h3 { margin: 0; font: 600 48px/57.6px var(--poppins); color: var(--bone); }
+  .step-text p { margin: 19.56px 0 0; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
+  #after-journey { transition: opacity .8s ease; }
+  #after-journey.hidden { opacity: 0; }
+
   .stock-track.swap { animation: stock-swap .45s ease; }
   .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
   @keyframes stock-fade { from { opacity: 0; } to { opacity: 1; } }
@@ -281,6 +308,121 @@
       track.classList.remove('swap'); void track.offsetWidth; track.classList.add('swap');
     }));
     track.addEventListener('animationend', () => track.classList.remove('swap'));
+  })();
+  // Ownership journey — while the stage is locked the page stays still and each scroll moves one step.
+  (() => {
+    const wrap = document.getElementById('journey');
+    if (!wrap) return;
+    const stage = document.getElementById('journey-stage');
+    const after = document.getElementById('after-journey');
+    const STAGE_H = 1564.77, CARE_HOLD = 3; // extra scrolls spent on "we care" before the next section
+    const panels = [...stage.querySelectorAll('.step-panel')];
+    const STEPS = panels.map(p => ({ path: p.dataset.path, x: +p.dataset.x, y: +p.dataset.y }));
+    const CARE = STEPS.length, CUSTOM_LAST = STEPS.findIndex(s => s.path === 'stock') - 1;
+    const diamonds = STEPS.map((_, k) => stage.querySelector(`.step-diamond[data-step="${k}"]`));
+    const fills = { custom: stage.querySelector('.fill-custom'), stock: stage.querySelector('.fill-stock') };
+
+    // Line length up to each diamond, so the white line stops exactly there.
+    const lenAt = (path, x, y) => {
+      let best = 0, bestD = Infinity;
+      for (let l = 0, L = path.getTotalLength(); l <= L; l += 2) {
+        const p = path.getPointAtLength(l), d = Math.hypot(p.x - x, p.y - y);
+        if (d < bestD) { bestD = d; best = l; }
+      }
+      return best;
+    };
+    const stops = STEPS.map(s => lenAt(fills[s.path], s.x, s.y));
+    Object.values(fills).forEach(f => { f.total = f.getTotalLength(); f.style.strokeDasharray = f.total; f.style.strokeDashoffset = f.total; });
+
+    let state = 0;
+    const render = () => {
+      const k = Math.min(state, CARE - 1), phase = STEPS[k].path;
+      stage.dataset.phase = phase;
+      stage.classList.toggle('care', state === CARE);
+      panels.forEach((p, i) => p.classList.toggle('on', i === k && state < CARE));
+      diamonds.forEach((d, i) => d && d.classList.toggle('done', phase === 'stock' ? (STEPS[i].path === 'custom' || i <= k) : i <= k));
+      fills.custom.style.strokeDashoffset = fills.custom.total - (phase === 'custom' ? stops[k] : (k === CARE - 1 ? fills.custom.total : stops[CUSTOM_LAST]));
+      fills.stock.style.strokeDashoffset = fills.stock.total - (phase === 'stock' ? stops[k] : 0);
+    };
+    render();
+    if (wrap.getBoundingClientRect().bottom > 0) after.classList.add('hidden'); // fades in once the journey is done
+
+    let locked = false, hold = 0, busyUntil = 0, lastWheel = 0, cooldownUntil = 0, lastAbs = 0, lastStepAt = 0;
+    const fit = () => {
+      const scale = Math.min(1, innerHeight / (STAGE_H * zoom()));
+      stage.style.transform = scale < 1 ? `scale(${scale})` : '';
+      wrap.style.height = STAGE_H * scale + 'px';
+    };
+    const alignTop = () => Math.max(0, (innerHeight - wrap.getBoundingClientRect().height) / 2); // centre the stage
+    const snap = () => scrollTo({ top: scrollY + wrap.getBoundingClientRect().top - alignTop(), behavior: 'instant' });
+    const lock = startState => {
+      locked = true; document.documentElement.classList.add('scroll-locked');
+      state = startState; hold = 0; snap(); render(); busyUntil = performance.now() + 250;
+    };
+    const unlock = () => { locked = false; document.documentElement.classList.remove('scroll-locked'); cooldownUntil = performance.now() + 700; };
+
+    const exitDown = () => {
+      // Jump Beyond Sale into place and fade it in instead of scrolling it up from the bottom.
+      after.classList.add('hidden');
+      unlock();
+      scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'instant' });
+      requestAnimationFrame(() => after.classList.remove('hidden'));
+      busyUntil = performance.now() + 900;
+    };
+    const step = dir => {
+      if (dir > 0) {
+        if (state < CARE) { state++; render(); if (state === CARE) hold = 0; }
+        else if (hold < CARE_HOLD) hold++;
+        else exitDown();
+      } else {
+        if (state === CARE && hold > 0) hold--;
+        else if (state > 0) { state--; render(); }
+        else { unlock(); return; }
+      }
+      busyUntil = performance.now() + 420;
+    };
+    const onIntent = (dir, e, isNew) => {
+      const now = performance.now();
+      if (!locked) { if (now < busyUntil) e?.preventDefault(); return; } // swallow momentum after the fade-in
+      if (dir < 0 && state === 0 && isNew && now >= busyUntil) { unlock(); return; } // release upward
+      e?.preventDefault();
+      if (isNew && now >= busyUntil) step(dir);
+    };
+
+    // One push of the wheel or trackpad is one scroll, wherever the cursor is. Momentum sends a stream of
+    // events, so a new push is a pause OR the deltas growing again after fading out.
+    document.addEventListener('wheel', e => {
+      if (!e.deltaY || e.target.closest?.('.stock-viewport')) return;
+      const now = performance.now(), abs = Math.abs(e.deltaY);
+      const isNew = now - lastWheel > 120 || (abs > lastAbs * 1.5 && abs > 6 && now - lastStepAt > 260) || (abs > 25 && now - lastStepAt > 1100);
+      lastWheel = now; lastAbs = abs;
+      const before = state + hold;
+      onIntent(Math.sign(e.deltaY), e, isNew);
+      if (state + hold !== before) lastStepAt = now;
+    }, { passive: false, capture: true });
+    document.addEventListener('keydown', e => {
+      if (e.target.closest('input, textarea, select')) return;
+      const down = ['ArrowDown', 'PageDown'].includes(e.key) || (e.key === ' ' && !e.shiftKey);
+      const up = ['ArrowUp', 'PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey);
+      if (down || up) onIntent(down ? 1 : -1, e, true);
+    }, { capture: true });
+
+    // Engage the lock when the stage reaches its place, from either direction.
+    let prevTop = wrap.getBoundingClientRect().top;
+    const watch = () => {
+      const r = wrap.getBoundingClientRect(), target = alignTop();
+      if (!locked && performance.now() > cooldownUntil) {
+        if (prevTop > target && r.top <= target && r.top > -r.height) lock(0);
+        else if (prevTop < target && r.top >= target && r.top < innerHeight) lock(CARE);
+      }
+      if (!locked && r.bottom <= 0) after.classList.remove('hidden'); // reached some other way
+      prevTop = wrap.getBoundingClientRect().top;
+    };
+    addEventListener('scroll', watch, { passive: true });
+    const loop = () => { watch(); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+    addEventListener('resize', () => { fit(); if (locked) snap(); });
+    fit();
   })();
 </script>
 </body>

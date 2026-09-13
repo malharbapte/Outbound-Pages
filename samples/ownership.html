@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ownership Journey sample | Outbound RVs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Section-only sample. Authored at the 2376px artboard width and zoomed to fit, like the homepage.
+     Stage = 2376 x 1564.77 on a thirds grid (columns every 792, rows every 521.59). */
+  :root { --poppins: "Poppins", system-ui, sans-serif; --oswald: "Oswald", "Arial Narrow", sans-serif;
+          --black: #0b0a07; --bone: #f4f1ea; --green: #8b9b4d; --olive: #6b7a32; --pink: #d5aca9; --silver: #bcbec0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; }
+  html { scrollbar-gutter: stable; }
+  html.scroll-locked { overflow: hidden; } /* stops any in-flight scroll while the journey is locked */
+  body { font-family: var(--poppins); -webkit-font-smoothing: antialiased; }
+  h2, h3, p { margin: 0; }
+  .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; }
+
+  .lead { height: 1400px; display: grid; place-items: center; font: 300 40px var(--poppins); color: #7a736a; }
+
+  /* ---- Journey stage ---- */
+  .journey { position: relative; height: 1564.77px; }
+  .stage { position: absolute; left: 0; top: 0; width: 2376px; height: 1564.77px; transform-origin: 50% 0; }
+  .layer { position: absolute; inset: 0; transition: opacity .7s ease; }
+  .journey-layer { background: var(--black); margin: 0 .12px; }
+  .care-layer { opacity: 0; background: #fff; outline: .25px solid var(--black); outline-offset: -.25px; pointer-events: none; }
+  .stage.care .journey-layer { opacity: 0; }
+  .stage.care .care-layer { opacity: 1; transition-delay: .6s; pointer-events: auto; }
+  .stage svg { position: absolute; inset: 0; overflow: visible; }
+
+  .t { position: absolute; margin: 0; white-space: nowrap; }
+  .title { left: 518.94px; top: 151.39px; font: 700 84px/100.8px var(--oswald); color: var(--bone); }
+  .subtitle { left: 518.94px; top: 253.56px; font: 300 48px/57.6px var(--oswald); color: #fff; }
+  .label { left: 395.64px; font: 400 48px/57.6px var(--poppins); color: var(--bone); transition: opacity .45s ease; }
+  .label.custom { top: 423.37px; }
+  .label.stock { top: 1343.36px; }
+  .stage[data-phase="custom"] .label.stock, .stage[data-phase="stock"] .label.custom { opacity: .4; }
+
+  .track { fill: none; stroke: rgba(244, 241, 234, .28); stroke-width: 4; }
+  .fill { fill: none; stroke: #fff; stroke-width: 4; transition: stroke-dashoffset .8s cubic-bezier(.65, 0, .35, 1); }
+  .diamond { fill: var(--bone); transition: fill .45s ease, opacity .45s ease; }
+  .diamond.done { fill: var(--green); }
+  .stage[data-phase="custom"] .d-stock, .stage[data-phase="custom"] .track-stock { opacity: .35; }
+
+  /* Step text stays anchored where step 1 sits and only cross-fades between steps. */
+  .panel { position: absolute; left: 404.63px; top: 809.51px; display: flex; gap: 34.08px; opacity: 0; transition: opacity .45s ease; pointer-events: none; }
+  .panel.on { opacity: 1; transition-delay: .35s; }
+  .num { flex: none; width: 71.22px; height: 71.22px; background: var(--pink); color: var(--black); display: grid; place-items: center; font: 700 40px/1 var(--oswald); }
+  .text { width: 920px; padding-top: 7.77px; }
+  .text h3 { font: 600 48px/57.6px var(--poppins); color: var(--bone); }
+  .text p { margin-top: 19.56px; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
+
+  .care-title { left: 0; width: 2376px; text-align: center; top: 625.4px; font: 600 79.65px/95.58px var(--poppins); color: var(--pink); }
+  .care-copy { left: 0; width: 2376px; text-align: center; top: 809.51px; font: 300 36px/43.2px var(--poppins); color: var(--pink); }
+
+  /* ---- Next section (simplified Beyond Sale) ---- */
+  .after { position: relative; height: 1066.24px; outline: .25px solid var(--black); outline-offset: -.25px; transition: opacity .8s ease; }
+  .after.hidden { opacity: 0; }
+  .after h2 { position: absolute; left: 536.12px; top: 174.48px; font: 700 84px/100.8px var(--oswald); }
+  .after .cols { position: absolute; left: 395.35px; top: 442.34px; display: flex; gap: 400px; font: 400 32px/42px var(--poppins); }
+  .after .cols h3 { font: 700 48px/1.2 var(--poppins); margin-bottom: 20px; color: var(--olive); }
+  .tail { height: 1600px; display: grid; place-items: center; font: 300 40px var(--poppins); color: #7a736a; }
+</style>
+</head>
+<body>
+<main class="page" id="page">
+  <div class="lead">Scroll down to the Ownership Journey</div>
+
+  <section class="journey" id="journey" aria-label="Ownership journey">
+    <div class="stage" id="stage" data-phase="custom">
+      <div class="layer journey-layer">
+        <!-- Raw artboard coordinates: the viewBox maps the design onto the stage. -->
+        <svg width="2376" height="1564.77" viewBox="3528.15 8796.01 2376 1564.77" aria-hidden="true">
+          <g transform="translate(0 2370.22)">
+            <polygon fill="#6b7a32" points="4023.44 6665.6 3923.79 6565.95 3885.79 6603.95 3947.43 6665.6 3885.79 6727.24 3923.79 6765.24 4023.44 6665.6"/>
+            <polygon fill="#f4f1ea" points="3885.79 6603.95 3847.78 6565.95 3748.13 6665.6 3847.78 6765.24 3885.79 6727.24 3824.14 6665.6 3885.79 6603.95"/>
+            <rect fill="#8b9b4d" x="3842.2" y="6622.01" width="87.18" height="87.18" transform="translate(-3575.1691 4699.9807) rotate(-45.0001)"/>
+          </g>
+          <path class="track track-custom" id="track-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H5904.14"/>
+          <path class="track track-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/>
+          <path class="fill" id="fill-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H5904.14"/>
+          <path class="fill" id="fill-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/>
+          <g id="diamonds"></g>
+        </svg>
+        <h2 class="t title">OWNERSHIP JOURNEY</h2>
+        <p class="t subtitle">THE BEGINNING OF A EVERLASTING RELATIONSHIP</p>
+        <p class="t label custom">CUSTOM CARAVAN (9-12 MONTHS)</p>
+        <p class="t label stock">STOCK VAN (1 MONTH)</p>
+        <div id="panels"></div>
+      </div>
+
+      <div class="layer care-layer">
+        <svg width="2376" height="1564.77" viewBox="3528.15 10360.79 2376 1564.77" aria-hidden="true">
+          <rect fill="#f4f1ea" x="4645.81" y="10970.73" width="140.67" height="140.67" rx="33.79" transform="translate(-6425.8867 6568.6819) rotate(-45.0001)"/>
+        </svg>
+        <h2 class="t care-title">we care</h2>
+        <p class="t care-copy">We understand the growing uncertainity in the Caravan industry, with a lot of companies<br>going under. We assure you your money is safe with us. We ensure that by :</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="after hidden" id="after">
+    <h2>BEYOND SALE</h2>
+    <div class="cols">
+      <div><h3>FINANCE</h3>The right caravan deserves a<br>finance plan that feels just as<br>considered.</div>
+      <div><h3 style="color:#000">SERVICING</h3>From your first 1,000 km service<br>to annual servicing and<br>general repairs.</div>
+    </div>
+  </section>
+  <div class="tail">Normal scrolling resumes here</div>
+</main>
+
+<script>
+  const page = document.getElementById('page');
+  const zoom = () => document.documentElement.clientWidth / 2376;
+  page.style.setProperty('--zoom', zoom());
+  addEventListener('resize', () => page.style.setProperty('--zoom', zoom()));
+
+  (() => {
+    // Placeholder copy until the real journey text is supplied.
+    const HANDOVER = ['Handover', 'We walk you through every feature before you hitch up and head off. This is where the journey really begins.'];
+    const STEPS = [
+      { path: 'custom', n: 1, x: 3966.34, y: 9359.63, copy: ['Understanding your needs', 'We sit down with you to learn how you travel, where you want to go and what matters most in a caravan.'] },
+      { path: 'custom', n: 2, x: 4335.63, y: 9359.63, copy: ['Designing your layout', 'Together we choose the model, floor plan and features, and lock in a build spec that suits your journey.'] },
+      { path: 'custom', n: 3, x: 4704.92, y: 9359.63, copy: ['Confirming your build', 'Your order is placed with Wonderland RV and your caravan is booked into the factory build schedule.'] },
+      { path: 'custom', n: 4, x: 5074.2, y: 9359.63, copy: ['Built for you', 'Your caravan is built to your spec, with updates from our team along the way.'] },
+      { path: 'custom', n: 5, x: 5463.43, y: 9711.08, merge: true, copy: HANDOVER },
+      { path: 'stock', n: 1, x: 3966.34, y: 10062.53, copy: ['Understanding your needs', 'Tell us how you like to travel and we match you with the vans we have in stock.'] },
+      { path: 'stock', n: 2, x: 4335.63, y: 10062.53, copy: ['Choosing your van', 'Walk through it in person at our Campbellfield yard, or take a virtual tour.'] },
+      { path: 'stock', n: 3, x: 4704.92, y: 10062.53, copy: ['Finance and paperwork', 'We help with finance, registration and pre-delivery checks so everything is ready.'] },
+      { path: 'stock', n: 4, x: 5463.43, y: 9711.08, merge: true, copy: HANDOVER },
+    ];
+    const CARE = STEPS.length;   // state after the last step
+    const CARE_HOLD = 3;         // extra scrolls spent on "we care" before the next section
+    const STAGE_H = 1564.77;
+
+    const wrap = document.getElementById('journey'), stage = document.getElementById('stage'), after = document.getElementById('after');
+    const NS = 'http://www.w3.org/2000/svg';
+    const fills = { custom: document.getElementById('fill-custom'), stock: document.getElementById('fill-stock') };
+
+    // Build diamonds (the meeting diamond is shared) and the anchored text panels.
+    const diamonds = STEPS.map((s, k) => {
+      if (s.path === 'stock' && s.merge) return null;
+      const r = document.createElementNS(NS, 'rect');
+      Object.entries({ x: -30.06, y: -30.06, width: 60.11, height: 60.11, transform: `translate(${s.x} ${s.y}) rotate(45)` }).forEach(([a, v]) => r.setAttribute(a, v));
+      r.setAttribute('class', `diamond d-${s.path}`);
+      document.getElementById('diamonds').append(r);
+      return r;
+    });
+    const panels = STEPS.map(s => {
+      const el = document.createElement('div');
+      el.className = 'panel';
+      el.innerHTML = `<span class="num">${s.n}</span><div class="text"><h3>${s.copy[0]}</h3><p>${s.copy[1]}</p></div>`;
+      document.getElementById('panels').append(el);
+      return el;
+    });
+
+    // Line length up to each diamond, so the white line stops exactly there.
+    const lenAt = (path, x, y) => {
+      let best = 0, bestD = Infinity;
+      for (let l = 0, L = path.getTotalLength(); l <= L; l += 2) {
+        const p = path.getPointAtLength(l), d = Math.hypot(p.x - x, p.y - y);
+        if (d < bestD) { bestD = d; best = l; }
+      }
+      return best;
+    };
+    const stops = STEPS.map(s => lenAt(fills[s.path], s.x, s.y));
+    Object.values(fills).forEach(f => { f.total = f.getTotalLength(); f.style.strokeDasharray = f.total; f.style.strokeDashoffset = f.total; });
+    const CUSTOM_LAST = STEPS.findIndex(s => s.path === 'stock') - 1;
+
+    let state = 0;
+    const render = () => {
+      const k = Math.min(state, CARE - 1);
+      const phase = STEPS[k].path;
+      stage.dataset.phase = phase;
+      stage.classList.toggle('care', state === CARE);
+      panels.forEach((p, i) => p.classList.toggle('on', i === k && state < CARE));
+      diamonds.forEach((d, i) => d && d.classList.toggle('done', phase === 'stock' ? (STEPS[i].path === 'custom' || i <= k) : i <= k));
+      fills.custom.style.strokeDashoffset = fills.custom.total - (phase === 'custom' ? stops[k] : (k === CARE - 1 ? fills.custom.total : stops[CUSTOM_LAST]));
+      fills.stock.style.strokeDashoffset = fills.stock.total - (phase === 'stock' ? stops[k] : 0);
+    };
+    render();
+
+    // ---- Scroll lock ------------------------------------------------------------------------
+    // While locked, the page does not move: every scroll gesture (anywhere on the page) changes state.
+    let locked = false, hold = 0, busyUntil = 0, lastWheel = 0, cooldownUntil = 0;
+    const fit = () => {
+      const h = STAGE_H * zoom();
+      const scale = Math.min(1, innerHeight / h);
+      stage.style.transform = scale < 1 ? `scale(${scale})` : '';
+      wrap.style.height = STAGE_H * scale + 'px';
+    };
+    const alignTop = () => Math.max(0, (innerHeight - wrap.getBoundingClientRect().height) / 2); // centre the stage
+    const snap = () => scrollTo({ top: scrollY + wrap.getBoundingClientRect().top - alignTop(), behavior: 'instant' });
+
+    const lock = startState => { locked = true; document.documentElement.classList.add('scroll-locked'); state = startState; hold = 0; snap(); render(); busyUntil = performance.now() + 250; };
+    const unlock = () => { locked = false; document.documentElement.classList.remove('scroll-locked'); cooldownUntil = performance.now() + 700; };
+
+    const exitDown = () => {
+      // Jump the next section into place and fade it in instead of scrolling it up from the bottom.
+      after.classList.add('hidden');
+      unlock();
+      scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'instant' });
+      requestAnimationFrame(() => after.classList.remove('hidden'));
+      busyUntil = performance.now() + 900;
+    };
+
+    const step = dir => {
+      if (dir > 0) {
+        if (state < CARE) { state++; render(); if (state === CARE) hold = 0; }
+        else if (hold < CARE_HOLD) hold++;
+        else exitDown();
+      } else {
+        if (state === CARE && hold > 0) hold--;
+        else if (state > 0) { state--; render(); }
+        else { unlock(); return false; } // back above the section: let the page scroll
+      }
+      busyUntil = performance.now() + 420;
+      return true;
+    };
+
+    const onIntent = (dir, e, isNewGesture) => {
+      const now = performance.now();
+      if (!locked) {
+        if (now < busyUntil) e?.preventDefault(); // swallow momentum right after the fade-in exit
+        return;
+      }
+      if (dir < 0 && state === 0 && isNewGesture && now >= busyUntil) { unlock(); return; } // release upward
+      e?.preventDefault();
+      if (isNewGesture && now >= busyUntil) step(dir);
+    };
+
+    // A "scroll" is one push of the wheel or trackpad. Smooth-scrolling mice and trackpad momentum send a
+    // continuous stream of events, so a new push is detected by a pause OR by the deltas growing again
+    // after they had been fading out. This does not depend on where the cursor is.
+    let lastAbs = 0, lastStepAt = 0;
+    document.addEventListener('wheel', e => {
+      if (!e.deltaY) return;
+      const now = performance.now(), abs = Math.abs(e.deltaY);
+      const paused = now - lastWheel > 120;
+      const pushedAgain = abs > lastAbs * 1.5 && abs > 6 && now - lastStepAt > 260;
+      const longHold = abs > 25 && now - lastStepAt > 1100; // still scrolling firmly well after the last step
+      const isNew = paused || pushedAgain || longHold;
+      lastWheel = now;
+      lastAbs = abs;
+      const before = state + hold;
+      onIntent(Math.sign(e.deltaY), e, isNew);
+      if (state + hold !== before) lastStepAt = now;
+    }, { passive: false, capture: true });
+
+    document.addEventListener('keydown', e => {
+      const down = ['ArrowDown', 'PageDown'].includes(e.key) || (e.key === ' ' && !e.shiftKey);
+      const up = ['ArrowUp', 'PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey);
+      if (down || up) onIntent(down ? 1 : -1, e, true);
+    }, { capture: true });
+
+    // Engage the lock when the stage reaches its place, from either direction.
+    let prevTop = wrap.getBoundingClientRect().top;
+    const watch = () => {
+      const top = wrap.getBoundingClientRect().top, target = alignTop();
+      if (!locked && performance.now() > cooldownUntil) {
+        if (prevTop > target && top <= target && top > -wrap.getBoundingClientRect().height) lock(0);
+        else if (prevTop < target && top >= target && top < innerHeight) lock(CARE);
+      }
+      if (!locked && top + wrap.getBoundingClientRect().height <= 0) after.classList.remove('hidden'); // reached some other way
+      prevTop = wrap.getBoundingClientRect().top;
+    };
+    addEventListener('scroll', watch, { passive: true });
+    const loop = () => { watch(); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+    addEventListener('resize', () => { fit(); if (locked) snap(); });
+    fit();
+  })();
+</script>
+</body>
+</html>

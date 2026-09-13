@@ -243,46 +243,84 @@ s.text(3923.79, 8482.66, ["We are closed on Sundays, and we acknowledge your pat
 btn(s, 3921.65, 8581.59, 507.27, 93.15, "Fill the form", 4070.93, 8639.48)
 ab1.append(s)
 
-# ---- Ownership journey --------------------------------------------------------------------
-s = Section("section", "journey", AB1, 8796.01, 10360.79)
-s.box(3528.27, 8796.01, 2375.75, 1564.77, style=f"background:{COL['black']};")
-s.svg(heading_icon(9035.82 - 6665.6)
-      + '<line stroke="#8b9b4d" stroke-width="4" x1="3966.34" y1="9605.52" x2="3966.34" y2="9391.86"/>'
-      '<path fill="none" stroke="#fff" stroke-width="4" d="M4005.59,9359.63h1043.61s145.69-13.66,201.28,98.65c55.6,112.31,80.29,253.19,182.47,252.8h471.19"/>'
-      '<rect fill="#8b9b4d" x="3936.28" y="9329.58" width="60.11" height="60.11" transform="translate(-5456.5486 5546.0063) rotate(-45)"/>'
-      '<rect fill="#f4f1ea" x="4305.57" y="9329.58" width="60.11" height="60.11" transform="translate(-5348.3869 5807.1315) rotate(-45)"/>'
-      '<rect fill="#f4f1ea" x="4674.86" y="9329.58" width="60.11" height="60.11" transform="translate(-5240.2251 6068.2567) rotate(-45)"/>'
-      '<rect fill="#f4f1ea" x="5044.14" y="9329.58" width="60.11" height="60.11" transform="translate(-5132.0634 6329.3818) rotate(-45)"/>'
-      '<rect fill="#f4f1ea" x="5433.37" y="9681.02" width="60.11" height="60.11" transform="translate(-5266.5735 6707.5398) rotate(-45)"/>'
-      '<rect fill="#d5aca9" x="3932.78" y="9605.52" width="71.22" height="71.22"/>'
-      '<polyline fill="#fff" points="5124.74 10051.97 5419.07 9757.64 5386.38 9724.95 5092.05 10019.28"/>'
-      '<polygon fill="#fff" points="4472.13 10042.75 3999.3 10042.75 4022.21 10065.86 3999.3 10088.98 4472.13 10088.98 4449.01 10065.86 4472.13 10042.75"/>'
-      '<polygon fill="#fff" points="5043.11 10042.75 4544.49 10042.75 4567.4 10065.86 4544.49 10088.98 5043.11 10088.98 5020 10065.86 5043.11 10042.75"/>'
-      '<path fill="#8c9c4d" d="M3986.54,10042.75l-20.2-20.2-43.32,43.32,43.32,43.32,20.2-20.2,23.11-23.11-23.11-23.11ZM3967.71,10088.98l-1.37,1.37-24.48-24.48,24.48-24.48,1.370,1.37,23.11,23.11-23.11,23.11Z"/>'
-      '<path fill="#8c9c4d" d="M4527.58,10042.75l-20.2-20.2-43.32,43.32,43.32,43.32,20.2-20.2,23.11-23.11-23.11-23.11ZM4508.74,10088.98l-1.37,1.37-24.48-24.48,24.48-24.48,1.37,1.37,23.11,23.11-23.11,23.11Z"/>'
-      '<path fill="#8c9c4d" d="M5098.21,10042.75l-20.2-20.2-43.32,43.32,43.32,43.32,20.2-20.2,23.11-23.11-23.11-23.11ZM5079.38,10088.98l-1.37,1.37-24.48-24.48,24.48-24.48,1.37,1.37,23.11,23.11-23.11,23.11Z"/>', z=1)
-s.text(4047.09, 9035.77, "OWNERSHIP JOURNEY", font="O", size=84, weight=700, color=COL["bone"], tag="h2")
-s.text(4047.09, 9100.07, "THE BEGINNING OF A EVERLASTING RELATIONSHIP", font="O", size=48, weight=300, color="#fff")
-s.text(3923.79, 9264.98, "CUSTOM CARAVAN (9-12 MONTHS)", size=48, color=COL["bone"])
-s.text(4038.08, 9658.89, "Understanding your needs", size=48, weight=600, color=COL["bone"], tag="h3")
-s.text(4038.07, 9724.65, ["We are closed on Sundays, and we acknowledge your ",
-                          "patience. However, you can still reach out to us ",
-                          "through the contact Us form."], size=36, weight=300, color=COL["bone"])
-s.text(3923.79, 10184.97, "STOCK VAN (1 MONTH)", size=48, color=COL["bone"])
-ab1.append(s)
+# ---- Ownership journey + we care (locked "static scroll" stage) ---------------------------------
+# While the stage is locked each scroll lights the next diamond: Custom Caravan first (5 steps up to the
+# meeting diamond), then Stock Van (4 steps, mirrored below), then "we care" holds for a few scrolls and
+# Beyond Sale fades in. Behaviour lives in template.html.
+TOP_Y, MERGE = 9359.63, (5463.43, 9711.08)
+BOT_Y = 2 * MERGE[1] - TOP_Y  # the stock path mirrors the custom path about the meeting diamond
+TOP_PATH = ("M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 "
+            "C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H5904.14")
+BOT_PATH = (f"M3966.34 {r(BOT_Y)} H5049.2 C5049.2 {r(BOT_Y)} 5194.89 10076.19 5250.48 9963.88 "
+            "C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08")
 
-# ---- We care ------------------------------------------------------------------------------
-s = Section("section", "care", AB1, 10360.79, 11925.41)
-s.box(3528.27, 10360.79, 2375.75, 1564.77, style="background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;")
-s.svg('<rect fill="#f4f1ea" x="4645.81" y="10970.73" width="140.67" height="140.67" rx="33.79" transform="translate(-6425.8867 6568.6819) rotate(-45.0001)"/>', z=1)
-s.text(0, 11061.86, "we care", size=79.65, weight=600, color=COL["pink"], center=True, tag="h2")
-s.text(0, 11204.52, ["We understand the growing uncertainity in the Caravan industry, with a lot of companies ",
-                     "going under. We assure you your money is safe with us. We ensure that by :"],
-       size=36, weight=300, color=COL["pink"], center=True)
-ab1.append(s)
+# Placeholder step copy until the real journey text is supplied. (title, description)
+CUSTOM_STEPS = [
+    ("Understanding your needs", "We sit down with you to learn how you travel, where you want to go and what matters most in a caravan."),
+    ("Designing your layout", "Together we choose the model, floor plan and features, and lock in a build spec that suits your journey."),
+    ("Confirming your build", "Your order is placed with Wonderland RV and your caravan is booked into the factory build schedule."),
+    ("Built for you", "Your caravan is built to your spec, with updates from our team along the way."),
+]
+STOCK_STEPS = [
+    ("Understanding your needs", "Tell us how you like to travel and we match you with the vans we have in stock."),
+    ("Choosing your van", "Walk through it in person at our Campbellfield yard, or take a virtual tour."),
+    ("Finance and paperwork", "We help with finance, registration and pre-delivery checks so everything is ready."),
+]
+HANDOVER = ("Handover", "We walk you through every feature before you hitch up and head off. This is where the journey really begins.")
+
+XS = [3966.34, 4335.63, 4704.92, 5074.2]
+journey_steps = ([("custom", i + 1, XS[i], TOP_Y, *c) for i, c in enumerate(CUSTOM_STEPS)]
+                 + [("custom", 5, *MERGE, *HANDOVER)]
+                 + [("stock", i + 1, XS[i], BOT_Y, *c) for i, c in enumerate(STOCK_STEPS)]
+                 + [("stock", 4, *MERGE, *HANDOVER)])
+
+journey = Section("div", "journey-layer", AB1, 8796.01, 10360.79)
+journey.box(3528.27, 8796.01, 2375.75, 1564.77, style=f"background:{COL['black']};")
+journey.text(4047.09, 9035.77, "OWNERSHIP JOURNEY", font="O", size=84, weight=700, color=COL["bone"], tag="h2")
+journey.text(4047.09, 9100.07, "THE BEGINNING OF A EVERLASTING RELATIONSHIP", font="O", size=48, weight=300, color="#fff")
+journey.text(3923.79, 9264.98, "CUSTOM CARAVAN (9-12 MONTHS)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="custom"')
+journey.text(3923.79, 10184.97, "STOCK VAN (1 MONTH)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="stock"')
+
+svg = (heading_icon(9035.82 - 6665.6)
+       + f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
+       + f'<path class="fill fill-custom" d="{TOP_PATH}"/><path class="fill fill-stock" d="{BOT_PATH}"/>')
+for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
+    if path == "stock" and (x, y) == MERGE:
+        continue  # the meeting diamond is shared, drawn once
+    svg += (f'<rect class="step-diamond d-{path}" data-step="{k}" x="-30.06" y="-30.06" width="60.11" height="60.11" '
+            f'transform="translate({r(x)} {r(y)}) rotate(45)"/>')
+journey.svg(svg, z=1, cls="shapes journey-svg")
+
+# All step text is anchored where step 1 sits (pink square at 3932.78, 9605.52) and cross-fades.
+for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
+    journey.add(f'<div class="step-panel" data-step="{k}" data-path="{path}" data-x="{r(x)}" data-y="{r(y)}" '
+                f'style="left:{r(journey.lx(3932.78))}px;top:{r(journey.ly(9605.52))}px">'
+                f'<span class="step-num">{n}</span><div class="step-text"><h3>{title}</h3><p>{desc}</p></div></div>')
+
+care = Section("div", "care-layer", AB1, 10360.79, 11925.41)
+care.box(3528.27, 10360.79, 2375.75, 1564.77, style="background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;")
+care.svg('<rect fill="#f4f1ea" x="4645.81" y="10970.73" width="140.67" height="140.67" rx="33.79" transform="translate(-6425.8867 6568.6819) rotate(-45.0001)"/>', z=1)
+care.text(0, 11061.86, "we care", size=79.65, weight=600, color=COL["pink"], center=True, tag="h2")
+care.text(0, 11204.52, ["We understand the growing uncertainity in the Caravan industry, with a lot of companies ",
+                        "going under. We assure you your money is safe with us. We ensure that by :"],
+          size=36, weight=300, color=COL["pink"], center=True)
+
+STAGE_H = 1564.77
+
+
+class JourneyScroll:
+    cls = "journey-scroll"
+
+    def render(self):
+        layer = lambda sec: (f'    <div class="layer {sec.cls}">\n' + "\n".join("      " + i for i in sec.items) + "\n    </div>")
+        return (f'  <section class="sec journey-scroll" id="journey" style="height:{r(STAGE_H)}px" aria-label="Ownership journey">\n'
+                f'   <div class="journey-stage" id="journey-stage">\n{layer(journey)}\n{layer(care)}\n   </div>\n  </section>')
+
+
+ab1.append(JourneyScroll())
 
 # ---- Beyond sale --------------------------------------------------------------------------
-s = Section("section", "beyond", AB1, 11925.41, 12991.65)
+s = Section("section", "beyond", AB1, 11925.41, 12991.65, 'id="after-journey"')
 s.box(3528.27, 11925.41, 2375.75, 1066.24, style="background:#fff;outline:.25px solid #0b0a07;outline-offset:-.25px;")
 s.svg('<rect fill="#f4f1ea" x="3613.01" y="12083.84" width="140.67" height="140.67" transform="translate(-7515.4758 6164.4059) rotate(-45.0001)"/>'
       '<rect fill="#8b9b4d" x="3692.65" y="12083.84" width="140.67" height="140.67" transform="translate(-7492.1508 6220.7173) rotate(-45.0001)"/>'
@@ -332,7 +370,7 @@ sec["range"].svg('<polygon fill="#6b7a32" opacity=".4" points="4458.33 4621.05 3
                  '<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="4922.99 5700.13 5972.97 6750.12 6373.43 6349.66 5723.9 5700.13 6373.43 5050.6 5972.97 4650.15 4922.99 5700.13"/>', z=0, cls="shapes deco-back")
 sec["visit"].svg('<polygon fill="#6b7a32" opacity=".4" points="4922.99 9310.93 5972.97 10360.92 6373.43 9960.46 5723.9 9310.93 6373.43 8661.4 5972.97 8260.95 4922.99 9310.93"/>', z=0, cls="shapes deco-back")
 sec["stories"].svg('<polygon fill="#6b7a32" opacity=".4" points="5561.6 13460.7 5910.03 13809.13 6042.91 13676.24 5827.37 13460.7 6042.91 13245.16 5910.03 13112.28 5561.6 13460.7"/>', z=0, cls="shapes deco-back")
-sec["care"].svg('<polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/>'
+care.svg('<polygon fill="#f4f1ea" points="3360.73 10847.61 3468.71 10955.59 3751.83 10672.47 3468.71 10389.35 3360.73 10497.33 3535.87 10672.47 3360.73 10847.61"/>'
                 '<polygon fill="#f4f1ea" points="6051.76 11298.51 5904.01 11150.76 5516.61 11538.16 5904.01 11925.56 6051.76 11777.81 5812.11 11538.16 6051.76 11298.51"/>', z=4)
 sec["beyond"].svg('<polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/>'
                   '<polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/>', z=4)
@@ -460,5 +498,7 @@ def artboard(name, sections, back, front, ab, top, bottom):
 html = open("template.html").read()
 html = html.replace("{{ARTBOARD_1}}", artboard("ab1", ab1, "", "", AB1, AB1_TOP, AB1_BOTTOM))
 html = html.replace("{{ARTBOARD_2}}", artboard("ab2", ab2, ab2_back, "", AB2, AB2_TOP, AB2_BOTTOM))
-open("index.html", "w").write(html)
-print("index.html written")
+import sys
+out = sys.argv[1] if len(sys.argv) > 1 else "index.html"
+open(out, "w").write(html)
+print(out, "written")
