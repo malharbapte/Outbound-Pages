@@ -23,6 +23,7 @@
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
   .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; }
+  html.browser-zoomed body { overflow-x: auto; } /* zoomed in past the window: allow sideways scrolling */
   .artboard { position: relative; width: 2376px; }
   .sec { position: relative; display: block; width: 2376px; margin: 0; }
   .deco { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
@@ -87,7 +88,7 @@
   .stock-photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(to bottom, rgba(11, 10, 7, 0), rgba(11, 10, 7, .88)); }
   .stock-title { position: absolute; left: 34px; right: 24px; top: 412.85px; bottom: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
   .stock-layout { margin: 0; display: flex; align-items: center; gap: 12px; font: 600 18px/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--bone); }
-  .stock-layout::before { content: ""; width: 12px; height: 12px; background: var(--green); transform: rotate(45deg); }
+  .stock-layout::before { content: ""; width: 12px; height: 12px; border-radius: 1.5px; background: var(--green); transform: rotate(45deg); }
   .stock-name { margin: 12px 0 0; font: 700 80px/1 var(--oswald); letter-spacing: .01em; color: #fff; }
   /* Same notched orange tag as "Full Composite" in the range section, mirrored to sit on the left. */
   .stock-badge { position: absolute; left: 0; top: 26px; z-index: 2; background: #ee964b; color: #fff; font: 400 24px/1 var(--poppins);
@@ -138,9 +139,9 @@
   /* The wrapper is white edge to edge and the stage clips to its box, so nothing outside the box shows,
      even when the stage is scaled down to fit a short window. */
   .journey-scroll { position: relative; z-index: 2; background: #fff; }
-  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; overflow: hidden; transition: opacity .5s ease; --s: 1; --tx: 0px; --ty: 0px; }
+  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; overflow: hidden; transition: opacity .375s ease; --s: 1; --tx: 0px; --ty: 0px; }
   .journey-stage.leaving { opacity: 0; }
-  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; transition: opacity .7s ease; }
+  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; transition: opacity .525s ease; }
   .journey-stage, .journey-stage * { cursor: none; } /* no cursor over the journey and we care */
   .journey-layer { background: var(--black); }
   .care-layer { background: #fff; }
@@ -151,22 +152,24 @@
   .layer-edge.right { right: 0; transform-origin: 100% 0; transform: translateY(var(--ty)) scale(var(--s)); }
   .care-layer { opacity: 0; pointer-events: none; }
   .journey-stage.care .journey-layer { opacity: 0; }
-  .journey-stage.care .care-layer { opacity: 1; transition-delay: .6s; pointer-events: auto; }
+  .journey-stage.care .care-layer { opacity: 1; transition-delay: .45s; pointer-events: auto; }
   .journey-svg .track { fill: none; stroke: rgba(244, 241, 234, .28); stroke-width: 4; }
   .journey-svg .fill { fill: none; stroke: #fff; stroke-width: 4; transition: stroke-dashoffset .8s cubic-bezier(.65, 0, .35, 1); }
   .journey-svg .step-diamond { fill: var(--bone); transition: fill .45s ease, opacity .45s ease; }
   .journey-svg .step-diamond.done { fill: var(--green); }
-  .journey-stage[data-phase="custom"] .d-stock, .journey-stage[data-phase="custom"] .track-stock { opacity: .35; }
+  .journey-stage[data-phase="custom"] .track-stock { opacity: .35; }
+  /* Dimmed diamonds stay solid (bone at 35% over tyre, pre-mixed) so the line never shows through them. */
+  .journey-stage[data-phase="custom"] .d-stock:not(.done) { fill: #5d5a56; }
   .path-label { transition: opacity .45s ease; }
   .journey-stage[data-phase="custom"] .path-label[data-path="stock"],
   .journey-stage[data-phase="stock"] .path-label[data-path="custom"] { opacity: .4; }
   .step-panel { position: absolute; z-index: 4; display: flex; gap: 34.08px; opacity: 0; transition: opacity .45s ease; pointer-events: none; }
   .step-panel.on { opacity: 1; transition-delay: .35s; }
-  .step-num { flex: none; width: 71.22px; height: 71.22px; background: var(--pink); color: var(--black); display: grid; place-items: center; font: 700 40px/1 var(--oswald); }
+  .step-num { flex: none; width: 71.22px; height: 71.22px; border-radius: 4px; background: var(--pink); color: #fff; display: grid; place-items: center; font: 700 40px/1 var(--oswald); }
   .step-text { width: 920px; padding-top: 7.77px; }
   .step-text h3 { margin: 0; font: 600 48px/57.6px var(--poppins); color: var(--bone); }
   .step-text p { margin: 19.56px 0 0; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
-  #after-journey { transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+  #after-journey { transition: opacity .9s ease, transform .9s cubic-bezier(.2, .7, .2, 1); }
   #after-journey.hidden { opacity: 0; transform: translateY(40px); transition: none; }
   #after-journey.fading-out { opacity: 0; transition: opacity .5s ease; }
 
@@ -292,7 +295,7 @@
     <input class="search" type="search" placeholder="Search" style="left:395.35px;top:406.76px">
     <button class="filter" style="left:935.89px;top:406.76px">Filter</button>
     <p class="t" style="top:428.33px;left:1621.8px;font-family:var(--poppins);font-size:24px;font-weight:300;line-height:28.8px;color:#7a736a;">View</p>
-    <div class="view-toggle" role="group" aria-label="Stock view" style="left:1702.38px;top:406.76px"><button class="on" data-view="slide" aria-pressed="true" aria-label="Sliding cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#8b9b4d" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button><button data-view="cols" aria-pressed="false" aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button><button data-view="grid" aria-pressed="false" aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button></div>
+    <div class="view-toggle" role="group" aria-label="Stock view" style="left:1702.38px;top:406.76px"><button class="on" data-view="slide" aria-pressed="true" aria-label="Sliding cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#f4f1ea" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#f4f1ea" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#f4f1ea" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button><button data-view="cols" aria-pressed="false" aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button><button data-view="grid" aria-pressed="false" aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button></div>
     <div class="stock-panel" data-view="slide"><div class="shadow-down"></div><div class="stock-viewport"><div class="stock-track"><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Amaroo, couples layout"><div class="stock-photo"><img src="assets/range-amaroo.jpg" alt="" draggable="false" style="object-position:50% 62%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">AMAROO</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,300<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,500<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>16'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Hornet, couples layout"><div class="stock-photo"><img src="assets/range-hornet.jpg" alt="" draggable="false" style="object-position:50% 64%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">HORNET</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,650<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Solara, couples layout"><div class="stock-photo"><img src="assets/range-solara.jpg" alt="" draggable="false" style="object-position:45% 70%"><span class="stock-badge">Composite</span><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">SOLARA</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,580<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Xtr, family layout"><div class="stock-photo"><img src="assets/range-xtr.jpg" alt="" draggable="false" style="object-position:40% 60%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">XTR</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,950<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>5</dd></div><div class="length"><dt>Length</dt><dd>20'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Amaroo, family layout"><div class="stock-photo"><img src="assets/range-amaroo.jpg" alt="" draggable="false" style="object-position:50% 62%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">AMAROO</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,780<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>4</dd></div><div class="length"><dt>Length</dt><dd>19'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Hornet, family layout"><div class="stock-photo"><img src="assets/range-hornet.jpg" alt="" draggable="false" style="object-position:50% 64%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">HORNET</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,950<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>5</dd></div><div class="length"><dt>Length</dt><dd>20'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Solara, family layout"><div class="stock-photo"><img src="assets/range-solara.jpg" alt="" draggable="false" style="object-position:45% 70%"><span class="stock-badge">Composite</span><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">SOLARA</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,890<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>4</dd></div><div class="length"><dt>Length</dt><dd>21'6"</dd></div></div></dl></a><a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Xtr, couples layout"><div class="stock-photo"><img src="assets/range-xtr.jpg" alt="" draggable="false" style="object-position:40% 60%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">XTR</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,700<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>19'6"</dd></div></div></dl></a></div></div><div class="stock-progress" aria-hidden="true"><span></span></div><div class="shadow-up"></div></div>
   </section>
   <section class="sec visit" style="height:2366.01px" >
@@ -318,7 +321,7 @@
         <p class="t" style="top:253.56px;left:395.64px;font-family:var(--oswald);font-size:48px;font-weight:300;line-height:57.6px;color:#fff;">THE BEGINNING OF A EVERLASTING RELATIONSHIP</p>
         <p class="t path-label" style="top:423.37px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;" data-path="custom">CUSTOM CARAVAN (9-12 MONTHS)</p>
         <p class="t path-label" style="top:1343.36px;left:395.64px;font-family:var(--poppins);font-size:48px;font-weight:400;line-height:57.6px;color:#f4f1ea;" data-path="stock">STOCK VAN (1 MONTH)</p>
-        <svg class="shapes journey-svg" style="z-index:1" width="2376" height="1564.78" viewBox="3528.15 8796.01 2376 1564.78" aria-hidden="true"><path class="track track-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><path class="track" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><rect class="step-diamond d-custom" data-step="0" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="1" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4335.63 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="2" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4704.92 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="3" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5074.2 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="4" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5463.43 9711.08) rotate(45)"/><rect class="step-diamond d-stock" data-step="5" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(3966.34 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="6" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(4520.27 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="7" x="-30.06" y="-30.06" width="60.11" height="60.11" transform="translate(5074.2 10062.53) rotate(45)"/></svg>
+        <svg class="shapes journey-svg" style="z-index:1" width="2376" height="1564.78" viewBox="3528.15 8796.01 2376 1564.78" aria-hidden="true"><polygon fill="#6b7a32" points="3864.78 9641.13 3514.78 9291.13 3381.30 9424.62 3597.81 9641.13 3381.30 9857.64 3514.78 9991.13"/><path class="track track-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><path class="track" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><rect class="step-diamond d-custom" data-step="0" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(3966.34 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="1" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(4335.63 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="2" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(4704.92 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="3" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(5074.2 9359.63) rotate(45)"/><rect class="step-diamond d-custom" data-step="4" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(5463.43 9711.08) rotate(45)"/><rect class="step-diamond d-stock" data-step="5" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(3966.34 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="6" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(4520.27 10062.53) rotate(45)"/><rect class="step-diamond d-stock" data-step="7" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(5074.2 10062.53) rotate(45)"/></svg>
         <div class="step-panel" data-step="0" data-path="custom" data-x="3966.34" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">1</span><div class="step-text"><h3>Understanding your needs</h3><p>We sit down with you to learn how you travel, where you want to go and what matters most in a caravan.</p></div></div>
         <div class="step-panel" data-step="1" data-path="custom" data-x="4335.63" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">2</span><div class="step-text"><h3>Designing your layout</h3><p>Together we choose the model, floor plan and features, and lock in a build spec that suits your journey.</p></div></div>
         <div class="step-panel" data-step="2" data-path="custom" data-x="4704.92" data-y="9359.63" style="left:404.63px;top:809.51px"><span class="step-num">3</span><div class="step-text"><h3>Confirming your build</h3><p>Your order is placed with Wonderland RV and your caravan is booked into the factory build schedule.</p></div></div>
@@ -348,7 +351,7 @@
     <svg class="shapes" style="z-index:4" width="2376" height="1066.24" viewBox="3528.15 11925.41 2376 1066.24" aria-hidden="true"><polygon fill="#7a736a" opacity=".4" style="mix-blend-mode:multiply" points="3862.45 12991.65 3514.02 12643.22 3381.14 12776.11 3596.68 12991.65 3381.14 13207.19 3514.02 13340.07 3862.45 12991.65"/><polygon fill="#6b7a32" opacity=".4" points="5608.66 12404.76 5756.41 12552.51 6143.81 12165.11 5904.26 11925.56 5608.66 11925.46 5848.31 12165.11 5608.66 12404.76"/></svg>
   </section>
   <section class="sec stories" style="height:2055.11px" >
-    <svg class="shapes" style="z-index:1" width="2376" height="2055.11" viewBox="3528.15 12991.65 2376 2055.11" aria-hidden="true"><rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/><rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/><polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/><polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/><rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/></svg>
+    <svg class="shapes" style="z-index:1" width="2376" height="2055.11" viewBox="3528.15 12991.65 2376 2055.11" aria-hidden="true"><rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" rx="3" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/><rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" rx="3" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/><polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/><polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/><polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/><rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" rx="3" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/></svg>
     <h2 class="t" style="top:249.62px;left:0;width:2376px;text-align:center;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#8e6673;">STORIES FROM OUR CUSTOMERS</h2>
     <div class="tile tile-white" style="position:absolute;left:0.12px;top:469.7px;width:791.96px;height:791.96px;"></div>
     <div class="tile" style="position:absolute;left:792.08px;top:469.7px;width:791.96px;height:791.96px;background:#f4f1ea;"></div>
@@ -421,10 +424,19 @@
 </div>
 </main>
 <script>
-  // Scale the 2376px artboard to the window width.
+  // Scale the 2376px artboard to fill the window, while still honouring browser zoom (Cmd + / Cmd −).
+  // Browser zoom changes the CSS width of the window but not the window's outer size, so a resize with an
+  // unchanged outer size is a zoom step: the artboard keeps its real on-screen size and grows/shrinks with it.
   const page = document.getElementById('page');
-  const zoom = () => document.documentElement.clientWidth / 2376;
-  const fit = () => page.style.setProperty('--zoom', zoom());
+  let browserZoom = 1, lastInner = innerWidth, lastOuterW = outerWidth, lastOuterH = outerHeight;
+  const zoom = () => document.documentElement.clientWidth * browserZoom / 2376;
+  const fit = () => {
+    if (outerWidth === lastOuterW && outerHeight === lastOuterH && innerWidth !== lastInner) browserZoom *= lastInner / innerWidth;
+    if (Math.abs(browserZoom - 1) < .02) browserZoom = 1;
+    lastInner = innerWidth; lastOuterW = outerWidth; lastOuterH = outerHeight;
+    document.documentElement.classList.toggle('browser-zoomed', browserZoom > 1);
+    page.style.setProperty('--zoom', zoom());
+  };
   fit();
   addEventListener('resize', fit);
 
@@ -522,7 +534,7 @@
     if (!wrap) return;
     const stage = document.getElementById('journey-stage');
     const after = document.getElementById('after-journey');
-    const STAGE_H = 1564.77, CARE_HOLD = 3; // extra scrolls spent on "we care" before the next section
+    const STAGE_H = 1564.77, CARE_HOLD = 2; // extra scrolls spent on "we care" before the next section
     const panels = [...stage.querySelectorAll('.step-panel')];
     const STEPS = panels.map(p => ({ path: p.dataset.path, x: +p.dataset.x, y: +p.dataset.y }));
     const CARE = STEPS.length, CUSTOM_LAST = STEPS.findIndex(s => s.path === 'stock') - 1;
@@ -573,19 +585,19 @@
 
     const exitDown = () => {
       // Fade "we care" out, then put Beyond Sale in place and fade it in instead of scrolling it up.
-      busyUntil = performance.now() + 1900;
+      busyUntil = performance.now() + 1425;
       stage.classList.add('leaving');
       setTimeout(() => {
         after.classList.add('hidden');
         void after.offsetWidth; // apply the hidden state first so the fade always plays (Safari)
         unlock();
-        busyUntil = performance.now() + 1300;
+        busyUntil = performance.now() + 975;
         scrollTo({ top: scrollY + after.getBoundingClientRect().top, behavior: 'auto' });
         setTimeout(() => {
           after.classList.remove('hidden');
           stage.classList.remove('leaving');
         }, 30);
-      }, 500);
+      }, 375);
     };
     const step = dir => {
       if (dir > 0) {
@@ -629,7 +641,7 @@
     const fadeBack = () => {
       document.documentElement.classList.add('scroll-locked'); // stop the upward scroll where it is
       scrollTo({ top: scrollY + wrap.getBoundingClientRect().bottom, behavior: 'auto' });
-      busyUntil = performance.now() + 1100;
+      busyUntil = performance.now() + 825;
       after.classList.add('fading-out');
       setTimeout(() => {
         stage.classList.add('leaving');
@@ -640,23 +652,29 @@
           stage.classList.remove('leaving');
           after.classList.remove('fading-out');
         }, 30);
-      }, 500);
+      }, 375);
     };
 
     // Engage the lock when the stage reaches its place, from either direction.
     let prevTop = wrap.getBoundingClientRect().top, prevBottom = wrap.getBoundingClientRect().bottom;
     const watch = () => {
       const r = wrap.getBoundingClientRect(), target = alignTop();
-      if (!locked && performance.now() > cooldownUntil && performance.now() > busyUntil && prevBottom <= 1 && r.bottom > 1 && r.bottom < innerHeight) {
+      // Only react to continuous scrolling; a jump (restored position, anchor link) should never grab the page.
+      const continuous = Math.abs(r.top - prevTop) < innerHeight * .5;
+      if (!locked && continuous && performance.now() > cooldownUntil && performance.now() > busyUntil && prevBottom <= 1 && r.bottom > 1 && r.bottom < innerHeight) {
         fadeBack();
         prevTop = r.top; prevBottom = r.bottom;
         return;
       }
-      if (!locked && performance.now() > cooldownUntil) {
+      if (!locked && continuous && performance.now() > cooldownUntil) {
         if (prevTop > target && r.top <= target && r.top > -r.height) lock(0);
-        else if (prevTop < target && r.top >= target && r.top < innerHeight) lock(CARE);
+        // Coming back up from below: only when the stage was genuinely above its resting place, so leaving the
+        // journey upward from step 1 can never re-lock it on "we care".
+        else if (prevTop < target - 2 && r.top >= target && r.top < innerHeight && r.bottom > 1) lock(CARE);
       }
       if (!locked && r.bottom <= 0) after.classList.remove('hidden'); // reached some other way
+      // Safety: never stay locked with the stage off its resting place (e.g. after a jump or window change).
+      if (locked && Math.abs(r.top - target) > innerHeight * .5) { unlock(); stage.classList.remove('leaving'); after.classList.remove('hidden', 'fading-out'); }
       prevTop = wrap.getBoundingClientRect().top;
       prevBottom = wrap.getBoundingClientRect().bottom;
     };

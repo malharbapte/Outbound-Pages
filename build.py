@@ -159,9 +159,9 @@ s.add(f'<input class="search" type="search" placeholder="Search" style="left:{r(
 s.add(f'<button class="filter" style="left:{r(s.lx(4464.04))}px;top:{r(s.ly(5406.76))}px">Filter</button>')
 s.text(5149.95, 5451.13, "View", size=24, weight=300, color=COL["grey"])
 s.add(f'<div class="view-toggle" role="group" aria-label="Stock view" style="left:{r(s.lx(5230.53))}px;top:{r(s.ly(5406.76))}px">'
-      '<button class="on" data-view="slide" aria-pressed="true" aria-label="Sliding cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#8b9b4d" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#8b9b4d" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button>'
-      '<button data-view="cols" aria-pressed="false" aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button>'
-      '<button data-view="grid" aria-pressed="false" aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#8b9b4d" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button>'
+      '<button class="on" data-view="slide" aria-pressed="true" aria-label="Sliding cards"><svg viewBox="5230.53 5406.76 75.84 74.99"><clipPath id="vt1"><rect x="5230.55" y="5406.76" width="75.84" height="74.99" rx="2.55"/></clipPath><g clip-path="url(#vt1)"><rect fill="#f4f1ea" x="5285.19" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#f4f1ea" x="5256.32" y="5415.92" width="24.31" height="56.44" rx="2"/><rect fill="#f4f1ea" x="5227.44" y="5415.92" width="24.31" height="56.44" rx="2"/></g></svg></button>'
+      '<button data-view="cols" aria-pressed="false" aria-label="Two columns"><svg viewBox="5331.19 5406.76 75.84 74.99"><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5370.67" y="5412.83" width="30.88" height="62.93" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5337.08" y="5412.76" width="30.88" height="62.93" rx="2"/></svg></button>'
+      '<button data-view="grid" aria-pressed="false" aria-label="Grid"><svg viewBox="5431.83 5406.76 75.84 74.99"><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5412.67" width="30.18" height="30.2" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5412.64" width="30.18" height="30.2" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5471.08" y="5445.68" width="30.18" height="30.2" rx="2"/><rect fill="#f4f1ea" stroke="#0b0a07" stroke-width=".25" x="5438.26" y="5445.65" width="30.18" height="30.2" rx="2"/></svg></button>'
       '</div>')
 
 # Placeholder stock list until the real stock feed is supplied.
@@ -261,12 +261,14 @@ journey.text(3923.79, 9100.07, "THE BEGINNING OF A EVERLASTING RELATIONSHIP", fo
 journey.text(3923.79, 9264.98, "CUSTOM CARAVAN (9-12 MONTHS)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="custom"')
 journey.text(3923.79, 10184.97, "STOCK VAN (1 MONTH)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="stock"')
 
-svg = (f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
+# Deep Olive chevron in the middle row, tip pointing at the middle of the step-number square's left side.
+svg = (f'<polygon fill="#6b7a32" points="3864.78 9641.13 3514.78 9291.13 3381.30 9424.62 3597.81 9641.13 3381.30 9857.64 3514.78 9991.13"/>'
+       f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
        + f'<path class="fill fill-custom" d="{TOP_PATH}"/><path class="fill fill-stock" d="{BOT_PATH}"/>')
 for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
     if path == "stock" and (x, y) == MERGE:
         continue  # the meeting diamond is shared, drawn once
-    svg += (f'<rect class="step-diamond d-{path}" data-step="{k}" x="-30.06" y="-30.06" width="60.11" height="60.11" '
+    svg += (f'<rect class="step-diamond d-{path}" data-step="{k}" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" '
             f'transform="translate({r(x)} {r(y)}) rotate(45)"/>')
 journey.svg(svg, z=1, cls="shapes journey-svg")
 
@@ -329,12 +331,12 @@ ab1.append(s)
 # ---- Stories from our customers ------------------------------------------------------------------
 s = Section("section", "stories", AB1, 12991.65, 15046.76)
 # Diamond cluster marking the break between Beyond Sale and Stories (kept on purpose).
-s.svg('<rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/>'
-      '<rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/>'
+s.svg('<rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" rx="3" transform="translate(-7909.6895 7149.3065) rotate(-45.0001)"/>'
+      '<rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" rx="3" transform="translate(-7898.0313 7177.452) rotate(-45.0001)"/>'
       '<polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/>'
       '<polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/>'
       '<polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/>'
-      '<rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/>', z=1)
+      '<rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" rx="3" transform="translate(-7880.0545 7220.8535) rotate(-45.0001)"/>', z=1)
 s.text(0, 13329.64, "STORIES FROM OUR CUSTOMERS", font="O", size=84, weight=700, color=COL["mauve"], center=True, tag="h2")
 tile = "position:absolute;box-sizing:border-box;width:791.96px;height:791.96px;"
 s.box(3528.27, 13461.35, 791.96, 791.96, cls="tile tile-white")

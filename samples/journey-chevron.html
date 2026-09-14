@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journey chevron samples | Outbound RVs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  /* Section-only sample: the Ownership Journey stage (step 1) three times, each with a different
+     Deep Olive (#6B7A32) chevron placement. Stage 2376 x 1564.77 → thirds at x 792/1584, y 521.6/1043.2. */
+  :root { --poppins: "Poppins", system-ui, sans-serif; --oswald: "Oswald", "Arial Narrow", sans-serif;
+          --tyre: #0b0a07; --bone: #f4f1ea; --olive: #8b9b4d; --deep: #6b7a32; --rose: #d5aca9; --orange: #ee964b; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; }
+  body { font-family: var(--poppins); -webkit-font-smoothing: antialiased; }
+  h2, h3, p { margin: 0; }
+  .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; padding-bottom: 160px; }
+  .label { padding: 100px 395px 36px; font: 700 40px/1 var(--oswald); color: var(--orange); letter-spacing: .04em; }
+  .label small { display: block; margin-top: 12px; font: 300 28px/1.4 var(--poppins); color: #7a736a; letter-spacing: 0; }
+
+  .stage { position: relative; width: 2376px; height: 1564.77px; background: var(--tyre); overflow: hidden; }
+  .stage > svg { position: absolute; inset: 0; }
+  .t { position: absolute; margin: 0; white-space: nowrap; }
+  .title { left: 395.64px; top: 151.39px; font: 700 84px/100.8px var(--oswald); color: var(--bone); }
+  .subtitle { left: 395.64px; top: 253.56px; font: 300 48px/57.6px var(--oswald); color: #fff; }
+  .lbl { left: 395.64px; font: 400 48px/57.6px var(--poppins); color: var(--bone); }
+  .lbl.stock { opacity: .4; }
+  .panel { position: absolute; left: 404.63px; top: 809.51px; display: flex; gap: 34.08px; }
+  .num { flex: none; width: 71.22px; height: 71.22px; border-radius: 4px; background: var(--rose); color: #fff; display: grid; place-items: center; font: 700 40px/1 var(--oswald); }
+  .panel h3 { font: 600 48px/57.6px var(--poppins); color: var(--bone); padding-top: 7.77px; }
+  .panel p { margin-top: 19.56px; width: 920px; font: 300 36px/43.2px var(--poppins); color: var(--bone); }
+
+  .grid { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s; z-index: 9;
+    background:
+      linear-gradient(to right, transparent calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px),
+                                transparent calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)),
+      linear-gradient(to bottom, transparent calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% - 1.5px), rgba(238,150,75,.9) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px),
+                                 transparent calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% - 1.5px), rgba(238,150,75,.9) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)); }
+  body.show-grid .grid { opacity: 1; }
+  .grid-toggle { position: fixed; right: 24px; bottom: 24px; z-index: 50; font: 600 14px/1 var(--poppins); letter-spacing: .06em; text-transform: uppercase;
+                 background: var(--tyre); color: var(--bone); border: 0; padding: 14px 18px; cursor: pointer; }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+<main class="page" id="page"></main>
+
+<template id="stage">
+  <div class="stage">
+    <svg width="2376" height="1564.77" viewBox="3528.15 8796.01 2376 1564.77" aria-hidden="true">
+      <g class="chevron"></g>
+      <path fill="none" stroke="rgba(244,241,234,.28)" stroke-width="4" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/>
+      <path fill="none" stroke="rgba(244,241,234,.28)" stroke-width="4" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/>
+      <g class="diamonds"></g>
+    </svg>
+    <h2 class="t title">OWNERSHIP JOURNEY</h2>
+    <p class="t subtitle">THE BEGINNING OF A EVERLASTING RELATIONSHIP</p>
+    <p class="t lbl" style="top:423.37px">CUSTOM CARAVAN (9-12 MONTHS)</p>
+    <p class="t lbl stock" style="top:1343.36px">STOCK VAN (1 MONTH)</p>
+    <div class="panel"><span class="num">1</span><div><h3>Understanding your needs</h3>
+      <p>We sit down with you to learn how you travel, where you want to go and what matters most in a caravan.</p></div></div>
+    <span class="grid" aria-hidden="true"></span>
+  </div>
+</template>
+
+<script>
+  const page = document.getElementById('page');
+  const fit = () => page.style.setProperty('--zoom', document.documentElement.clientWidth / 2376);
+  fit(); addEventListener('resize', fit);
+
+  const X0 = 3528.15, Y0 = 8796.01;   // stage origin in artboard units
+  const NS = 'http://www.w3.org/2000/svg';
+
+  // The page's chevron (from the design), tip at 0,0 pointing right; 2100 tall, 1450 wide at scale 1.
+  const CHEVRON = [[0, 0], [-1050, -1050], [-1450.44, -649.53], [-800.92, 0], [-1450.44, 649.53], [-1050, 1050]];
+  const chevron = (tipX, tipY, height, opacity = 1) => {
+    const s = height / 2100;
+    const pts = CHEVRON.map(([x, y]) => `${X0 + tipX + x * s} ${Y0 + tipY + y * s}`).join(' ');
+    return `<polygon fill="#6b7a32" opacity="${opacity}" points="${pts}"/>`;
+  };
+
+  // Diamonds with very subtle rounded corners (rx 4 on a 60-unit square).
+  const diamond = (x, y, fill) => `<rect fill="${fill}" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" transform="translate(${x} ${y}) rotate(45)"/>`;
+  const DIAMONDS = [
+    [3966.34, 9359.63, '#8b9b4d'], [4335.63, 9359.63, '#f4f1ea'], [4704.92, 9359.63, '#f4f1ea'], [5074.2, 9359.63, '#f4f1ea'], [5463.43, 9711.08, '#f4f1ea'],
+    [3966.34, 10062.53, '#5d5a56'], [4520.27, 10062.53, '#5d5a56'], [5074.2, 10062.53, '#5d5a56'],
+  ];
+
+  const SAMPLES = [
+    ['SAMPLE 1 — MARGIN MARKER',
+     'A modest chevron (one-third of the stage height) sits in the left margin, centred on the middle row and pointing into the step text. Its tip stops just short of the content edge.',
+     chevron(360, 782.4, 521.6)],
+    ['SAMPLE 2 — EDGE BLEED',
+     'Chosen. The chevron runs off the left edge in the middle row; its tip points at the midpoint of the step-number square\'s left side.',
+     chevron(336.63, 845.12, 700)],
+    ['SAMPLE 3 — BACKGROUND ECHO',
+     'The chevron sits behind the step text on the right third line at low opacity, so it reads as a quiet texture rather than a shape competing with the content.',
+     chevron(1584, 782.4, 900, .35)],
+  ];
+
+  const tpl = document.getElementById('stage');
+  SAMPLES.forEach(([title, desc, shape]) => {
+    const label = document.createElement('p');
+    label.className = 'label';
+    label.innerHTML = `${title}<small>${desc}</small>`;
+    const node = tpl.content.cloneNode(true);
+    node.querySelector('.chevron').outerHTML = shape;
+    node.querySelector('.diamonds').outerHTML = DIAMONDS.map(d => diamond(...d)).join('');
+    page.append(label, node);
+  });
+</script>
+</body>
+</html>
