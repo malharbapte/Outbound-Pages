@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Journey chevron samples | Outbound RVs</title>
+<title>Journey chevron sizes | Outbound RVs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -88,16 +88,15 @@
     [3966.34, 10062.53, '#5d5a56'], [4520.27, 10062.53, '#5d5a56'], [5074.2, 10062.53, '#5d5a56'],
   ];
 
+  // Only the arrowhead shows: the screen edge sits exactly at the chevron's inner notch,
+  // so everything behind the notch is off-screen. Tip level with the middle of the number square.
+  const NOTCH = 800.92 / 2100;            // notch distance from the tip, as a share of the height
+  const edgeChevron = h => chevron(NOTCH * h, 845.12, h);
   const SAMPLES = [
-    ['SAMPLE 1 — MARGIN MARKER',
-     'A modest chevron (one-third of the stage height) sits in the left margin, centred on the middle row and pointing into the step text. Its tip stops just short of the content edge.',
-     chevron(360, 782.4, 521.6)],
-    ['SAMPLE 2 — EDGE BLEED',
-     'Chosen. The chevron runs off the left edge in the middle row; its tip points at the midpoint of the step-number square\'s left side.',
-     chevron(203.63, 845.12, 700)],
-    ['SAMPLE 3 — BACKGROUND ECHO',
-     'The chevron sits behind the step text on the right third line at low opacity, so it reads as a quiet texture rather than a shape competing with the content.',
-     chevron(1584, 782.4, 900, .35)],
+    ['SIZE A — 450 TALL', 'Smallest. Arrowhead is 172 wide.', edgeChevron(450)],
+    ['SIZE B — 650 TALL', 'Arrowhead is 248 wide.', edgeChevron(650)],
+    ['SIZE C — 850 TALL', 'Arrowhead is 324 wide; tip stops short of the number square.', edgeChevron(850)],
+    ['SIZE D — 1000 TALL', 'Largest that still clears the square. Arrowhead is 381 wide.', edgeChevron(1000)],
   ];
 
   const tpl = document.getElementById('stage');

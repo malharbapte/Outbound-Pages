@@ -261,9 +261,7 @@ journey.text(3923.79, 9100.07, "THE BEGINNING OF A EVERLASTING RELATIONSHIP", fo
 journey.text(3923.79, 9264.98, "CUSTOM CARAVAN (9-12 MONTHS)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="custom"')
 journey.text(3923.79, 10184.97, "STOCK VAN (1 MONTH)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="stock"')
 
-# Deep Olive chevron in the middle row, tip pointing at the middle of the step-number square's left side.
-svg = (f'<polygon fill="#6b7a32" points="3731.78 9641.13 3381.78 9291.13 3248.30 9424.62 3464.81 9641.13 3248.30 9857.64 3381.78 9991.13"/>'
-       f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
+svg = (f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
        + f'<path class="fill fill-custom" d="{TOP_PATH}"/><path class="fill fill-stock" d="{BOT_PATH}"/>')
 for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
     if path == "stock" and (x, y) == MERGE:
@@ -271,6 +269,9 @@ for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
     svg += (f'<rect class="step-diamond d-{path}" data-step="{k}" x="-30.06" y="-30.06" width="60.11" height="60.11" rx="4" '
             f'transform="translate({r(x)} {r(y)}) rotate(45)"/>')
 journey.svg(svg, z=1, cls="shapes journey-svg")
+# Deep Olive chevron pinned to the screen's left edge: the edge sits at its inner notch, so only the
+# arrowhead shows at any window size. Tip level with the middle of the step-number square.
+journey.svg('<polygon fill="#6b7a32" points="3776.05 9641.13 3451.05 9316.13 3327.11 9440.09 3528.15 9641.13 3327.11 9842.18 3451.05 9966.13"/>', z=1, cls="shapes edge-left")
 
 # All step text is anchored where step 1 sits (pink square at 3932.78, 9605.52) and cross-fades.
 for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
