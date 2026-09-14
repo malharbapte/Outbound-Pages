@@ -262,7 +262,7 @@ journey.text(3923.79, 9264.98, "CUSTOM CARAVAN (9-12 MONTHS)", size=48, color=CO
 journey.text(3923.79, 10184.97, "STOCK VAN (1 MONTH)", size=48, color=COL["bone"], cls="path-label", attrs='data-path="stock"')
 
 # Deep Olive chevron in the middle row, tip pointing at the middle of the step-number square's left side.
-svg = (f'<polygon fill="#6b7a32" points="3864.78 9641.13 3514.78 9291.13 3381.30 9424.62 3597.81 9641.13 3381.30 9857.64 3514.78 9991.13"/>'
+svg = (f'<polygon fill="#6b7a32" points="3731.78 9641.13 3381.78 9291.13 3248.30 9424.62 3464.81 9641.13 3248.30 9857.64 3381.78 9991.13"/>'
        f'<path class="track track-stock" d="{BOT_PATH}"/><path class="track" d="{TOP_PATH}"/>'
        + f'<path class="fill fill-custom" d="{TOP_PATH}"/><path class="fill fill-stock" d="{BOT_PATH}"/>')
 for k, (path, n, x, y, title, desc) in enumerate(journey_steps):
