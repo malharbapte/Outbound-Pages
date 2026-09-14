@@ -22,7 +22,16 @@
   a { color: inherit; text-decoration: none; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-  .page { width: 2376px; zoom: var(--zoom, 1); overflow: clip; }
+  /* --bleed: extra design px on each side when the browser is zoomed out, so full-width backgrounds reach the window edges. */
+  :root { --bleed: 0px; }
+  .page { width: calc(2376px + 2 * var(--bleed)); zoom: var(--zoom, 1); overflow: clip; }
+  .artboard { margin-left: var(--bleed); }
+  /* Two sideways copies of the background (no vertical spread), so bands reach the window edges without growing taller. */
+  .bleed { box-shadow: calc(-1 * var(--bleed)) 0 0 0 var(--bleed-bg), var(--bleed) 0 0 0 var(--bleed-bg); }
+  .nav.stuck .nav-bg.bleed { box-shadow: calc(-1 * var(--bleed)) 0 0 0 var(--bleed-bg), var(--bleed) 0 0 0 var(--bleed-bg), 0 6px 24px rgba(11, 10, 7, .08); }
+  .sec.footer { overflow: visible !important; clip-path: inset(0 calc(-1 * var(--bleed))); }
+  .sec.hero { overflow: visible !important; clip-path: inset(0 calc(-1 * var(--bleed))); }
+  .sec.hero > img { left: calc(-172.09px - var(--bleed)) !important; width: calc(2565.74px + 2 * var(--bleed)) !important; object-fit: cover; }
   html.browser-zoomed body { overflow-x: auto; } /* zoomed in past the window: allow sideways scrolling */
   .artboard { position: relative; width: 2376px; }
   .sec { position: relative; display: block; width: 2376px; margin: 0; }
@@ -120,12 +129,12 @@
 
   /* View 1 — sliding cards */
   .stock-panel[data-view="slide"] { height: 832.44px; }
-  .stock-panel[data-view="slide"] .stock-viewport { overflow: hidden; margin-left: -1.85px; width: 2376px; padding: 106.57px 0 0 93.91px; cursor: grab; touch-action: pan-y; }
+  .stock-panel[data-view="slide"] .stock-viewport { overflow: hidden; margin-left: calc(-1.85px - var(--bleed)); width: calc(2376px + 2 * var(--bleed)); padding: 106.57px 0 0 calc(93.91px + var(--bleed)); cursor: grab; touch-action: pan-y; }
   .stock-panel[data-view="slide"] .stock-viewport.dragging { cursor: grabbing; }
   .stock-panel[data-view="slide"] .stock-track { will-change: transform; }
 
   /* Progress line sits on the bottom edge of the grey band. */
-  .stock-progress { position: absolute; left: -1.85px; bottom: 0; width: 2376px; height: 18px; background: #d1d3d4; overflow: hidden; z-index: 3; }
+  .stock-progress { position: absolute; left: calc(-1.85px - var(--bleed)); bottom: 0; width: calc(2376px + 2 * var(--bleed)); height: 18px; background: #d1d3d4; overflow: hidden; z-index: 3; }
   .stock-progress span { display: block; height: 100%; background: var(--olive); transform-origin: left center; transform: scaleX(0); }
   .stock-panel:not([data-view="slide"]) .stock-progress { display: none; }
   .stock-panel:not([data-view="slide"]) .clone { display: none; }
@@ -147,9 +156,9 @@
   /* The wrapper is white edge to edge and the stage clips to its box, so nothing outside the box shows,
      even when the stage is scaled down to fit a short window. */
   .journey-scroll { position: relative; z-index: 2; background: #fff; }
-  .journey-stage { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; overflow: hidden; transition: opacity .375s ease; --s: 1; --tx: 0px; --ty: 0px; }
+  .journey-stage { position: absolute; left: calc(-1 * var(--bleed)); top: 0; width: calc(2376px + 2 * var(--bleed)); height: 100%; overflow: hidden; transition: opacity .375s ease; --s: 1; --tx: 0px; --ty: 0px; }
   .journey-stage.leaving { opacity: 0; }
-  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 2376px; height: 100%; transition: opacity .525s ease; }
+  .journey-stage .layer { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transition: opacity .525s ease; }
   .journey-stage, .journey-stage * { cursor: none; } /* no cursor over the journey and we care */
   .journey-layer { background: var(--black); }
   .care-layer { background: #fff; }
@@ -266,9 +275,20 @@
     if (outerWidth === lastOuterW && outerHeight === lastOuterH && innerWidth !== lastInner) browserZoom *= lastInner / innerWidth;
     if (Math.abs(browserZoom - 1) < .02) browserZoom = 1;
     lastInner = innerWidth; lastOuterW = outerWidth; lastOuterH = outerHeight;
+    const cw = document.documentElement.clientWidth, z = zoom();
+    // Zoomed out: the artboard is narrower than the window, so centre it and let full-width backgrounds bleed.
+    const bleed = Math.max(0, (cw / z - 2376) / 2);
     document.documentElement.classList.toggle('browser-zoomed', browserZoom > 1);
-    page.style.setProperty('--zoom', zoom());
+    document.documentElement.style.setProperty('--bleed', bleed + 'px');
+    page.style.setProperty('--zoom', z);
   };
+  // Full-width background boxes (nav, bands, panels) extend into the side margins with their own colour.
+  document.querySelectorAll('.sec > div, .sec > .stock-panel, .sec.nav > div').forEach(el => {
+    const cs = getComputedStyle(el), bg = cs.backgroundColor;
+    if (el.offsetWidth >= 2370 && el.offsetLeft <= 2 && bg !== 'rgba(0, 0, 0, 0)') {
+      el.classList.add('bleed'); el.style.setProperty('--bleed-bg', bg);
+    }
+  });
   fit();
   addEventListener('resize', fit);
 
@@ -404,7 +424,7 @@
       const vh = innerHeight / zoom(), s = Math.min(1, vh / STAGE_H);
       wrap.style.height = vh + 'px';
       stage.style.setProperty('--s', s);
-      stage.style.setProperty('--tx', (2376 - 2376 * s) / 2 + 'px');
+      stage.style.setProperty('--tx', (stage.offsetWidth - 2376 * s) / 2 + 'px');
       stage.style.setProperty('--ty', (vh - STAGE_H * s) / 2 + 'px');
     };
     const alignTop = () => Math.max(0, (innerHeight - wrap.getBoundingClientRect().height) / 2); // centre the stage
