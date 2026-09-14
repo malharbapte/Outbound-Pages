@@ -78,13 +78,13 @@ class Section:
                  f'viewBox="{r(self.ab[0])} {r(self.y0)} {AB_W} {r(h)}" aria-hidden="true">{content}</svg>')
 
 
-def btn(sec, x, y, w, h, label, tx, ty, href="#", tag="a"):
+def btn(sec, x, y, w, h, label, tx, ty, href="#", tag="a", dark=False):
     """Green rectangle CTA with its label placed on the design baseline."""
     asc, full = METRICS["P"]
     lh = 43.2
     top = ty - ((lh - full * 36) / 2 + asc * 36)
     pad_top = top - y
-    sec.box(x, y, w, h, tag=tag, cls="btn",
+    sec.box(x, y, w, h, tag=tag, cls="btn on-dark" if dark else "btn",
             style=f"padding-top:{r(pad_top)}px;",
             inner=label, attrs=(f'href="{href}"' if tag == "a" else 'type="submit"'))
 
@@ -210,7 +210,7 @@ s = Section("section", "visit", AB1, 6430, 8796.01)
 s.img(3515.81, 6475.22, 3285 * .727, 2320 * .727, "dealership.png", "Outbound RVs dealership at 58B Lara Way, Campbellfield")
 s.text(3923.79, 6699.61, "COME SEE US", font="O", size=84, weight=700, color="#000", tag="h2")
 s.text(3923.79, 7915.29, ["We are located at 58B Laraway, Campbellfeild VIC.", "You are welcome to visit us "], size=36, weight=600, color=COL["bone"])
-btn(s, 3921.65, 8003.33, 507.27, 93.15, "Let Us know", 4071.5, 8061.23)
+btn(s, 3921.65, 8003.33, 507.27, 93.15, "Let Us know", 4071.5, 8061.23, dark=True)  # sits on the dealership photo
 s.text(3923.79, 8251.26, "WE ARE OPEN ON :", size=36, weight=700, color=COL["black"])
 s.text(3924.03, 8331.12, "Mon - Fri", size=36, weight=600, color=COL["black"])
 s.text(3924.03, 8379.49, "9 am - 5 pm", size=36, color=COL["olive"])

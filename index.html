@@ -43,9 +43,17 @@
   .logo { z-index: 3; }
 
   /* Buttons */
+  /* Standard CTA ("Breathe") for this site and any linked pages: Olive button with 6px corners. On hover it grows 2%
+     with a faint shadow and turns Tyre with a Bone label (on dark backgrounds, add .on-dark: Bone with a Tyre label).
+     It settles back slightly when pressed. */
   .btn { display: block; background: var(--green); color: var(--bone); font: 600 36px/43.2px var(--poppins);
-         text-align: center; border: 0; cursor: pointer; transition: background .2s; }
-  .btn:hover { background: var(--olive); }
+         text-align: center; border: 0; border-radius: 6px; cursor: pointer; text-decoration: none;
+         transition: transform .5s cubic-bezier(.65, 0, .35, 1), box-shadow .5s cubic-bezier(.65, 0, .35, 1), background-color .35s ease, color .35s ease; }
+  .btn:hover { transform: scale(1.02); background: var(--black); color: var(--bone); box-shadow: 0 10px 24px -12px rgba(11, 10, 7, .5); }
+  .btn.on-dark:hover { background: var(--bone); color: var(--black); box-shadow: 0 10px 24px -12px rgba(244, 241, 234, .25); }
+  .btn:active { transform: scale(.99); }
+  .btn:focus-visible { outline: 4px solid #ee964b; outline-offset: 5px; }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: background-color .2s ease, color .2s ease; } .btn:hover, .btn:active { transform: none; } }
 
   /* Exclusive dealership */
   .exclusive .van { z-index: 2; }
@@ -302,7 +310,7 @@
     <img src="assets/dealership.png" alt="Outbound RVs dealership at 58B Lara Way, Campbellfield" style="position:absolute;left:-12.34px;top:45.22px;width:2388.19px;height:1686.64px;">
     <h2 class="t" style="top:181.24px;left:395.64px;font-family:var(--oswald);font-size:84px;font-weight:700;line-height:100.8px;color:#000;">COME SEE US</h2>
     <p class="t" style="top:1451.09px;left:395.64px;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#f4f1ea;">We are located at 58B Laraway, Campbellfeild VIC.<br>You are welcome to visit us </p>
-    <a class="btn" style="position:absolute;left:393.5px;top:1573.33px;width:507.27px;height:93.15px;padding-top:23.7px;" href="#">Let Us know</a>
+    <a class="btn on-dark" style="position:absolute;left:393.5px;top:1573.33px;width:507.27px;height:93.15px;padding-top:23.7px;" href="#">Let Us know</a>
     <p class="t" style="top:1787.06px;left:395.64px;font-family:var(--poppins);font-size:36px;font-weight:700;line-height:43.2px;color:#0b0a07;">WE ARE OPEN ON :</p>
     <p class="t" style="top:1866.92px;left:395.88px;font-family:var(--poppins);font-size:36px;font-weight:600;line-height:43.2px;color:#0b0a07;">Mon - Fri</p>
     <p class="t" style="top:1915.29px;left:395.88px;font-family:var(--poppins);font-size:36px;font-weight:400;line-height:43.2px;color:#6b7a32;">9 am - 5 pm</p>
