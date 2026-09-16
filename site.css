@@ -299,6 +299,7 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
 .j-title { left: calc(395.64 * var(--u)); top: calc(151.39 * var(--u)); font: 700 calc(84 * var(--u))/1.2 var(--oswald); color: var(--bone); white-space: nowrap; }
 .j-sub { left: calc(395.64 * var(--u)); top: calc(253.56 * var(--u)); font: 300 calc(48 * var(--u))/1.2 var(--oswald); color: #fff; white-space: nowrap; }
 .path-label { left: calc(395.64 * var(--u)); font: 400 calc(48 * var(--u))/1.2 var(--poppins); color: var(--bone); white-space: nowrap; transition: opacity .45s ease; }
+.path-label b { font-weight: 700; }
 .journey-stage[data-phase="custom"] .path-label[data-path="stock"],
 .journey-stage[data-phase="stock"] .path-label[data-path="custom"] { opacity: .4; }
 
@@ -453,6 +454,14 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
   background-position: right 1.1rem center, right .75rem center; background-size: .35rem .35rem; background-repeat: no-repeat; }
 .contact-form select.boxed:valid { color: var(--tyre); }
 .contact-form .row:last-of-type input.line { height: 2.55rem; }
+/* Required fields carry a Rose asterisk at the end of the control, so it stays visible once the field is filled.
+   The State box keeps its own right edge for the chevron, so its mark sits inboard of it. */
+.contact-form .req { position: relative; display: block; }
+.contact-form .req::after { content: "*"; position: absolute; top: .56rem; right: .42rem; pointer-events: none;
+  font: 500 1.05rem/1 var(--poppins); color: var(--rose-deep); }
+.contact-form .req input.line { padding-right: 1.15rem; }
+.contact-form .req:has(select.boxed)::after { top: .78rem; right: 2.3rem; }
+.contact-form .req select.boxed { padding-right: 3rem; }
 /* "How can we help?": one olive block slides to the chosen answer. While it travels its leading edge is a chevron point,
    which settles back to a straight edge when it arrives. */
 .tabs { position: relative; margin: 2.17rem 0 0; padding: .3rem; border: 3px solid var(--warm-grey); border-radius: 6px; min-inline-size: 0;

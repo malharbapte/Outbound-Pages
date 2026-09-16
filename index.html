@@ -151,8 +151,8 @@
         <div class="j-canvas">
           <h2 class="j-title">OWNERSHIP JOURNEY</h2>
           <p class="j-sub">THE BEGINNING OF AN EVERLASTING&nbsp;RELATIONSHIP</p>
-          <p class="path-label" data-path="custom" style="top:calc(423.37 * var(--u))">CUSTOM CARAVAN (9-12&nbsp;MONTHS)</p>
-          <p class="path-label" data-path="stock" style="top:calc(1343.36 * var(--u))">STOCK VAN (1&nbsp;MONTH)</p>
+          <p class="path-label" data-path="custom" style="top:calc(423.37 * var(--u))">CUSTOM CARAVAN (<b>9-12&nbsp;MONTHS</b>)</p>
+          <p class="path-label" data-path="stock" style="top:calc(1343.36 * var(--u))">STOCK VAN (<b>1&nbsp;MONTH</b>)</p>
           <svg class="j-svg" viewBox="3528.15 8796.01 2376 1564.77" aria-hidden="true"><path class="track track-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/><path class="track" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-custom" d="M3966.34 9359.63 H5049.2 C5049.2 9359.63 5194.89 9345.97 5250.48 9458.28 C5306.08 9570.59 5330.77 9711.47 5432.95 9711.08 H6800"/><path class="fill fill-stock" d="M3966.34 10062.53 H5049.2 C5049.2 10062.53 5194.89 10076.19 5250.48 9963.88 C5306.08 9851.57 5330.77 9710.69 5432.95 9711.08"/>
           <rect class="step-diamond d-custom" data-step="0" x="3936.28" y="9329.57" width="60.11" height="60.11" rx="4" style="--d:0.2s"/>
           <rect class="step-diamond d-custom" data-step="1" x="4305.57" y="9329.57" width="60.11" height="60.11" rx="4" style="--d:0.34s"/>
@@ -258,11 +258,11 @@
           <a class="contact-row" href="mailto:sales@outboundrvs.com.au"><span class="mini"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="5" width="18.8" height="14" rx="2"/><path d="m3.4 6.6 8.6 6.4 8.6-6.4"/></svg></span>sales@outboundrvs.com.au</a>
         </div>
         <form class="contact-form" onsubmit="return false">
-          <div class="row"><input class="line" name="first" placeholder="First Name" aria-label="First name"><input class="line" name="last" placeholder="Last Name" aria-label="Last name"></div>
-          <div class="row"><input class="line" name="phone" type="tel" placeholder="Phone no." aria-label="Phone number"><input class="line" name="email" type="email" placeholder="Email" aria-label="Email"></div>
+          <div class="row"><span class="req"><input class="line" name="first" placeholder="First Name" aria-label="First name" required></span><span class="req"><input class="line" name="last" placeholder="Last Name" aria-label="Last name" required></span></div>
+          <div class="row"><span class="req"><input class="line" name="phone" type="tel" placeholder="Phone no." aria-label="Phone number" required></span><span class="req"><input class="line" name="email" type="email" placeholder="Email" aria-label="Email" required></span></div>
           <div class="row">
-            <select class="boxed" name="state" aria-label="State" required><option value="" selected disabled hidden>State</option><option>VIC</option><option>NSW</option><option>QLD</option><option>SA</option><option>WA</option><option>TAS</option><option>NT</option><option>ACT</option></select>
-            <input class="line" name="postcode" placeholder="Post Code" aria-label="Post code">
+            <span class="req"><select class="boxed" name="state" aria-label="State" required><option value="" selected disabled hidden>State</option><option>VIC</option><option>NSW</option><option>QLD</option><option>SA</option><option>WA</option><option>TAS</option><option>NT</option><option>ACT</option></select></span>
+            <span class="req"><input class="line" name="postcode" placeholder="Post Code" aria-label="Post code" required></span>
           </div>
           <fieldset class="tabs">
             <legend class="sr-only">How can we help?</legend>
