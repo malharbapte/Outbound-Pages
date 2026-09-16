@@ -1,0 +1,47 @@
+name: Refresh Instagram strip
+
+# Pulls the latest posts into the site four times a day, and once a month refreshes the token
+# (Instagram tokens last about 60 days). Run it by hand any time from the Actions tab.
+on:
+  schedule:
+    - cron: "0 */6 * * *"      # every six hours
+    - cron: "0 3 1 * *"        # the 1st of each month, to refresh the token
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  posts:
+    if: github.event.schedule != '0 3 1 * *'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the latest posts
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: python3 scripts/fetch_instagram.py
+      - name: Commit any changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/instagram instagram.json
+          git diff --staged --quiet || git commit -m "Update Instagram strip"
+          git push
+
+  token:
+    if: github.event.schedule == '0 3 1 * *' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Needs a personal access token with permission to update secrets, stored as GH_PAT.
+      # Without it this step is skipped and the token has to be refreshed by hand every two months.
+      - name: Refresh the Instagram token
+        if: ${{ secrets.GH_PAT != '' }}
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          NEW=$(python3 scripts/refresh_instagram_token.py)
+          gh secret set IG_TOKEN --body "$NEW" --repo "${{ github.repository }}"
+          echo "Instagram token refreshed."
