@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stories reveal: samples</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  body { background: #fff; }
+  .page { position: relative; width: var(--content); margin: 4rem auto 8rem; }
+  .page > h1 { font: 700 2.4rem/1.1 var(--oswald); }
+  .page > p { margin-top: .6rem; max-width: 44rem; font: 400 1rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .options { margin-top: 3rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 3.5rem 3rem; }
+  .opt h2 { font: 600 1.15rem/1.2 var(--poppins); }
+  .opt p { margin-top: .35rem; font: 400 .9rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; min-height: 2.9em; }
+  .pair { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, 1fr); }
+
+  .tile { position: relative; overflow: hidden; aspect-ratio: 1; container-type: inline-size; background: #fff; }
+  .layer { position: absolute; inset: 0; overflow: hidden; }
+  .layer > .fill { position: absolute; inset: 0; }
+  .fill img { width: 100%; height: 100%; object-fit: cover; }
+  .fill svg.pat { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .fill.review { background: var(--bone); }
+  .fill.review svg { position: absolute; left: 0; top: 0; width: 33.09cqw; }
+  .fill.review blockquote { position: absolute; left: 18.06cqw; right: 12cqw; top: 35.8cqw; margin: 0; font: 400 4.6cqw/1.4 var(--poppins); color: var(--rose-deep); }
+  .fill.review figcaption { position: absolute; left: 18.06cqw; bottom: 11cqw; font: 600 4.2cqw/1.2 var(--poppins); color: var(--rose-deep); }
+  .mosaic { position: absolute; inset: 0; z-index: 3; display: grid; grid-template-columns: repeat(5, 1fr); pointer-events: none; }
+  .mosaic i { display: block; aspect-ratio: 1; scale: 0; rotate: 45deg; }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+
+<main class="page">
+  <h1>STORIES TILE REVEALS</h1>
+  <p>Six ways for two tiles to swap at the same moment, each looping every 3.5 seconds. A is the current closing diamond. The rest lean on slower easing, depth and parallax so the change feels like a photo settling in rather than a slide transition.</p>
+  <div class="options" id="options"></div>
+  <span class="thirds" aria-hidden="true"></span>
+</main>
+
+<script>
+  // ---- Content: the three chosen patterns, photos and the review ------------------------------
+  const PATTERNS = [
+    { bg: '#6b7a32', fg: '#8b9b4d', op: 1, w: .16, h: .2, vb: '0 0 160 200',   // Offset chevrons, Deep Olive
+      art: c => `<polygon fill="${c}" points="68.8 49.8 19 0 0 19 30.8 49.8 0 80.6 19 99.6"/><polygon fill="${c}" points="148.8 149.8 99 100 80 119 110.8 149.8 80 180.6 99 199.6"/>` },
+    { bg: '#284b63', fg: '#f4f1ea', op: .2, w: .125, h: .125, vb: '0 0 100 100', // Diamond lattice, Blue
+      art: c => [[50, 50], [0, 0], [100, 0], [0, 100], [100, 100]].map(([x, y]) => `<rect fill="${c}" x="${x - 15}" y="${y - 15}" width="30" height="30" rx="4" transform="rotate(45 ${x} ${y})"/>`).join('') },
+    { bg: '#d5aca9', fg: '#8e6673', op: .55, w: .25, h: .25, vb: '0 0 100 100',  // Stitched argyle, Rose
+      art: c => `<polygon fill="${c}" opacity=".45" points="50 6 94 50 50 94 6 50"/><g stroke="${c}" stroke-width="3" stroke-dasharray="7 6"><line x1="0" y1="0" x2="100" y2="100"/><line x1="100" y1="0" x2="0" y2="100"/></g>` },
+  ];
+  let uid = 0;
+  const pattern = p => { const id = 'p' + (++uid);
+    return `<svg class="pat" aria-hidden="true"><defs><pattern id="${id}" width="${p.w}" height="${p.h}" patternUnits="objectBoundingBox" viewBox="${p.vb}" preserveAspectRatio="none"><g opacity="${p.op}">${p.art(p.fg)}</g></pattern></defs><rect width="100%" height="100%" fill="${p.bg}"/><rect width="100%" height="100%" fill="url(#${id})"/></svg>`; };
+  const STATES = [
+    { html: () => `<img src="../assets/range-amaroo.jpg" alt="">`, tone: '#b9a58a' },
+    { html: () => pattern(PATTERNS[0]), tone: PATTERNS[0].bg },
+    { html: () => `<img src="../assets/range-xtr.jpg" alt="">`, tone: '#9a6b4f' },
+    { cls: 'review', tone: '#f4f1ea', html: () => `<svg viewBox="4319.93 13460.7 262.06 262.06" aria-hidden="true"><path fill="#d5aca9" d="M4450.96,13460.7l-131.03,131.03,131.03,131.03,131.03-131.03-131.03-131.03ZM4450.84,13690.64l-98.8-98.8,98.8-98.8,98.8,98.8-98.8,98.8Z"/></svg><blockquote>Review text starts here. A few lines from a customer about their caravan and the Outbound&nbsp;team.</blockquote><figcaption>Kevin Smalley</figcaption>` },
+    { html: () => pattern(PATTERNS[1]), tone: PATTERNS[1].bg },
+    { html: () => `<img src="../assets/range-hornet.jpg" alt="">`, tone: '#8c8f86' },
+    { html: () => pattern(PATTERNS[2]), tone: PATTERNS[2].bg },
+    { html: () => `<img src="../assets/hero.jpg" alt="">`, tone: '#7d8f63' },
+  ];
+  const makeLayer = state => {
+    const l = document.createElement('div'); l.className = 'layer';
+    l.innerHTML = `<div class="fill ${state.cls || ''}">${state.html()}</div>`;
+    return l;
+  };
+
+  // ---- Reveals: each gets the tile, the old layer, the new layer and the new state; returns when done ----
+  const EASE = 'cubic-bezier(.65, 0, .35, 1)', SOFT = 'cubic-bezier(.22, 1, .36, 1)';
+  const done = (...anims) => Promise.all(anims.map(a => a.finished));
+  const REVEALS = [
+    { name: 'A · Closing diamond (current)', note: 'The old content shrinks into the centre through a diamond, uncovering the new one underneath.',
+      run: (t, o, n) => { t.prepend(n);
+        return done(o.animate([{ clipPath: 'polygon(50% -50%, 150% 50%, 50% 150%, -50% 50%)' }, { clipPath: 'polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)' }], { duration: 1100, easing: EASE })); } },
+    { name: 'B · Settle', note: 'A slow crossfade. The new content starts slightly enlarged and eases back to size, like a camera settling.',
+      run: (t, o, n) => { t.append(n);
+        return done(n.animate([{ opacity: 0, transform: 'scale(1.08)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 1600, easing: SOFT }),
+                    o.animate([{ opacity: 1 }, { opacity: 1, offset: .35 }, { opacity: 0 }], { duration: 1600 })); } },
+    { name: 'C · Parallax rise', note: 'The new content rises up over the old, while its image moves more slowly than its edge. Editorial and calm.',
+      run: (t, o, n) => { t.append(n);
+        return done(n.animate([{ clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 1300, easing: EASE }),
+                    n.firstElementChild.animate([{ transform: 'translateY(22%)' }, { transform: 'none' }], { duration: 1300, easing: EASE }),
+                    o.firstElementChild.animate([{ transform: 'none', filter: 'brightness(1)' }, { transform: 'translateY(-12%)', filter: 'brightness(.7)' }], { duration: 1300, easing: EASE })); } },
+    { name: 'D · Focus pull', note: 'The old content softens out of focus and fades; the new one sharpens into focus. Very quiet.',
+      run: (t, o, n) => { t.append(n);
+        return done(o.animate([{ filter: 'blur(0)', opacity: 1 }, { filter: 'blur(14px)', opacity: 0 }], { duration: 1200, easing: 'ease-in' }),
+                    n.animate([{ filter: 'blur(14px)', opacity: 0, transform: 'scale(1.03)' }, { filter: 'blur(0)', opacity: 1, transform: 'scale(1)' }], { duration: 1500, easing: SOFT, delay: 250, fill: 'backwards' })); } },
+    { name: 'E · Diamond mosaic', note: 'Small diamonds in the new tile’s colour ripple out from one corner to cover the tile, then clear to show the new content.',
+      run: async (t, o, n, state) => {
+        const m = document.createElement('div'); m.className = 'mosaic';
+        m.innerHTML = Array.from({ length: 25 }, () => `<i style="background:${state.tone}"></i>`).join('');
+        t.append(m);
+        const cells = [...m.children], delay = i => ((i % 5) + (i / 5 | 0)) * 45;
+        await done(...cells.map((c, i) => c.animate([{ scale: 0 }, { scale: 1.5 }], { duration: 500, delay: delay(i), easing: EASE, fill: 'forwards' })));
+        t.append(n); m.remove(); t.append(m);
+        await done(...cells.map((c, i) => c.animate([{ scale: 1.5 }, { scale: 0 }], { duration: 500, delay: delay(i), easing: EASE, fill: 'forwards' })));
+        m.remove(); } },
+    { name: 'F · Chevron sweep', note: 'A chevron-fronted edge sweeps across, like the button hover, with the content drifting the same way.',
+      run: (t, o, n) => { t.append(n);
+        const at = x => `polygon(0 0, ${x}% 0, ${x + 18}% 50%, ${x}% 100%, 0 100%)`;
+        return done(n.animate([{ clipPath: at(-20) }, { clipPath: at(100) }], { duration: 1300, easing: EASE }),
+                    n.firstElementChild.animate([{ transform: 'translateX(-10%)' }, { transform: 'none' }], { duration: 1300, easing: EASE }),
+                    o.firstElementChild.animate([{ transform: 'none', filter: 'brightness(1)' }, { transform: 'translateX(8%)', filter: 'brightness(.75)' }], { duration: 1300, easing: EASE })); } },
+  ];
+
+  // ---- Build: every option shows two tiles changing at the same moment ------------------------
+  const wrap = document.getElementById('options');
+  REVEALS.forEach((rev, r) => {
+    const opt = document.createElement('section'); opt.className = 'opt';
+    opt.innerHTML = `<h2>${rev.name}</h2><p>${rev.note}</p><div class="pair"><div class="tile"></div><div class="tile"></div></div>`;
+    wrap.append(opt);
+    const tiles = [...opt.querySelectorAll('.tile')], idx = [0, 3];
+    tiles.forEach((t, k) => t.append(makeLayer(STATES[idx[k]])));
+    const cycle = async () => {
+      await Promise.all(tiles.map(async (t, k) => {
+        idx[k] = (idx[k] + 1) % STATES.length;
+        const o = t.querySelector('.layer'), state = STATES[idx[k]], n = makeLayer(state);
+        await rev.run(t, o, n, state);
+        o.remove();
+      }));
+      setTimeout(cycle, 3500);
+    };
+    setTimeout(cycle, 1200 + r * 150);
+  });
+</script>
+</body>
+</html>

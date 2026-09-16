@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pill chevron: smooth samples 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  body { background: #fff; }
+  .page { position: relative; width: var(--content); margin: 4rem auto 10rem; }
+  .page > h1 { font: 700 2.4rem/1.1 var(--oswald); }
+  .page > p { margin-top: .6rem; max-width: 46rem; font: 400 1rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .controls { margin-top: 1.4rem; display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; font: 400 .85rem/1.3 var(--poppins); color: var(--warm-grey); }
+  .controls button { border: 2px solid var(--tyre); background: none; border-radius: 6px; padding: .5rem .8rem; font: 600 .8rem/1 var(--poppins); cursor: pointer; }
+  .controls button.on { background: var(--tyre); color: var(--bone); }
+  .fps { font-variant-numeric: tabular-nums; padding: .5rem .7rem; background: var(--bone); border-radius: 6px; }
+
+  .opt { margin-top: 3rem; }
+  .opt h2 { font: 600 1.15rem/1.2 var(--poppins); }
+  .opt > p { margin-top: .3rem; font: 400 .9rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .demo { margin-top: 1rem; max-width: 39.54rem; }
+
+  .set { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); padding: .3rem; border: 3px solid var(--warm-grey); border-radius: 6px; background: #fff; }
+  .set label { position: relative; z-index: 2; cursor: pointer; }
+  .set input { position: absolute; opacity: 0; }
+  /* The weight never changes, so no text is re-laid-out while the block is moving. */
+  .set span { display: flex; align-items: center; justify-content: center; text-align: center; height: 3.4rem; padding: 0 .4rem;
+              font: 600 .91rem/1.2 var(--poppins); color: var(--warm-grey); text-wrap: balance; transition: color .25s linear; }
+  .set label:hover span { color: var(--olive); }
+  .set input:checked + span { color: var(--bone); }
+
+  /* The olive block is a plain rectangle that slides. The point is cut by two white wedges that are drawn once and then
+     only moved or faded — never re-shaped — so every frame is a straight compositing job. */
+  .glide { position: absolute; z-index: 1; left: .3rem; top: .3rem; height: 3.4rem; width: calc((100% - .6rem) / 4); background: var(--olive); border-radius: 4px;
+           overflow: hidden; will-change: transform; transform: translate3d(0, 0, 0); transition: transform var(--dur) var(--curve); }
+  .glide i { position: absolute; top: 0; width: 1.7rem; height: 100%; background: #fff; opacity: 0; will-change: transform, opacity; }
+  .glide .pt-r { right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 100% 50%); }
+  .glide .pt-l { left: 0; clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 0 50%); }
+  .glide .nt-l { left: 0; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+  .glide .nt-r { right: 0; clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+  /* Which wedges are used depends on the way it is travelling: the point always leads, the notch always trails. */
+  .set.to-right .pt-r, .set.to-left .pt-l { opacity: 1; }
+  .set.chev.to-right .nt-l, .set.chev.to-left .nt-r { opacity: 1; }
+
+  /* Fade: the wedges appear and disappear in place. */
+  .fade .glide i { transition: opacity var(--cut) linear; }
+
+  /* Slide: each wedge starts pushed off its edge and slides in, so the point grows without being re-shaped. */
+  .slide .glide i { transition: opacity .01s linear, transform var(--cut) var(--curve); }
+  .slide .glide .pt-r, .slide .glide .nt-r { transform: translate3d(100%, 0, 0); }
+  .slide .glide .pt-l, .slide .glide .nt-l { transform: translate3d(-100%, 0, 0); }
+  .slide.to-right .pt-r, .slide.to-right .nt-l,
+  .slide.to-left .pt-l, .slide.to-left .nt-r { transform: translate3d(0, 0, 0); }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+
+<main class="page">
+  <h1>SMOOTH POINT, TAKE 3</h1>
+  <p>The wedges that cut the point are now drawn once and only moved or faded. Nothing is re-shaped while the block travels, which is what was costing frames before. Slow motion runs everything at a quarter speed so the shape itself can be judged.</p>
+  <div class="controls">
+    <button type="button" id="play" class="on">Pause the demo</button>
+    <button type="button" id="slow">Slow motion</button>
+    <span class="fps" id="fps">measuring…</span>
+    <span>60 or above is smooth; under 30 looks choppy.</span>
+  </div>
+  <div id="opts"></div>
+  <span class="thirds" aria-hidden="true"></span>
+</main>
+
+<script>
+  const CHOICES = ['Book a factory&nbsp;tour', 'A virtual&nbsp;tour', 'Call back', 'Get a&nbsp;quote'];
+  // [key, mode, shape, name, note]
+  const OPTIONS = [
+    ['a1', 'fade', 'plain', '1 · Arrowhead, fading point', 'The front half is cut to a triangle. The cut fades in as the block sets off and fades out as it lands.'],
+    ['a2', 'slide', 'plain', '2 · Arrowhead, growing point', 'The same triangle, but the cut slides in from the leading edge, so the point appears to grow.'],
+    ['c1', 'fade', 'chev', '3 · Chevron, fading point', 'Point in front and a matching notch at the back, both fading in and out.'],
+    ['c2', 'slide', 'chev', '4 · Chevron, growing point', 'The chevron’s point and notch slide in from the two edges.'],
+    ['z0', 'fade', 'none', '5 · Control: no point at all', 'A plain block that only slides. If this one also stutters on your machine, the problem is the browser or the screen rather than the shape work.'],
+  ];
+  document.getElementById('opts').innerHTML = OPTIONS.map(([k, mode, shape, name, note]) => `
+    <section class="opt">
+      <h2>${name}</h2>
+      <p>${note}</p>
+      <div class="demo"><fieldset style="margin:0;padding:0;border:0;min-inline-size:0">
+        <legend class="sr-only">How can we help?</legend>
+        <div class="set ${mode} ${shape === 'chev' ? 'chev' : ''}" id="${k}">
+          <span class="glide">${shape === 'none' ? '' : '<i class="pt-l"></i><i class="nt-l"></i><i class="pt-r"></i><i class="nt-r"></i>'}</span>
+          ${CHOICES.map((c, i) => `<label><input type="radio" name="intent-${k}" value="${i}"${i === 0 ? ' checked' : ''}><span>${c}</span></label>`).join('')}
+        </div>
+      </fieldset></div>
+    </section>`).join('');
+
+  let slowMo = 1;
+  const timing = set => {
+    set.style.setProperty('--dur', `${.55 * slowMo}s`);
+    set.style.setProperty('--cut', `${.18 * slowMo}s`);
+    set.style.setProperty('--curve', 'cubic-bezier(.4, 0, .2, 1)');
+  };
+
+  const sets = [...document.querySelectorAll('.set')].map(set => {
+    const glide = set.querySelector('.glide'), radios = [...set.querySelectorAll('input')];
+    let at = Math.max(radios.findIndex(r => r.checked), 0), clear = null;
+    timing(set);
+    const put = i => { glide.style.transform = `translate3d(${i * 100}%, 0, 0)`; };
+    put(at);
+    const settle = () => set.classList.remove('to-left', 'to-right');
+    glide.addEventListener('transitionend', e => { if (e.propertyName === 'transform') settle(); });
+    const go = i => {
+      if (i === at) return;
+      set.classList.remove('to-left', 'to-right');
+      set.classList.add(i > at ? 'to-right' : 'to-left');   // the point always leads the way it travels
+      at = i;
+      radios[i].checked = true;
+      put(i);
+      clearTimeout(clear); clear = setTimeout(settle, 1200 * slowMo);
+    };
+    set.addEventListener('change', () => go(radios.findIndex(r => r.checked)));
+    return { next: () => go((at + 1) % 4), retime: () => timing(set) };
+  });
+
+  const start = () => setInterval(() => sets.forEach(s => s.next()), 2400 * slowMo);
+  let timer = start();
+  const play = document.getElementById('play');
+  play.addEventListener('click', () => {
+    if (timer) { clearInterval(timer); timer = null; play.textContent = 'Play the demo'; play.classList.remove('on'); }
+    else { timer = start(); play.textContent = 'Pause the demo'; play.classList.add('on'); }
+  });
+  document.getElementById('slow').addEventListener('click', e => {
+    slowMo = slowMo === 1 ? 4 : 1;
+    e.target.classList.toggle('on', slowMo === 4);
+    sets.forEach(s => s.retime());
+    if (timer) { clearInterval(timer); timer = start(); }
+  });
+
+  const fps = document.getElementById('fps');
+  let frames = 0, since = performance.now(), worst = 99;
+  const tick = now => {
+    frames++;
+    if (now - since >= 1000) {
+      const f = Math.round(frames * 1000 / (now - since));
+      worst = Math.min(worst, f);
+      fps.textContent = `${f} fps now · ${worst} fps worst`;
+      frames = 0; since = now;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+</script>
+</body>
+</html>

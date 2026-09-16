@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Left margin triangles: sample</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  body { background: #fff; }
+  /* The section, rebuilt as it appears on the page, so the triangles can be judged in place. */
+  .stage { position: relative; overflow-x: clip; padding: 5rem 0 6rem; }
+  .stage .container { position: relative; z-index: 1; }
+  .stage .section-title { color: #000; }
+  .lede { margin-top: 3.63rem; font: 600 1.36rem/1.2 var(--poppins); }
+  .line { position: relative; margin-top: 2.66rem; display: flex; justify-content: space-between; }
+  .line::before { content: ""; position: absolute; left: 1.58rem; right: 1.58rem; top: calc(50% - 2px); height: 4px; background: var(--deep-olive); }
+  .line i { position: relative; width: 3.16rem; height: 3.16rem; }
+  .line i::after { content: ""; position: absolute; left: .46rem; top: .46rem; width: 2.24rem; height: 2.24rem; border-radius: 3px;
+                   background: var(--bone); box-shadow: inset 0 0 0 .15rem var(--olive); rotate: 45deg; }
+  .line i:first-child::after { background: var(--olive); box-shadow: none; }
+  .value { margin-top: 2.2rem; display: grid; grid-template-columns: auto 1fr; column-gap: 1.4rem; align-items: start; min-height: 6.4rem; }
+  .value svg { grid-row: 1 / 3; width: 3.4rem; height: 3.4rem; fill: none; stroke: var(--olive); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+  .value h3 { font: 600 1.36rem/1.2 var(--poppins); }
+  .value p { margin-top: .62rem; font: 400 1.05rem/1.4 var(--poppins); }
+  .cta { margin-top: 3.06rem; }
+  /* The grey chevron on the right, for scale: the triangles are meant to be about half its size. */
+  .right-chev { position: absolute; z-index: 0; right: calc(-512.12 * .03788rem); top: calc(215.79 * .03788rem); width: calc(1191.93 * .03788rem);
+                opacity: .4; mix-blend-mode: multiply; pointer-events: none; }
+
+  /* Two equilateral triangles on the left, drawn into one canvas: a bigger outline with a smaller solid one whose
+     flat side sits on the outer triangle's flat side. */
+  .tris { position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none; overflow: visible; }
+
+  /* Controls */
+  .panel { position: fixed; right: 16px; top: 16px; z-index: 60; width: 20rem; padding: 1rem 1.1rem 1.2rem; background: var(--tyre); color: var(--bone);
+           border-radius: 8px; font: 400 12px/1.4 var(--poppins); box-shadow: 0 14px 40px rgba(11,10,7,.3); }
+  .panel h2 { font: 600 11px/1.2 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: #bcbec0; }
+  .panel label { display: block; margin-top: .85rem; }
+  .panel .row { display: flex; justify-content: space-between; align-items: baseline; }
+  .panel b { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .panel input[type=range] { width: 100%; accent-color: #8b9b4d; }
+  .panel .out { margin-top: 1rem; padding: .6rem .7rem; background: rgba(244,241,234,.1); border-radius: 6px; font: 400 11px/1.5 ui-monospace, monospace; white-space: pre-wrap; }
+  .panel button { margin-top: .7rem; width: 100%; border: 0; border-radius: 6px; padding: .6rem; background: var(--bone); color: var(--tyre); font: 600 12px/1 var(--poppins); cursor: pointer; }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+
+<div class="panel">
+  <h2>Triangles on the left</h2>
+  <label><span class="row">Gap from the button <b id="v-gap"></b></span><input id="gap" type="range" min="-6" max="24" step=".25" value="12"></label>
+  <label><span class="row">Up or down <b id="v-drop"></b></span><input id="drop" type="range" min="-12" max="12" step=".25" value="0"></label>
+  <label><span class="row">Outer triangle, side length <b id="v-size"></b></span><input id="size" type="range" min="6" max="34" step=".5" value="19"></label>
+  <label><span class="row">Inner triangle, side length <b id="v-inner"></b></span><input id="inner" type="range" min="2" max="34" step=".5" value="6"></label>
+  <label><span class="row">Outline thickness <b id="v-stroke"></b></span><input id="stroke" type="range" min="0" max="14" step=".5" value="1"></label>
+  <label><span class="row">Strength <b id="v-fade"></b></span><input id="fade" type="range" min="10" max="100" step="5" value="100"></label>
+  <div class="out" id="out"></div>
+  <button type="button" id="copy">Copy these numbers</button>
+</div>
+
+<section class="stage" id="stage">
+  <svg class="right-chev" viewBox="8484.97 373.13 1191.93 1725.69" aria-hidden="true"><polygon fill="#7a736a" points="8484.97 1235.97 9347.81 2098.82 9676.9 1769.74 9143.13 1235.97 9676.9 702.21 9347.81 373.13 8484.97 1235.97"/></svg>
+
+  <svg class="tris" id="tris" aria-hidden="true">
+    <polygon id="outer-shape" fill="#8b9b4d" stroke="#8b9b4d"/>
+    <polygon id="inner-shape" fill="#fff"/>
+  </svg>
+
+  <div class="container">
+    <h2 class="section-title">WHAT MAKES US DIFFERENT?</h2>
+    <p class="lede">We listen first, guide honestly and stay for the&nbsp;journey.</p>
+    <div class="line"><i></i><i></i><i></i><i></i></div>
+    <div class="value">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>
+      <h3>Guidance</h3>
+      <p>We take the time to understand your lifestyle, travel plans and needs before helping you find the right&nbsp;fit.</p>
+    </div>
+    <a class="btn cta" id="cta" href="#">Know more about&nbsp;us</a>
+  </div>
+  <span class="thirds" aria-hidden="true"></span>
+</section>
+<div style="height:30vh"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const controls = ['gap', 'drop', 'size', 'inner', 'stroke', 'fade'];
+  const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+  // Pointing right: the tip sticks out s * √3 / 2 from the flat side, and that flat side is 35% longer than s,
+  // which makes each triangle isosceles rather than equilateral.
+  const HEIGHT = Math.sqrt(3) / 2, BASE = 1.35;
+  const draw = () => {
+    const gap = +$('gap').value, drop = +$('drop').value, side = +$('size').value;
+    const innerSide = Math.min(+$('inner').value, side), stroke = +$('stroke').value, fade = +$('fade').value;
+    const cta = $('cta').getBoundingClientRect(), stage = $('stage').getBoundingClientRect();
+    const u = rem();
+
+    // The outer tip sits `gap` to the left of the button, level with its middle (plus any up or down nudge).
+    const tipX = cta.left - stage.left - gap * u;
+    const midY = cta.top - stage.top + cta.height / 2 + drop * u;
+    const outerH = side * HEIGHT * u, innerH = innerSide * HEIGHT * u;
+    const backX = tipX - outerH;                     // the flat side both triangles share
+    const half = side * BASE * u / 2, innerHalf = innerSide * BASE * u / 2;
+
+    const tris = $('tris');
+    tris.setAttribute('width', Math.max(tipX, 1));
+    tris.setAttribute('height', stage.height);
+    tris.style.opacity = fade / 100;
+    $('outer-shape').setAttribute('points', `${backX} ${midY - half}, ${tipX} ${midY}, ${backX} ${midY + half}`);
+    $('outer-shape').setAttribute('stroke-width', stroke);
+    // The inner triangle keeps its flat side on the outer one's flat side, centred on the same line.
+    $('inner-shape').setAttribute('points', `${backX} ${midY - innerHalf}, ${backX + innerH} ${midY}, ${backX} ${midY + innerHalf}`);
+
+    $('v-gap').textContent = gap + ' rem';
+    $('v-drop').textContent = drop + ' rem';
+    $('v-size').textContent = side + ' rem';
+    $('v-inner').textContent = innerSide + ' rem';
+    $('v-stroke').textContent = stroke + ' px';
+    $('v-fade').textContent = fade + '%';
+    $('out').textContent = `gap ${gap}rem · up/down ${drop}rem\nouter side ${side}rem · inner side ${innerSide}rem\nflat side 35% longer · outline ${stroke}px · strength ${fade}%`;
+  };
+
+  controls.forEach(id => $(id).addEventListener('input', draw));
+  addEventListener('resize', draw);
+  addEventListener('load', draw);
+  draw();
+
+  $('copy').addEventListener('click', () => {
+    navigator.clipboard?.writeText($('out').textContent);
+    $('copy').textContent = 'Copied — paste them to me';
+    setTimeout(() => $('copy').textContent = 'Copy these numbers', 1800);
+  });
+</script>
+</body>
+</html>

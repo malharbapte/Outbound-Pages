@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact pills: samples</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  body { background: #fff; }
+  .page { position: relative; width: var(--content); margin: 4rem auto 10rem; }
+  .page > h1 { font: 700 2.4rem/1.1 var(--oswald); }
+  .page > p { margin-top: .6rem; max-width: 44rem; font: 400 1rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .opt { margin-top: 3.4rem; }
+  .opt h2 { font: 600 1.15rem/1.2 var(--poppins); }
+  .opt > p { margin-top: .3rem; font: 400 .9rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .demo { margin-top: 1.1rem; max-width: 39.54rem; }   /* the form's width in the real section */
+  fieldset { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+  .set { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .set label { position: relative; cursor: pointer; }
+  .set input { position: absolute; opacity: 0; }
+  .set span { display: flex; align-items: center; justify-content: center; text-align: center; font: 500 .91rem/1.2 var(--poppins); text-wrap: balance; }
+
+  /* A · Current: one bordered strip, cells inside, selected cell filled */
+  .a .set { padding: .23rem; border: 3px solid var(--warm-grey); gap: .26rem; }
+  .a span { height: 3.7rem; padding: 0 .4rem; border: 1px solid var(--warm-grey); color: var(--warm-grey);
+            transition: background-color .25s ease, color .25s ease, border-color .25s ease; }
+  .a label:hover span { border-color: var(--olive); color: var(--olive); }
+  .a input:checked + span { background: var(--olive); border-color: var(--olive); color: var(--bone); font-weight: 700; }
+
+  /* B · Separate pills with the button's rounded corners */
+  .b .set { gap: .7rem; }
+  .b span { height: 3.4rem; padding: 0 .5rem; border: 2px solid var(--warm-grey); border-radius: 6px; color: var(--warm-grey);
+            transition: background-color .3s var(--ease), color .3s ease, border-color .3s ease, transform .3s var(--ease); }
+  .b label:hover span { border-color: var(--olive); color: var(--olive); transform: translateY(-2px); }
+  .b input:checked + span { background: var(--olive); border-color: var(--olive); color: var(--bone); font-weight: 600; transform: none; }
+
+  /* C · Chevron wipe, like the buttons: the olive fill sweeps in behind a pointed edge */
+  .c .set { gap: .7rem; }
+  .c span { position: relative; isolation: isolate; overflow: hidden; height: 3.4rem; padding: 0 .5rem; border: 2px solid var(--warm-grey); border-radius: 6px;
+            color: var(--warm-grey); transition: color .3s ease .05s, border-color .4s ease; }
+  .c span::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1.6rem; width: calc(100% + 1.6rem); z-index: -1; background: var(--olive);
+                    clip-path: polygon(0 0, calc(100% - 1.6rem) 0, 100% 50%, calc(100% - 1.6rem) 100%, 0 100%);
+                    transform: translateX(-100%); transition: transform .55s var(--ease); }
+  .c label:hover span { color: var(--olive); border-color: var(--olive); }
+  .c input:checked + span { color: var(--bone); border-color: var(--olive); font-weight: 600; }
+  .c input:checked + span::before { transform: translateX(1.6rem); }
+
+  /* D · Diamond marker: the choice is marked by a brand diamond that fills and turns */
+  .d .set { gap: 1.4rem; }
+  .d span { gap: .6rem; justify-content: flex-start; height: 3.4rem; padding-bottom: .5rem; border-bottom: 2px solid rgba(122, 115, 106, .45); color: var(--warm-grey);
+            transition: color .3s ease, border-color .3s ease; }
+  .d span::before { content: ""; flex: none; width: .72rem; height: .72rem; border-radius: 2px; box-shadow: inset 0 0 0 2px var(--warm-grey); rotate: 0deg;
+                    transition: rotate .5s var(--ease), background-color .3s ease, box-shadow .3s ease; }
+  .d label:hover span { color: var(--olive); }
+  .d input:checked + span { color: var(--olive); border-color: var(--olive); font-weight: 600; }
+  .d input:checked + span::before { background: var(--olive); box-shadow: inset 0 0 0 2px var(--olive); rotate: 45deg; }
+
+  /* E · Sliding highlight: one olive block slides between the four choices */
+  .e .set { position: relative; padding: .3rem; border: 2px solid var(--warm-grey); border-radius: 6px; gap: 0; }
+  .e .glide { position: absolute; top: .3rem; bottom: .3rem; left: .3rem; width: calc((100% - .6rem) / 4); background: var(--olive); border-radius: 4px; z-index: 0;
+              will-change: translate, clip-path; clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%, 0 50%);
+              transition: translate .55s var(--ease), clip-path .3s var(--ease); }
+  .e .set.to-right .glide { clip-path: polygon(0 0, calc(100% - .9rem) 0, 100% 50%, calc(100% - .9rem) 100%, 0 100%, 0 50%); }
+  .e .set.to-left .glide { clip-path: polygon(.9rem 0, 100% 0, 100% 50%, 100% 100%, .9rem 100%, 0 50%); }
+  .e span { position: relative; z-index: 1; height: 3.2rem; padding: 0 .4rem; color: var(--warm-grey); transition: color .3s ease; }
+  .e label:hover span { color: var(--olive); }
+  .e input:checked + span { color: var(--bone); font-weight: 600; }
+
+  /* F · Bone tiles: filled from the start, the selected one goes dark like the Tyre colour */
+  .f .set { gap: .5rem; }
+  .f span { height: 3.4rem; padding: 0 .5rem; background: var(--bone); color: var(--warm-grey);
+            transition: background-color .35s ease, color .3s ease, translate .3s var(--ease); }
+  .f label:hover span { translate: 0 -2px; color: var(--tyre); }
+  .f input:checked + span { background: var(--tyre); color: var(--bone); font-weight: 600; translate: none; }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+
+<main class="page">
+  <h1>SELECTION PILLS</h1>
+  <p>Six ways to show "How can we help?" in the contact form. Each one is shown at the width it would have in the real form, with Call back selected to start. Click to try them.</p>
+  <div id="opts"></div>
+  <span class="thirds" aria-hidden="true"></span>
+</main>
+
+<script>
+  const CHOICES = ['Book a factory&nbsp;tour', 'A virtual&nbsp;tour', 'Call back', 'Get a&nbsp;quote'];
+  const OPTIONS = [
+    ['a', 'A · Current', 'One bordered strip with four cells inside; the selected cell fills olive.'],
+    ['b', 'B · Rounded pills', 'Separate pills with the button’s 6px corners. They lift on hover and fill olive when chosen.'],
+    ['c', 'C · Chevron wipe', 'The same pills, but the olive fill sweeps in behind a pointed chevron edge, like the buttons.'],
+    ['d', 'D · Diamond marker', 'No boxes at all. A small brand diamond turns and fills, and the label goes olive above a line.'],
+    ['e', 'E · Sliding highlight', 'One olive block slides across to the choice you pick, so the four stay as one control.'],
+    ['f', 'F · Bone tiles', 'Soft bone tiles from the start; the chosen one turns Tyre dark. Quiet until you choose.'],
+  ];
+  document.getElementById('opts').innerHTML = OPTIONS.map(([k, name, note]) => `
+    <section class="opt ${k}">
+      <h2>${name}</h2>
+      <p>${note}</p>
+      <div class="demo"><fieldset><legend class="sr-only">How can we help?</legend>
+        <div class="set">${k === 'e' ? '<span class="glide"></span>' : ''}${CHOICES.map((c, i) => `
+          <label><input type="radio" name="intent-${k}" value="${i}"${i === 2 ? ' checked' : ''}><span>${c}</span></label>`).join('')}
+        </div>
+      </fieldset></div>
+    </section>`).join('');
+
+  // The sliding highlight follows the checked choice, leading with a chevron point while it travels.
+  document.querySelectorAll('.e .set').forEach(set => {
+    const glide = set.querySelector('.glide'), radios = [...set.querySelectorAll('input')];
+    let at = Math.max(radios.findIndex(r => r.checked), 0);
+    glide.style.translate = `${at * 100}% 0`;
+    glide.addEventListener('transitionend', e => { if (e.propertyName === 'translate') set.classList.remove('to-left', 'to-right'); });
+    let clear = null;
+    set.addEventListener('change', () => {
+      const i = radios.findIndex(r => r.checked);
+      if (i === at) return;
+      set.classList.remove('to-left', 'to-right');
+      set.classList.add(i > at ? 'to-right' : 'to-left');
+      at = i;
+      glide.style.translate = `${i * 100}% 0`;
+      clearTimeout(clear);   // fallback in case transitionend never arrives (e.g. the tab was hidden mid-slide)
+      clear = setTimeout(() => set.classList.remove('to-left', 'to-right'), 800);
+    });
+  });
+</script>
+</body>
+</html>

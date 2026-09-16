@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pill chevron: samples</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  body { background: #fff; }
+  .page { position: relative; width: var(--content); margin: 4rem auto 10rem; }
+  .page > h1 { font: 700 2.4rem/1.1 var(--oswald); }
+  .page > p { margin-top: .6rem; max-width: 46rem; font: 400 1rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .controls { margin-top: 1.4rem; display: flex; gap: .6rem; align-items: center; font: 400 .85rem/1 var(--poppins); color: var(--warm-grey); }
+  .controls button { border: 2px solid var(--tyre); background: none; border-radius: 6px; padding: .5rem .8rem; font: 600 .8rem/1 var(--poppins); cursor: pointer; }
+  .controls button.on { background: var(--tyre); color: var(--bone); }
+
+  .opt { margin-top: 3rem; }
+  .opt h2 { font: 600 1.15rem/1.2 var(--poppins); }
+  .opt > p { margin-top: .3rem; font: 400 .9rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .demo { margin-top: 1rem; max-width: 39.54rem; }
+
+  .set { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); padding: .3rem; border: 3px solid var(--warm-grey); border-radius: 6px; }
+  .set label { position: relative; z-index: 1; cursor: pointer; }
+  .set input { position: absolute; opacity: 0; }
+  .set span { display: flex; align-items: center; justify-content: center; text-align: center; height: 3.4rem; padding: 0 .4rem;
+              font: 500 .91rem/1.2 var(--poppins); color: var(--warm-grey); text-wrap: balance; transition: color .3s ease; }
+  .set label:hover span { color: var(--olive); }
+  .set input:checked + span { color: var(--bone); font-weight: 600; }
+  /* All shapes keep the same six points in the same order, so the browser morphs between them instead of snapping.
+     --tip is how far the point reaches forward, --notch how far the back edge is cut in. */
+  .glide { position: absolute; z-index: 0; left: .3rem; top: .3rem; bottom: .3rem; width: calc((100% - .6rem) / 4); background: var(--olive); border-radius: 4px;
+           will-change: translate, clip-path; --tip: 0rem; --notch: 0rem;
+           clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%, 0 50%);
+           transition: translate .55s var(--ease), clip-path .28s var(--ease); }
+  .set.to-right .glide { clip-path: polygon(0 0, calc(100% - var(--tip)) 0, 100% 50%, calc(100% - var(--tip)) 100%, 0 100%, var(--notch) 50%); }
+  .set.to-left .glide { clip-path: polygon(var(--tip) 0, 100% 0, calc(100% - var(--notch)) 50%, 100% 100%, var(--tip) 100%, 0 50%); }
+</style>
+</head>
+<body>
+<button class="grid-toggle" type="button" onclick="document.body.classList.toggle('show-grid')">Show thirds grid</button>
+
+<main class="page">
+  <h1>HOW POINTED, WHILE IT MOVES</h1>
+  <p>The olive block only takes its shape while it travels, then settles back to a rectangle. These five differ in how far the point reaches forward, and whether the back edge is cut in to make a full chevron. All of them are demonstrating on their own; click any choice to drive it yourself.</p>
+  <div class="controls">
+    <button type="button" id="play" class="on">Pause the demo</button>
+    <span>They all move at the same speed, so only the shape differs.</span>
+  </div>
+  <div id="opts"></div>
+  <span class="thirds" aria-hidden="true"></span>
+</main>
+
+<script>
+  const CHOICES = ['Book a factory&nbsp;tour', 'A virtual&nbsp;tour', 'Call back', 'Get a&nbsp;quote'];
+  // [key, name, note, tip, notch]
+  const OPTIONS = [
+    ['t1', '1 · Current', 'A small point, about the size of a button’s chevron. Subtle.', '.9rem', '0rem'],
+    ['t2', '2 · Deeper point', 'The point reaches twice as far forward, so it reads clearly as a pointed block.', '1.9rem', '0rem'],
+    ['t3', '3 · Chevron', 'The point reaches forward and the back edge is cut in, so the whole block becomes a chevron.', '1.9rem', '1.2rem'],
+    ['t4', '4 · Deep chevron', 'The same idea, pushed further: a long point and a deep cut at the back.', '2.8rem', '1.9rem'],
+    ['t5', '5 · Arrowhead', 'The front half of the block becomes a solid triangle. The most forceful of the five.', '50%', '0rem'],
+  ];
+  document.getElementById('opts').innerHTML = OPTIONS.map(([k, name, note, tip, notch]) => `
+    <section class="opt">
+      <h2>${name}</h2>
+      <p>${note}</p>
+      <div class="demo"><fieldset style="margin:0;padding:0;border:0;min-inline-size:0">
+        <legend class="sr-only">How can we help?</legend>
+        <div class="set" id="${k}">
+          <span class="glide" style="--tip:${tip};--notch:${notch}"></span>
+          ${CHOICES.map((c, i) => `<label><input type="radio" name="intent-${k}" value="${i}"${i === 0 ? ' checked' : ''}><span>${c}</span></label>`).join('')}
+        </div>
+      </fieldset></div>
+    </section>`).join('');
+
+  const sets = [...document.querySelectorAll('.set')].map(set => {
+    const glide = set.querySelector('.glide'), radios = [...set.querySelectorAll('input')];
+    let at = Math.max(radios.findIndex(r => r.checked), 0), clear = null;
+    glide.style.translate = `${at * 100}% 0`;
+    glide.addEventListener('transitionend', e => { if (e.propertyName === 'translate') set.classList.remove('to-left', 'to-right'); });
+    const go = i => {
+      if (i === at) return;
+      set.classList.remove('to-left', 'to-right');
+      set.classList.add(i > at ? 'to-right' : 'to-left');
+      at = i;
+      radios[i].checked = true;
+      glide.style.translate = `${i * 100}% 0`;
+      clearTimeout(clear);
+      clear = setTimeout(() => set.classList.remove('to-left', 'to-right'), 800);
+    };
+    set.addEventListener('change', () => go(radios.findIndex(r => r.checked)));
+    return { go, next: () => go((at + 1) % 4) };
+  });
+
+  // Loop the demo so the shapes can be compared side by side without clicking.
+  let timer = setInterval(() => sets.forEach(s => s.next()), 2400);
+  const play = document.getElementById('play');
+  play.addEventListener('click', () => {
+    if (timer) { clearInterval(timer); timer = null; play.textContent = 'Play the demo'; play.classList.remove('on'); }
+    else { timer = setInterval(() => sets.forEach(s => s.next()), 2400); play.textContent = 'Pause the demo'; play.classList.add('on'); }
+  });
+</script>
+</body>
+</html>

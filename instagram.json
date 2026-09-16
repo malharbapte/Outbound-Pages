@@ -1,0 +1,34 @@
+{
+  "posts": [
+    {
+      "image": "assets/range-amaroo.jpg",
+      "link": "https://www.instagram.com/",
+      "caption": "Test post",
+      "date": ""
+    },
+    {
+      "image": "assets/range-hornet.jpg",
+      "link": "https://www.instagram.com/",
+      "caption": "Test post",
+      "date": ""
+    },
+    {
+      "image": "assets/range-solara.jpg",
+      "link": "https://www.instagram.com/",
+      "caption": "Test post",
+      "date": ""
+    },
+    {
+      "image": "assets/range-xtr.jpg",
+      "link": "https://www.instagram.com/",
+      "caption": "Test post",
+      "date": ""
+    },
+    {
+      "image": "assets/hero.jpg",
+      "link": "https://www.instagram.com/",
+      "caption": "Test post",
+      "date": ""
+    }
+  ]
+}

@@ -1,0 +1,562 @@
+/* Outbound RVs — responsive site styles (v2).
+   Sizes are fluid: they scale with the window between set limits, so browser zoom and different
+   screens reflow the layout naturally. Reference: the Illustrator artboard at 1440px wide. */
+
+:root {
+  /* Brand colours (brand guidelines) */
+  --olive: #8b9b4d;
+  --tyre: #0b0a07;
+  --bone: #f4f1ea;
+  --deep-olive: #6b7a32;
+  --warm-grey: #7a736a;
+  --rose: #d5aca9;
+  --rose-deep: #8e6673;
+  --blue: #284b63;
+  --orange: #ee964b;
+
+  --poppins: "Poppins", system-ui, sans-serif;
+  --oswald: "Oswald", "Arial Narrow", sans-serif;
+  --ease: cubic-bezier(.65, 0, .35, 1);
+
+  /* Layout: content sits in the middle two-thirds of wide screens, wider on small ones. */
+  --content: min(100% - 40px, 60rem);   /* artboard content column: 1586 units */
+  /* One shared scale for the whole site. 1rem = 16px on a 1440px-wide screen, growing with the screen
+     (about 20px at 1920px) while still responding to browser zoom. Artboard units convert as
+     rem = artboard units × 0.03788 (2376px artboard shown at 1440px, divided by 16). */
+  --header-h: 5.2rem;
+}
+html { font-size: clamp(12px, 0.9vw + 3px, 24px); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); }
+body { margin: 0; background: #fff; color: var(--tyre); font-family: var(--poppins); -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3, p { margin: 0; }
+
+.container { width: var(--content); margin-inline: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- Standard CTA ("Chevron Wipe", Tyre / Bone): Olive button with Bone label and 6px corners. On hover a fill with a
+   pointed, chevron-shaped front wipes across from the left: Tyre on light backgrounds, or Bone with a Tyre label on dark
+   backgrounds (.on-dark). It slides back out when the cursor leaves and presses in slightly on click. */
+.btn { position: relative; isolation: isolate; overflow: hidden; display: inline-flex; align-items: center; justify-content: center;
+       min-height: 3.52rem; padding: 0 2.2em; border: 0; border-radius: 6px; background: var(--olive); color: var(--bone);
+       text-decoration: none; cursor: pointer; font: 600 1.29rem/1 var(--poppins); white-space: nowrap;
+       --wipe: var(--tyre); --wipe-text: var(--bone);
+       transition: color .3s ease .1s, transform .5s var(--ease), box-shadow .5s var(--ease); }
+.btn::before { content: ""; position: absolute; top: 0; bottom: 0; left: -2.5rem; width: calc(100% + 2.5rem); z-index: -1; background: var(--wipe);
+               clip-path: polygon(0 0, calc(100% - 2.5rem) 0, 100% 50%, calc(100% - 2.5rem) 100%, 0 100%);
+               transform: translateX(-100%); transition: transform .6s var(--ease); }
+.btn:hover { color: var(--wipe-text); transform: scale(1.035); box-shadow: 0 10px 24px -12px rgba(11, 10, 7, .45); }
+.btn.on-dark:hover { box-shadow: 0 10px 24px -12px rgba(244, 241, 234, .25); }
+.btn:hover::before { transform: translateX(2.5rem); }
+.btn.on-dark { --wipe: var(--bone); --wipe-text: var(--tyre); }
+.btn:active { transform: scale(.99); transition-duration: .15s; }
+.btn:focus-visible, .nav a:focus-visible, .menu-toggle:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+
+/* ---- Header -------------------------------------------------------------------------------- */
+.site-header { position: sticky; top: 0; z-index: 50; height: var(--header-h);
+               background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+               transition: box-shadow .3s ease; }
+.site-header.stuck { box-shadow: 0 6px 24px rgba(11, 10, 7, .08); }
+.site-header .container { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+.logo img { height: 2.25rem; width: auto; }
+
+.nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2.4rem; }
+.nav a { display: block; padding: 8px 0; text-decoration: none; font: 600 .91rem/1 var(--poppins);
+         letter-spacing: .02em; transition: color .2s ease; }
+.nav a:hover { color: var(--olive); }
+
+.menu-toggle { display: none; width: 44px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+.menu-toggle span { display: block; width: 24px; height: 2px; margin: 5px auto; background: var(--tyre); border-radius: 2px;
+                    transition: transform .3s var(--ease), opacity .2s ease; }
+
+/* Narrow windows (or a strong zoom-in): links move into a drop-down menu. */
+@media (max-width: 860px) {
+  .menu-toggle { display: block; }
+  .nav { position: absolute; top: 100%; left: 0; right: 0; background: #fff; box-shadow: 0 12px 24px rgba(11, 10, 7, .08);
+         clip-path: inset(0 0 100% 0); transition: clip-path .4s var(--ease); }
+  .nav ul { flex-direction: column; gap: 0; width: var(--content); margin-inline: auto; padding: 8px 0 20px; }
+  .nav a { padding: 16px 0; font-size: 16px; border-bottom: 1px solid rgba(11, 10, 7, .08); }
+  .site-header.open .nav { clip-path: inset(0 0 0 0); }
+  .site-header.open .menu-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .site-header.open .menu-toggle span:nth-child(2) { opacity: 0; }
+  .site-header.open .menu-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
+/* ---- Hero ---------------------------------------------------------------------------------- */
+/* Full-bleed photo at the artboard's 16:9, never shorter than 420px or taller than the window. */
+.hero { position: relative; height: clamp(420px, 56.25vw, calc(100svh - var(--header-h))); overflow: hidden; color: #fff; }
+.hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+.hero .container { position: relative; height: 100%; }
+/* Title sits on the upper-third line, centred like the artboard. */
+.hero h1 { position: absolute; left: 0; right: 0; top: 33.333%; transform: translateY(-50%); text-align: center;
+           font: 700 5.54rem/1 var(--oswald); letter-spacing: .005em; text-shadow: 0 2px 30px rgba(11, 10, 7, .15); }
+.hero .credit { position: absolute; right: 0; bottom: max(1rem, 5.5%); font: 600 .91rem/1 var(--poppins);
+                color: var(--bone); letter-spacing: .02em; }
+
+/* ---- Diamonds ------------------------------------------------------------------------------ */
+/* Every diamond starts as a square and turns into a diamond once the viewer reaches it. The script adds .in-view (once)
+   to each .diamond-host when half of it is on screen. Add new diamonds to this list and mark their host. */
+.stock-layout::before, .closed .diamond { rotate: 0deg; transition: rotate 1.1s var(--ease) .15s; }
+.in-view .stock-layout::before, .in-view .diamond { rotate: 45deg; }
+
+/* ---- Shared type ------------------------------------------------------------------------- */
+.section-title { font: 700 3.18rem/1.1 var(--oswald); text-wrap: balance; }
+.body-lg { font: 400 1.36rem/1.35 var(--poppins); text-wrap: pretty; }
+
+/* ---- Exclusive dealership ----------------------------------------------------------------- */
+/* Artboard proportions: the band and vans are sized to the window width (vw) so the composition holds;
+   the heading and paragraph use fluid type so they respond to zoom. */
+.exclusive { position: relative; overflow: hidden; padding-top: 6.2rem; }
+.exclusive .section-title { text-align: center; margin-bottom: 3.07rem; }
+.dealer { position: relative; min-height: 48.57vw; padding-bottom: 4.5rem; }
+.dealer .band { position: relative; background: var(--tyre); padding-block: 2.3vw; display: grid; place-items: center; }
+.dealer .band img { width: min(41.3vw, 980px); height: auto; } /* part of the van composition, so it scales with the vans */
+.dealer .van { position: absolute; max-width: none; transition: transform .6s var(--ease); }
+.dealer .van-left { left: -18.72vw; top: -3.08vw; width: 57.82vw; z-index: 2; }
+.dealer .van-right { left: 59.56vw; top: 8.08vw; width: 50vw; z-index: 2; }
+.dealer .van-shadow { left: 67.88vw; top: 26.55vw; width: 30.07vw; opacity: .7; mix-blend-mode: multiply; z-index: 1; pointer-events: none; }
+/* Hover: each van grows slightly from where its wheels meet the ground; the right van's shadow grows with it. */
+.dealer .van-left, .dealer .van-right { transform-origin: 50% 90%; }
+.dealer .van-shadow { transform-origin: 16.68vw 10.95vw; }   /* same ground point as the right van */
+.dealer .van-left:hover, .dealer .van-right:hover, .dealer:has(.van-right:hover) .van-shadow { transform: scale(1.04); }
+.dealer .container { position: relative; z-index: 3; pointer-events: none; }
+.dealer .container p { pointer-events: auto; }
+.dealer p { margin-top: 14.2vw; max-width: 33.5rem; }   /* artboard measure: four lines, clear of the van */
+
+/* ---- The Wonderland RV Range ------------------------------------------------------------- */
+.range { position: relative; background: var(--bone); padding: 3rem 0 4.24rem; }
+.range::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 1.43rem; background: linear-gradient(#231f20 3%, #fff);
+                opacity: .4; mix-blend-mode: multiply; pointer-events: none; z-index: 2; }
+.range .swoosh { position: absolute; left: 0; top: 0; width: 14.02rem; height: auto; z-index: 3; pointer-events: none; }
+.range .section-title { font-weight: 500; position: relative; z-index: 4; margin-bottom: 2.4rem; }
+/* Four full-bleed cards, each a quarter of the window, at the artboard's tall proportion. */
+.range-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); }
+.range-card { position: relative; display: block; aspect-ratio: 593.84 / 1134.2; overflow: hidden; color: #fff; text-decoration: none; }
+.range-card img { position: absolute; max-width: none; height: auto; transition: transform .8s var(--ease); transform-origin: 50% 70%; }
+.range-card:hover img { transform: scale(1.04); }
+.range-card .name { position: absolute; left: 0; right: 0; bottom: 9.6%; text-align: center; }
+.range-card h3 { font: 600 2.73rem/1 var(--poppins); }
+.range-card .kind { margin-top: .55rem; font: italic 300 .91rem/1 var(--poppins); }
+.range-card .tag { position: absolute; right: 0; top: 2.08rem; height: 2.07rem; display: flex; align-items: center; padding: 0 1rem 0 1.9rem;
+                   background: var(--orange); color: #fff; font: 400 1.25rem/1 var(--poppins); white-space: nowrap;
+                   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 1rem 50%); }
+.range .lede { margin: 3.2rem auto 0; max-width: 46em; text-align: center; font: 600 1.36rem/1.2 var(--poppins); color: var(--blue); text-wrap: balance; }
+.range .actions { margin-top: 2.9rem; text-align: center; }
+.range .actions .btn { min-width: 21.8rem; }
+@media (max-width: 700px) { .range-cards { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---- Drive Away (stock) ------------------------------------------------------------------- */
+.drive { position: relative; padding-top: 6.2rem; overflow: clip; }
+.drive .section-title { color: #000; margin-bottom: 1.9rem; }
+.drive-controls { display: flex; align-items: center; gap: 1.36rem; }
+.search, .filter { width: 19.12rem; height: 2.84rem; padding: 0 .9rem; border-radius: 0; font: 300 .8rem/1 var(--poppins); }
+.search { background: #fff; border: .5px solid var(--tyre); color: var(--tyre); outline: none; }
+.search::placeholder { color: #a7a9ac; }
+.search:focus-visible { box-shadow: inset 0 0 0 2px var(--olive); }
+.filter { background: #000; color: #e6e7e8; border: 0; text-align: left; cursor: pointer; }
+.views { margin-left: auto; display: flex; align-items: center; gap: .6rem; }
+.views-label { font: 300 .91rem/1 var(--poppins); color: var(--warm-grey); }
+.view-toggle { display: flex; gap: .94rem; }
+.view-toggle button { width: 2.87rem; height: 2.84rem; padding: 0; background: #fff; border: .5px solid var(--tyre); border-radius: 2.55px; cursor: pointer; overflow: hidden; }
+.view-toggle button.on { outline: .265rem solid var(--rose-deep); outline-offset: -.13rem; border-color: transparent; }
+.view-toggle svg { display: block; width: 100%; height: 100%; }
+.view-toggle button:focus-visible:not(.on) { outline: 3px solid var(--olive); }
+@media (max-width: 900px) { .drive-controls { flex-wrap: wrap; } .search, .filter { flex: 1 1 12rem; width: auto; } }
+
+/* Bone panel, full-bleed, with the artboard's soft shadows at the top and bottom edges. */
+.stock-panel { position: relative; margin-top: 4.18rem; background: var(--bone); }
+.stock-panel::before, .stock-panel::after { content: ""; position: absolute; left: 0; right: 0; height: 1.43rem; opacity: .4; mix-blend-mode: multiply; pointer-events: none; z-index: 2; }
+.stock-panel::before { top: 0; background: linear-gradient(#231f20 3%, #fff); }
+.stock-panel::after { bottom: 0; background: linear-gradient(#fff, #231f20 97%); }
+.stock-viewport { position: relative; z-index: 1; }
+.stock-track { display: flex; gap: 1.39rem; }
+
+/* Stock card: landscape 4:3 on a thirds grid (photo + name in the left two-thirds, specs in the right third).
+   Everything inside is sized from the card's own width (cqw), so one card design serves all three views.
+   1 artboard unit = 0.12111cqw (card is 825.69 units wide). */
+.stock-card { position: relative; flex: none; width: 31.28rem; aspect-ratio: 825.69 / 619.27; container-type: inline-size;
+              display: block; background: var(--tyre); color: var(--bone); text-decoration: none; overflow: hidden;
+              transition: transform .3s ease, box-shadow .3s ease; }
+.stock-card > * { position: absolute; top: 0; bottom: 0; }
+.stock-card:hover { transform: translateY(-.3rem); box-shadow: 0 .76rem 1.52rem rgba(11, 10, 7, .25); }
+.stock-card:focus-visible { outline: 3px solid var(--olive); outline-offset: 3px; }
+.stock-photo { left: 0; width: 66.667%; overflow: hidden; }
+.stock-photo img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transition: transform .6s ease; user-select: none; -webkit-user-drag: none; }
+.stock-card:hover .stock-photo img { transform: scale(1.05); }
+.stock-photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(rgba(11, 10, 7, 0), rgba(11, 10, 7, .88)); }
+.stock-title { position: absolute; left: 6.18cqw; right: 4.36cqw; top: 66.667%; bottom: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+.stock-layout { display: flex; align-items: center; gap: 2.18cqw; font: 600 2.18cqw/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--bone); }
+.stock-layout::before { content: ""; width: 1.45cqw; height: 1.45cqw; border-radius: 1.5px; background: var(--olive); }
+.stock-name { margin-top: 1.45cqw; font: 700 9.69cqw/1 var(--oswald); letter-spacing: .01em; color: #fff; }
+/* Same notched orange tag as "Full Composite" in the range section, mirrored to sit on the left. */
+.stock-badge { position: absolute; left: 0; top: 3.15cqw; z-index: 2; background: var(--orange); color: #fff; font: 400 2.91cqw/1 var(--poppins);
+               padding: 1.21cqw 4.6cqw 1.21cqw 2.66cqw; clip-path: polygon(0 0, 100% 0, calc(100% - 2.42cqw) 50%, 100% 100%, 0 100%); }
+
+.stock-rail { left: 66.667%; right: 0; margin: 0; display: grid; grid-template-rows: repeat(3, 1fr); }
+.stock-rail .row { padding: 0 2.91cqw 0 3.63cqw; display: flex; flex-direction: column; justify-content: center; }
+.stock-rail .row + .row { border-top: 1px solid rgba(244, 241, 234, .16); }
+.stock-rail dt { font: 400 2.3cqw/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: #bcbec0; }
+.stock-rail dd { margin: 1.21cqw 0 0; font-family: var(--oswald); font-weight: 500; line-height: 1; white-space: nowrap; color: var(--bone); }
+.stock-rail dd small { margin-left: .73cqw; font: 500 .3em/1 var(--poppins); letter-spacing: .04em; color: #bcbec0; }
+.stock-rail .r1 { background: rgba(139, 155, 77, .12); }
+.stock-rail .r1 dt { font-size: 2.62cqw; font-weight: 600; color: var(--olive); }
+.stock-rail .r1 dd, .stock-rail .r2 dd { font-size: 7.99cqw; }
+.stock-rail .r3 { flex-direction: row; align-items: center; }
+.stock-rail .r3 > div { flex: 1; }
+.stock-rail .length { padding-left: 2.66cqw; border-left: 1px solid rgba(244, 241, 234, .16); }
+.stock-rail .sleeps dd { font-size: 5.98cqw; color: #d9d5cc; }
+.stock-rail .length dd { font-size: 5.98cqw; color: #bcbec0; }
+.stock-rail .r3 dt { font-size: 2.12cqw; }
+
+/* Sliding view: one full-bleed row that moves continuously, with the progress line along the bottom. */
+.stock-panel[data-view="slide"] .stock-viewport { overflow: hidden; padding: 4.04rem 0 4.03rem 3.56rem; cursor: grab; touch-action: pan-y; }
+.stock-panel[data-view="slide"] .stock-viewport.dragging { cursor: grabbing; }
+.stock-panel[data-view="slide"] .stock-track { will-change: transform; }
+.stock-progress { position: absolute; left: 0; right: 0; bottom: 0; height: .68rem; background: #d1d3d4; overflow: hidden; z-index: 3; }
+.stock-progress span { display: block; height: 100%; background: var(--olive); transform-origin: left center; transform: scaleX(0); }
+.stock-panel:not([data-view="slide"]) .stock-progress,
+.stock-panel:not([data-view="slide"]) .clone { display: none; }
+
+/* Two-column and grid views: cards fill the content column and keep their proportions. */
+.stock-panel:not([data-view="slide"]) .stock-viewport { width: min(100% - 40px, 80rem); margin-inline: auto; padding: 4.04rem 0 5.42rem; }
+.stock-panel:not([data-view="slide"]) .stock-card { width: auto; }
+.stock-panel[data-view="cols"] .stock-track { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.27rem 2.5rem; }
+.stock-panel[data-view="grid"] .stock-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.39rem; }
+@media (max-width: 900px) { .stock-panel[data-view="grid"] .stock-track { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .stock-panel[data-view="cols"] .stock-track { grid-template-columns: 1fr; } }
+
+/* Zoom-out exception: the rest of the site shrinks when the browser zooms out, but stock cards keep their
+   normal (100% zoom) size so the specs stay readable. The script sets --u (one normal rem, in current px),
+   --cw (normal card width in the column views) and --cols; zooming in still behaves as usual. */
+.stock-panel.fixed-scale .stock-track { gap: calc(1.39 * var(--u)); }
+.stock-panel.fixed-scale[data-view="slide"] .stock-card { width: calc(31.28 * var(--u)); }
+.stock-panel.fixed-scale:not([data-view="slide"]) .stock-viewport { width: auto; padding-inline: 20px; }
+.stock-panel.fixed-scale:not([data-view="slide"]) .stock-track { grid-template-columns: repeat(var(--cols), var(--cw)); justify-content: center; }
+.stock-panel.fixed-scale[data-view="cols"] .stock-track { gap: calc(2.27 * var(--u)) calc(2.5 * var(--u)); }
+
+.stock-track.swap { animation: stock-swap .45s ease; }
+.stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
+@keyframes stock-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes stock-swap { from { opacity: 0; transform: translateY(1rem); } to { opacity: 1; transform: none; } }
+
+/* ---- Come see us ------------------------------------------------------------------------- */
+/* Full-bleed dealership photo at its own proportion (never so short that the overlay text collides). */
+.visit { position: relative; overflow: hidden; padding-bottom: 4.6rem; }
+.visit-photo { position: relative; margin-top: 1.9vw; aspect-ratio: 2400 / 1695; min-height: 30rem; }
+.visit-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+.visit-photo .container { position: relative; height: 100%; }
+.visit-photo .section-title { position: absolute; top: calc(13.3% - 2.9rem); color: #000; }          /* artboard baseline at 13.3% */
+.visit-cta { position: absolute; left: 0; bottom: 3.9%; }                                            /* button ends at 96.1% */
+.visit-cta p { font-weight: 600; line-height: 1.2; color: var(--bone); }
+.visit-cta p span { display: block; }
+.visit-cta .btn { margin-top: 1.33rem; min-width: 19.2rem; }
+
+/* Hours on the thirds: a small label, the days lead, then a closing row with the Sunday note (two-thirds) and the button (last third). */
+.visit-info { position: relative; z-index: 1; padding-top: 3.2rem; color: var(--tyre); }
+.visit-info .eyebrow { font: 600 .8rem/1 var(--poppins); letter-spacing: .18em; text-transform: uppercase; color: var(--warm-grey); }
+.hours, .visit-foot { display: grid; grid-template-columns: repeat(3, 1fr); }
+.hours { margin: 1.5rem 0 0; }
+.hours > div:last-child { grid-column: 2 / 4; }
+.hours dt { font: 600 1.2rem/1.3 var(--poppins); }
+.hours dd { margin: .2rem 0 0; padding-right: 1.5rem; font: 400 1.05rem/1.35 var(--poppins); color: var(--olive); text-wrap: pretty; }
+.visit-foot { margin-top: 2.6rem; padding-top: 2rem; border-top: 1px solid rgba(11, 10, 7, .12); align-items: center; }
+.closed { grid-column: 1 / 3; display: flex; align-items: center; gap: 1.1rem; padding-right: 2rem; font: 500 1rem/1.4 var(--poppins); color: var(--blue); text-wrap: pretty; }
+.closed .diamond { flex: none; width: .8rem; height: .8rem; border-radius: 2px; background: var(--blue); }
+.visit-foot .btn { justify-self: start; min-width: 16rem; }
+/* Deep olive chevron corner (40%), cut off by the section's bottom and right edges as in the artboard. */
+.visit-chevron { position: absolute; right: 0; bottom: 0; width: 19.62vw; aspect-ratio: 1; background: var(--deep-olive); opacity: .4;
+                 clip-path: polygon(100% 0, 100% 100%, 0 100%); pointer-events: none; }
+@media (max-width: 760px) { .closed { grid-column: 1 / -1; padding-right: 0; } .visit-foot { row-gap: 1.4rem; } }
+
+/* ---- Ownership journey + we care (locked step scroll) ------------------------------------ */
+/* The stage fills the window. Its composition is drawn on a canvas in artboard units (--u, on the shared rem scale),
+   centred, and scaled down only when the window is too short for it. Edge chevrons stay pinned to the screen edges. */
+html.scroll-locked { overflow: hidden; }
+.site-header { transition: box-shadow .3s ease, opacity .4s ease; }
+html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out of the way while the journey is locked */
+.journey-scroll { position: relative; z-index: 2; height: 100vh; background: #fff; --u: .03788rem; }
+.journey-stage { position: absolute; inset: 0; overflow: hidden; transition: opacity .3s ease; --s: 1; --ty: 0px; }
+.journey-stage.leaving { opacity: 0; }
+.journey-stage, .journey-stage * { cursor: none; }                      /* no cursor over the journey and we care */
+.journey-stage .layer { position: absolute; inset: 0; transition: opacity .525s ease; }
+.journey-layer { background: var(--tyre); }
+.care-layer { background: #fff; opacity: 0; pointer-events: none; }
+.journey-stage.care .journey-layer { opacity: 0; }
+.journey-stage.care .care-layer { opacity: 1; transition-delay: .3s; pointer-events: auto; }
+
+.j-canvas { position: absolute; left: 50%; top: 0; width: calc(2376 * var(--u)); height: calc(1564.77 * var(--u));
+            transform-origin: 50% 0; transform: translate(-50%, var(--ty)) scale(var(--s)); }
+.j-canvas > * { position: absolute; margin: 0; }
+.j-edge { position: absolute; top: 0; width: calc(2376 * var(--u)); height: calc(1564.77 * var(--u)); pointer-events: none; z-index: 4;
+          transform: translateY(var(--ty)) scale(var(--s)); }
+.j-edge.left { left: 0; transform-origin: 0 0; }
+.j-edge.right { right: 0; transform-origin: 100% 0; }
+.j-edge svg, .j-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+.j-title { left: calc(395.64 * var(--u)); top: calc(151.39 * var(--u)); font: 700 calc(84 * var(--u))/1.2 var(--oswald); color: var(--bone); white-space: nowrap; }
+.j-sub { left: calc(395.64 * var(--u)); top: calc(253.56 * var(--u)); font: 300 calc(48 * var(--u))/1.2 var(--oswald); color: #fff; white-space: nowrap; }
+.path-label { left: calc(395.64 * var(--u)); font: 400 calc(48 * var(--u))/1.2 var(--poppins); color: var(--bone); white-space: nowrap; transition: opacity .45s ease; }
+.journey-stage[data-phase="custom"] .path-label[data-path="stock"],
+.journey-stage[data-phase="stock"] .path-label[data-path="custom"] { opacity: .4; }
+
+.j-svg .track { fill: none; stroke: rgba(244, 241, 234, .28); stroke-width: 4; }
+.j-svg .fill { fill: none; stroke: #fff; stroke-width: 4; transition: stroke-dashoffset .8s var(--ease); }
+.j-svg .step-diamond { fill: var(--bone); transform-box: fill-box; transform-origin: center; rotate: 0deg;
+                       transition: fill .45s ease, rotate 1.1s var(--ease) var(--d, .15s); }
+.journey-stage.in-view .step-diamond { rotate: 45deg; }                 /* squares turn into diamonds, left to right */
+.j-svg .step-diamond.done { fill: var(--olive); }
+.journey-stage[data-phase="custom"] .track-stock { opacity: .35; }
+/* Dimmed diamonds stay solid (bone at 35% over tyre, pre-mixed) so the line never shows through them. */
+.journey-stage[data-phase="custom"] .d-stock:not(.done) { fill: #5d5a56; }
+
+/* All step text sits where step 1 sits and cross-fades. */
+.step-panel { left: calc(404.63 * var(--u)); top: calc(809.51 * var(--u)); z-index: 4; display: flex; gap: calc(34.08 * var(--u));
+              opacity: 0; transition: opacity .45s ease; pointer-events: none; }
+.step-panel.on { opacity: 1; transition-delay: .35s; }
+.step-num { flex: none; width: calc(71.22 * var(--u)); height: calc(71.22 * var(--u)); border-radius: 4px; background: var(--rose); color: #fff;
+            display: grid; place-items: center; font: 700 calc(40 * var(--u))/1 var(--oswald); }
+.step-text { width: calc(920 * var(--u)); padding-top: calc(7.77 * var(--u)); }
+.step-text h3 { font: 600 calc(48 * var(--u))/1.2 var(--poppins); color: var(--bone); }
+.step-text p { margin-top: calc(19.56 * var(--u)); font: 300 calc(36 * var(--u))/1.2 var(--poppins); color: var(--bone); text-wrap: pretty; }
+
+.care-diamond { left: calc((1188 - 70.34) * var(--u)); top: calc((680.28 - 70.34) * var(--u)); width: calc(140.67 * var(--u)); height: calc(140.67 * var(--u));
+                border-radius: calc(33.79 * var(--u)); background: var(--bone); rotate: 0deg; transition: rotate 1.1s var(--ease) .7s; }
+.journey-stage.care .care-diamond { rotate: 45deg; }
+.care-title { left: 0; right: 0; top: calc(625.4 * var(--u)); text-align: center; font: 600 calc(79.65 * var(--u))/1.2 var(--poppins); color: var(--rose); }
+.care-text { left: 50%; top: calc(809.53 * var(--u)); width: calc(1700 * var(--u)); translate: -50% 0; text-align: center;
+             font: 300 calc(36 * var(--u))/1.2 var(--poppins); color: var(--rose); text-wrap: balance; }
+
+/* The section after the journey fades in rather than scrolling up. */
+#after-journey { transition: opacity .9s ease, transform .9s cubic-bezier(.2, .7, .2, 1); }
+#after-journey.hidden { opacity: 0; transform: translateY(1.5rem); transition: none; }
+#after-journey.fading-out { opacity: 0; transition: opacity .5s ease; }
+
+/* ---- Beyond sale (expanding panels) ------------------------------------------------------ */
+.beyond { position: relative; z-index: 2; overflow-x: clip; background: #fff; padding: 6.6rem 0 4.96rem; --u: .03788rem; }
+.beyond .section-title { color: #000; margin-bottom: 3.03rem; }
+.bs-items { height: 21.97rem; display: flex; gap: .76rem; }
+.bs-item { position: relative; flex: 1 1 0; min-width: 0; background: var(--bone); padding: 1.97rem; overflow: hidden; cursor: default;
+           transition: flex-grow .75s var(--ease), background-color .5s ease, box-shadow .5s ease; }
+.bs-item.on { flex-grow: 4; background: #fff; box-shadow: inset 0 0 0 3px var(--olive); }
+.bs-item:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.bs-icon { display: block; width: 3.64rem; height: 3.64rem; fill: none; stroke: var(--olive); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.bs-item h3 { position: absolute; left: 1.97rem; bottom: 1.97rem; font: 700 1.82rem/1.15 var(--poppins); color: #000; white-space: nowrap;
+              transform-origin: 0 100%; transform: rotate(-90deg) translate(0, 100%);
+              transition: transform .65s var(--ease), bottom .65s var(--ease), color .45s ease; }
+.bs-item.on h3 { transform: none; bottom: 12.05rem; color: var(--olive); }
+.bs-desc { position: absolute; left: 1.97rem; top: 10.98rem; width: 32.58rem; font: 400 1.21rem/1.59rem var(--poppins); color: var(--tyre); text-wrap: pretty;
+           opacity: 0; transform: translateY(.6rem); transition: opacity .3s ease, transform .3s ease; }
+.bs-item.on .bs-desc { opacity: 1; transform: none; transition: opacity .5s ease .4s, transform .6s var(--ease) .4s; }
+/* Chevrons at 40%, pinned to the screen edges: grey on the left (centred on the section's bottom edge), olive top right. */
+.bs-chev { position: absolute; z-index: 4; opacity: .4; pointer-events: none; }
+.bs-chev-left { left: calc(-147.01 * var(--u)); top: calc(100% - 348.43 * var(--u)); width: calc(481.31 * var(--u)); mix-blend-mode: multiply; }
+.bs-chev-right { right: calc(-239.66 * var(--u)); top: 0; width: calc(535.15 * var(--u)); }
+
+/* ---- Stories from our customers --------------------------------------------------------- */
+.stories { position: relative; overflow-x: clip; padding-top: 3.07rem; --u: .03788rem; }
+.stories .cluster { display: block; width: 9.77rem; margin-inline: auto; overflow: visible; }
+.stories .section-title { margin: 2.61rem auto 4.84rem; text-align: center; color: var(--rose-deep); }
+/* Diamonds in the divider start square and turn one after another. */
+.c-dmd { transform-box: fill-box; transform-origin: center; rotate: 0deg; transition: rotate 1.1s var(--ease) var(--d, .15s); }
+.cluster.in-view .c-dmd { rotate: 45deg; }
+
+/* Eight full-bleed square tiles, four across and two down (2:1). Tile contents are sized from the tile (cqw). */
+.story-tiles { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); }
+.stories-chev { position: absolute; z-index: 0; right: calc(-138.76 * var(--u)); top: calc(-348.42 * var(--u)); width: calc(481.31 * var(--u)); opacity: .4; pointer-events: none; }
+.tile { position: relative; z-index: 1; overflow: hidden; aspect-ratio: 1; container-type: inline-size; background: #fff; }
+.tile-layer { position: absolute; inset: 0; }
+.tile-layer img { width: 100%; height: 100%; object-fit: cover; }
+.tile-layer svg.pat { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tile-layer.story { background: var(--bone); }
+.story .quote-dmd { position: absolute; left: 0; top: 0; width: 33.09cqw; rotate: -45deg; transition: rotate 1.1s var(--ease) .1s; }
+.story.shown .quote-dmd { rotate: 0deg; }                               /* the outlined square turns into its diamond */
+.story blockquote { position: absolute; left: 18.06cqw; right: 12cqw; top: 35.8cqw; margin: 0; font: 400 4.6cqw/1.4 var(--poppins); color: var(--rose-deep); text-wrap: pretty; }
+.story figcaption { position: absolute; left: 18.06cqw; bottom: 11cqw; font: 600 4.2cqw/1.2 var(--poppins); color: var(--rose-deep); }
+/* Diamond mosaic reveal: a 5 × 5 grid of diamonds that grow to cover the tile and shrink away again. */
+.tile-mosaic { position: absolute; inset: 0; z-index: 3; display: grid; grid-template-columns: repeat(5, 1fr); pointer-events: none; }
+.tile-mosaic i { display: block; aspect-ratio: 1; scale: 0; rotate: 45deg; }
+
+/* ---- What makes us different ----------------------------------------------------------- */
+.different { position: relative; overflow-x: clip; padding: 7.74rem 0 3rem; --u: .03788rem; }
+.different .container { position: relative; z-index: 1; }
+.different .section-title { color: #000; }
+.diff-lede { margin-top: 3.63rem; font: 600 1.36rem/1.2 var(--poppins); text-wrap: pretty; }
+/* Four values on a Deep Olive line, one shown at a time. The line runs from the first diamond's centre to the last one's,
+   so it never shows past a diamond's tip. Unselected diamonds are outlined; the selected one fills with its value's colour. */
+.values { margin-top: 2.66rem; }
+.value-dots { position: relative; display: flex; justify-content: space-between; }
+.value-dots::before { content: ""; position: absolute; left: 1.58rem; right: 1.58rem; top: calc(50% - 2px); height: 4px; background: var(--deep-olive); }
+.value-dots button { position: relative; user-select: none; width: 3.16rem; height: 3.16rem; padding: 0; border: 0; background: none; cursor: pointer; }
+.step-dmd { position: absolute; left: .46rem; top: .46rem; width: 2.24rem; height: 2.24rem; border-radius: 3px; background: var(--bone); box-shadow: inset 0 0 0 .15rem var(--olive);
+            rotate: 0deg; scale: 1; transition: rotate 1.1s var(--ease) var(--d, .15s), background-color .5s ease, box-shadow .5s ease, scale .35s var(--ease); }
+.value-dots button:nth-child(2) .step-dmd { --d: .3s; }
+.value-dots button:nth-child(3) .step-dmd { --d: .45s; }
+.value-dots button:nth-child(4) .step-dmd { --d: .6s; }
+.values.in-view .step-dmd { rotate: 45deg; }
+.value-dots button:hover .step-dmd { scale: 1.12; }
+.value-dots button[aria-selected="true"] .step-dmd { background: var(--c); box-shadow: inset 0 0 0 .15rem var(--c); scale: 1.12; }
+.value-dots button:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; border-radius: 4px; }
+/* The value's text runs the full width under the line and eases in when it changes. */
+.value-panels { margin-top: 2.2rem; min-height: calc(1.36rem * 1.2 + .62rem + 2 * 1.05rem * 1.4); }   /* room for two lines, so the link below never jumps */
+.value[hidden] { display: none; }        /* the grid display below must not override hidden */
+.value { display: grid; grid-template-columns: auto 1fr; column-gap: 1.4rem; align-items: start;
+         opacity: 0; translate: 0 .6rem; transition: opacity .7s ease, translate .9s var(--ease); }
+/* The icon takes its value's colour and sits beside the heading and description. */
+.value-ic { grid-row: 1 / 3; width: 3.4rem; height: 3.4rem; margin-top: -.25rem; fill: none; stroke: var(--c, var(--olive));
+            stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.value.on { opacity: 1; translate: 0 0; }
+.value h3 { font: 600 1.36rem/1.2 var(--poppins); text-wrap: balance; }
+.value p { margin-top: .62rem; font: 400 1.05rem/1.4 var(--poppins); text-wrap: pretty; }
+.diff-cta-wrap { position: relative; margin-top: 3.06rem; display: flex; }
+.diff-cta { flex: none; }
+/* Two triangles filling the empty left margin, tip pointing at the button. Each has a flat side 35% longer than its
+   other two sides. The smaller white one sits on the bigger olive one's flat side. */
+.diff-tris { position: absolute; z-index: 0; right: calc(100% + 11.5rem); top: 50%; translate: 0 calc(-50% - .25rem);
+             width: 17.59rem; height: 26.79rem; overflow: visible; pointer-events: none; }
+/* Warm Grey chevron at 40%, pinned to the right edge; it continues down behind the next section. */
+.diff-chev { position: absolute; z-index: 0; right: calc(-512.12 * var(--u)); top: calc(215.79 * var(--u)); width: calc(1191.93 * var(--u));
+             opacity: .4; mix-blend-mode: multiply; pointer-events: none; }
+
+/* ---- Contact us --------------------------------------------------------------------------- */
+.contact { position: relative; padding: 7.5rem 0 6.4rem; --u: .03788rem; }
+.contact .section-title { color: #000; }
+.contact-sub { margin-top: .5rem; font: 300 1.82rem/1.2 var(--oswald); }
+.contact-cols { margin-top: 3.67rem; display: grid; grid-template-columns: 19.13rem 1fr; column-gap: 1.33rem; align-items: start; }
+.contact-lede { font: 600 1.36rem/1.2 var(--poppins); color: var(--olive); text-wrap: pretty; }
+.contact-note { margin-top: 1.24rem; font: 400 .91rem/1.2 var(--poppins); color: var(--olive); }
+.reach { margin-top: 11.05rem; font: 600 1.36rem/1.2 var(--poppins); text-wrap: pretty; }
+.socials { margin-top: 1.68rem; display: flex; gap: 1.6rem; }
+.social { display: grid; place-items: center; color: var(--tyre); transition: color .3s ease, transform .3s var(--ease); }
+.social:hover { color: var(--olive); transform: translateY(-2px); }
+.social .ic { width: 2.78rem; height: 2.78rem; }
+.contact-row { margin-top: 1.2rem; display: flex; align-items: center; gap: .74rem; font: 600 .91rem/1.2 var(--poppins); color: var(--tyre); text-decoration: none; }
+.contact-row + .contact-row { margin-top: .82rem; }
+.contact-row .mini { flex: none; display: grid; place-items: center; }
+.contact-row .ic { width: 1.38rem; height: 1.38rem; }
+.contact-row:hover { color: var(--olive); }
+.ic { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.ic.solid { fill: currentColor; stroke: none; }
+
+/* The form keeps the artboard's underlined fields, boxed select, choice tabs and message box. */
+.contact-form .row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.33rem; }
+.contact-form .row + .row { margin-top: 1.02rem; }
+.contact-form .row:last-of-type { align-items: end; }
+.contact-form input.line, .contact-form select.boxed, .contact-form textarea { width: 100%; font: 300 .91rem/1.2 var(--poppins); color: var(--tyre); border-radius: 0; background: transparent; }
+.contact-form input.line { height: 2.59rem; padding: .6rem .48rem 0; border: 0; border-bottom: 3px solid var(--warm-grey); outline: none; transition: border-color .3s ease; }
+.contact-form input.line:focus { border-bottom-color: var(--olive); }
+.contact-form ::placeholder { color: var(--warm-grey); opacity: 1; }
+.contact-form select.boxed { height: 2.55rem; padding: 0 .48rem; border: 3px solid var(--warm-grey); appearance: none; color: var(--warm-grey);
+  background-image: linear-gradient(45deg, transparent 50%, var(--warm-grey) 50%), linear-gradient(135deg, var(--warm-grey) 50%, transparent 50%);
+  background-position: right 1.1rem center, right .75rem center; background-size: .35rem .35rem; background-repeat: no-repeat; }
+.contact-form select.boxed:valid { color: var(--tyre); }
+.contact-form .row:last-of-type input.line { height: 2.55rem; }
+/* "How can we help?": one olive block slides to the chosen answer. While it travels its leading edge is a chevron point,
+   which settles back to a straight edge when it arrives. */
+.tabs { position: relative; margin: 2.17rem 0 0; padding: .3rem; border: 3px solid var(--warm-grey); border-radius: 6px; min-inline-size: 0;
+        display: grid; grid-template-columns: repeat(4, 1fr); }
+.tabs .glide { position: absolute; z-index: 0; left: .3rem; top: .3rem; bottom: .3rem; width: calc((100% - .6rem) / 4); background: var(--olive); border-radius: 4px;
+               will-change: translate, clip-path; clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%, 0 50%);
+               /* A gentler ease-in-out than the site curve: it starts and stops softly instead of snapping away. */
+               transition: translate .42s cubic-bezier(.45, .05, .25, 1), clip-path .24s cubic-bezier(.45, .05, .25, 1); }
+/* Every shape below keeps the same six points, in the same order, so the browser can morph between them smoothly. */
+.tabs.to-right .glide { clip-path: polygon(0 0, calc(100% - .9rem) 0, 100% 50%, calc(100% - .9rem) 100%, 0 100%, 0 50%); }
+.tabs.to-left .glide { clip-path: polygon(.9rem 0, 100% 0, 100% 50%, 100% 100%, .9rem 100%, 0 50%); }
+.tabs label { position: relative; z-index: 1; cursor: pointer; }
+.tabs input { position: absolute; opacity: 0; }
+.tabs span { user-select: none; display: flex; align-items: center; justify-content: center; text-align: center; height: 3.4rem; padding: 0 .4rem;
+             font: 500 .91rem/1.2 var(--poppins); color: var(--warm-grey); text-wrap: balance; transition: color .3s ease; }
+.tabs label:hover span { color: var(--olive); }
+.tabs input:checked + span { color: var(--bone); font-weight: 600; }
+.tabs input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 3px; }
+.contact-form textarea { display: block; margin-top: 1.23rem; height: 6.3rem; padding: .45rem .42rem; border: 3px solid var(--warm-grey); resize: none; outline: none; transition: border-color .3s ease; }
+.contact-form textarea:focus { border-color: var(--olive); }
+.consent { margin-top: .88rem; display: flex; gap: .32rem; font: 300 .91rem/1.2 var(--poppins); color: var(--warm-grey); cursor: pointer; text-wrap: pretty; }
+/* The tick box draws a white check when it is ticked. */
+.consent input { appearance: none; flex: none; position: relative; width: 1.18rem; height: 1.18rem; margin: 0; border: 3px solid var(--warm-grey); cursor: pointer;
+                 transition: background-color .25s ease, border-color .25s ease; }
+.consent input::after { content: ""; position: absolute; left: 50%; top: 44%; width: .72rem; height: .38rem; translate: -50% -50%;
+                        border: solid #fff; border-width: 0 0 .17rem .17rem; rotate: -45deg; opacity: 0; transition: opacity .2s ease; }
+.consent input:checked { background: var(--olive); border-color: var(--olive); }
+.consent input:checked::after { opacity: 1; }
+.consent input:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.contact-form .submit { margin-top: 1.46rem; min-width: 19.13rem; }
+
+/* ---- Follow us on Instagram --------------------------------------------------------------- */
+.insta { position: relative; background: var(--tyre); padding: 4.65rem 0 4.89rem; overflow: hidden; }
+.insta h2 { font: 700 1.82rem/1.2 var(--oswald); color: var(--bone); }
+.ig-viewport { margin-top: 3rem; overflow: hidden; cursor: grab; touch-action: pan-y; }
+.ig-viewport.dragging { cursor: grabbing; }
+.ig-viewport.dragging .ig-tile { transform: none; }
+.ig-track { display: flex; gap: .21rem; will-change: transform; }
+.ig-tile { flex: none; user-select: none; -webkit-user-drag: none; width: 15.92rem; aspect-ratio: 1; background: #fff; border: 3px solid var(--tyre); display: grid; place-items: center;
+           color: var(--warm-grey); transition: transform .4s var(--ease), color .4s ease; }
+.ig-tile img { width: 100%; height: 100%; object-fit: cover; }
+.ig-tile .ic { width: 3.4rem; height: 3.4rem; opacity: .35; transition: opacity .4s ease; }
+.ig-tile:hover { transform: translateY(-.4rem); color: var(--olive); }
+.ig-tile:hover .ic { opacity: 1; }
+.ig-tile:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+
+/* ---- FAQ ------------------------------------------------------------------------------------ */
+/* Two columns: the heading and an invitation to ask on the left third, the questions on the right two-thirds.
+   The questions themselves keep the marker and colours used elsewhere on the page. */
+.faq { position: relative; padding: 3.94rem 0 5rem; }
+.faq-cols { display: grid; grid-template-columns: 19.13rem 1fr; column-gap: 3rem; align-items: start; }
+.faq .section-title { color: #000; }
+.faq-aside p { margin-top: 1rem; font: 400 1.05rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+.faq-aside .btn { margin-top: 1.6rem; }
+.faq-list { margin-top: .2rem; }        /* the first question sits level with the heading */
+.faq-item { border-top: 1px solid rgba(11, 10, 7, .14); }
+.faq-item:last-child { border-bottom: 1px solid rgba(11, 10, 7, .14); }
+.faq-q { width: 100%; user-select: none; padding: 1.1rem 0; border: 0; background: none; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer;
+         font: 400 1.21rem/1.59rem var(--poppins); color: var(--blue); transition: color .25s ease; }
+.faq-q:hover { color: var(--olive); }
+.faq-q:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+/* The marker starts as a small square and turns into a diamond when its answer opens. */
+.faq-dmd { flex: none; width: .7rem; height: .7rem; border-radius: 2px; background: var(--blue); rotate: 0deg;
+           transition: rotate .5s var(--ease), background-color .25s ease; }
+.faq-item.on .faq-q { color: var(--olive); }
+.faq-item.on .faq-dmd { rotate: 45deg; background: var(--olive); }
+/* The answer opens by growing its row, which keeps the movement even. */
+.faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--ease); }
+.faq-item.on .faq-answer { grid-template-rows: 1fr; }
+/* min-height: 0 lets the row really collapse to nothing; the padding lives inside, so no strip is left behind. */
+.faq-answer-inner { overflow: hidden; min-height: 0; }
+.faq-text { padding-bottom: 1.4rem; max-width: 40rem; font: 400 1.05rem/1.55 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+
+/* ---- Footer ---------------------------------------------------------------------------------- */
+.site-footer { position: relative; overflow: hidden; background: var(--tyre); color: var(--bone); padding: 2.03rem 0 2.4rem; --u: .03788rem; }
+.foot-shape { position: absolute; top: 50%; translate: 0 -50%; pointer-events: none; }
+.foot-left { left: calc(-226.59 * var(--u)); width: calc(574.49 * var(--u)); }
+.foot-right { right: calc(-176.27 * var(--u)); width: calc(605.51 * var(--u)); }
+.foot-cols { position: relative; z-index: 1; display: grid; grid-template-columns: 22.7rem 18.2rem 1fr; }
+.foot-label { font: 600 .91rem/1.2 var(--poppins); }
+.foot-logo { display: block; margin-top: 1.1rem; width: 18.15rem; transition: opacity .3s ease; }
+.foot-logo:hover { opacity: .8; }
+.foot-legal { margin-top: 2.4rem; font: 300 .91rem/1.2 var(--poppins); }
+.foot-legal span { display: block; margin-top: .2rem; }
+.foot-legal a { text-decoration: none; transition: color .25s ease; }
+.foot-legal a:hover { color: var(--olive); }
+.site-footer .socials { margin-top: .9rem; }
+.site-footer .social { color: var(--bone); }
+.site-footer .social:hover { color: var(--olive); }
+.site-footer .contact-row { color: var(--bone); font-weight: 400; }
+.site-footer .contact-row:hover { color: var(--olive); }
+.foot-find .foot-text { margin-top: .5rem; font: 400 .91rem/1.2 var(--poppins); }
+.foot-find .foot-small { font-size: .68rem; line-height: 1.2; }
+.foot-label-2 { margin-top: 1.9rem; }
+
+/* ---- Thirds overlay (review aid) ----------------------------------------------------------- */
+.thirds { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s; z-index: 5;
+  background:
+    linear-gradient(to right, transparent calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% + 1px), transparent calc(33.333% + 1px),
+                              transparent calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% + 1px), transparent calc(66.666% + 1px)),
+    linear-gradient(to bottom, transparent calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% - 1px), rgba(238,150,75,.9) calc(33.333% + 1px), transparent calc(33.333% + 1px),
+                               transparent calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% - 1px), rgba(238,150,75,.9) calc(66.666% + 1px), transparent calc(66.666% + 1px)); }
+body.show-grid .thirds { opacity: 1; }
+.grid-toggle { position: fixed; right: 16px; bottom: 16px; z-index: 60; border: 0; border-radius: 4px; padding: 12px 16px; cursor: pointer;
+               background: var(--tyre); color: var(--bone); font: 600 12px/1 var(--poppins); letter-spacing: .06em; text-transform: uppercase; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01s !important; animation: none !important; } }
