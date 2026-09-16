@@ -457,10 +457,12 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
 /* Required fields carry a Rose asterisk at the end of the control, so it stays visible once the field is filled.
    The State box keeps its own right edge for the chevron, so its mark sits inboard of it. */
 .contact-form .req { position: relative; display: block; }
-.contact-form .req::after { content: "*"; position: absolute; top: .56rem; right: .42rem; pointer-events: none;
+/* The asterisk's ink sits high in its line box (it never reaches the baseline), so centring the box would leave the
+   mark riding high. The nudge drops it by the distance from the box top to the ink's own centre. */
+.contact-form .req::after { content: "*"; position: absolute; top: 50%; right: .42rem; translate: 0 -.302em; pointer-events: none;
   font: 500 1.05rem/1 var(--poppins); color: var(--rose-deep); }
 .contact-form .req input.line { padding-right: 1.15rem; }
-.contact-form .req:has(select.boxed)::after { top: .78rem; right: 2.3rem; }
+.contact-form .req:has(select.boxed)::after { right: 2.3rem; }
 .contact-form .req select.boxed { padding-right: 3rem; }
 /* "How can we help?": one olive block slides to the chosen answer. While it travels its leading edge is a chevron point,
    which settles back to a straight edge when it arrives. */
