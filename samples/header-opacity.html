@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Header opacity: three options</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  /* SAMPLE ONLY. The real header, from site.css, with its background opacity driven by --a (0 to 1).
+     Three scripts below decide what --a is as the page scrolls; the variant bar picks one. */
+  .site-header { background: rgba(255, 255, 255, var(--a, .75)); }
+  .site-header.eased { transition: box-shadow .3s ease, opacity .4s ease, background-color .35s ease; }
+
+  .band { position: relative; padding: 7rem 0; }
+  .band .container > * + * { margin-top: 1rem; }
+  .band h2 { font: 700 3.18rem/1.1 var(--oswald); }
+  .band p { max-width: 40rem; font: 400 1.1rem/1.5 var(--poppins); }
+  .photo { height: 78vh; background: url("../assets/hero.jpg") 50% 60% / cover; }
+  .photo.two { background-image: url("../assets/dealership.png"); background-position: 50% 40%; height: 90vh; }
+  .dark { background: var(--tyre); color: var(--bone); }
+  .olive { background: var(--olive); color: #fff; }
+  .bone { background: var(--bone); }
+  .white { background: #fff; }
+
+  .bar { position: fixed; right: 14px; bottom: 14px; z-index: 100; width: min(23rem, calc(100vw - 28px)); padding: 12px 14px; border-radius: 10px;
+         background: var(--tyre); color: var(--bone); font: 500 12px/1.35 var(--poppins); box-shadow: 0 8px 24px rgba(11,10,7,.35); }
+  .bar b { display: block; font: 600 10px/1 var(--poppins); letter-spacing: .1em; text-transform: uppercase; opacity: .6; margin-bottom: 7px; }
+  .bar .row { display: flex; gap: 5px; flex-wrap: wrap; }
+  .bar .row + b { margin-top: 11px; }
+  .bar button { flex: 1 1 auto; border: 1px solid rgba(244,241,234,.35); background: none; color: inherit; border-radius: 5px; padding: 8px 9px; font: inherit; cursor: pointer; }
+  .bar button.on { background: var(--olive); border-color: var(--olive); color: #fff; }
+  .bar button:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+  .bar .what { margin-top: 10px; opacity: .8; }
+  .bar .read { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+  .bar .meter { flex: 1; height: 6px; border-radius: 3px; background: rgba(244,241,234,.18); overflow: hidden; }
+  .bar .meter i { display: block; height: 100%; width: 0; background: var(--olive); }
+  .bar output { font-variant-numeric: tabular-nums; min-width: 4.2em; text-align: right; }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a class="logo" href="../index.html"><img src="../assets/outbound-logo-tight.png" alt="Outbound RVs" width="740" height="147"></a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#">CARAVANS</a></li>
+        <li><a href="#">SUPPORT</a></li>
+        <li><a href="../contact.html">CONTACT</a></li>
+        <li><a href="#">ABOUT</a></li>
+        <li><a href="#">REVIEWS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="photo" role="img" aria-label="Outbound RVs on the road"></div>
+  <section class="band white"><div class="container"><h2>Scroll slowly</h2><p>Watch the header over the photo above, then over each band below: white, black, olive and a second photo. Opacity matters most where the header sits on something dark or busy.</p></div></section>
+  <section class="band dark"><div class="container"><h2>Over black</h2><p>A translucent white header over a dark band turns grey. A solid one stays clean.</p></div></section>
+  <div class="photo two" role="img" aria-label="The Outbound RVs dealership"></div>
+  <section class="band olive"><div class="container"><h2>Over olive</h2><p>The brand colour behind a half-clear header tints it green.</p></div></section>
+  <section class="band bone"><div class="container"><h2>Over bone</h2><p>Scroll back up to see how each option behaves on the way up.</p></div></section>
+  <section class="band white"><div class="container"><h2>The end</h2><p>Keep the page length so every option has room to work.</p></div></section>
+</main>
+
+<div class="bar" role="group" aria-label="Sample controls">
+  <b>Option</b>
+  <div class="row" data-key="opt">
+    <button data-v="a" class="on">A. Step</button><button data-v="b">B. Ramp</button><button data-v="c">C. Direction</button>
+  </div>
+  <p class="what" id="what"></p>
+  <b>Opacity at the top of the page</b>
+  <div class="row" data-key="start">
+    <button data-v=".6">60%</button><button data-v=".75" class="on">75%</button><button data-v=".9">90%</button>
+  </div>
+  <div class="read"><div class="meter" aria-hidden="true"><i id="meter"></i></div><output id="out" aria-live="off">75%</output></div>
+</div>
+
+<script>
+  const header = document.getElementById('site-header');
+  const out = document.getElementById('out'), meter = document.getElementById('meter'), what = document.getElementById('what');
+  const FULL_AT = 40, RAMP = 320;                               // px: where option A flips, and how far option B takes to reach solid
+  const state = { opt: 'a', start: .75, lastY: 0, dir: 'start' };
+
+  const DESC = {
+    a: `Two states. Glassy at the top; the moment you pass ${FULL_AT}px it fades to fully solid in a third of a second, and stays solid until you are back at the top.`,
+    b: `Follows your scroll. Opacity climbs in step with the page, from the starting value to solid over the first ${RAMP}px, and falls back the same way on the way up. No timers.`,
+    c: `Follows your direction. Scrolling down makes it solid; scrolling up lets it go glassy again, so it clears the picture when you are heading back. Always glassy at the very top.`
+  };
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+  function alphaFor(y) {
+    if (state.opt === 'a') return y > FULL_AT ? 1 : state.start;
+    if (state.opt === 'b') return state.start + (1 - state.start) * clamp(y / RAMP, 0, 1);
+    // c: direction, with a small dead zone so tiny wobbles don't flicker it
+    if (y <= FULL_AT) state.dir = 'start';
+    else if (y - state.lastY > 4) state.dir = 'solid';
+    else if (y - state.lastY < -4) state.dir = 'start';
+    return state.dir === 'solid' ? 1 : state.start;
+  }
+
+  function update() {
+    const y = Math.max(0, scrollY);
+    const a = alphaFor(y);
+    state.lastY = y;
+    header.style.setProperty('--a', a.toFixed(3));
+    header.classList.toggle('eased', state.opt !== 'b');         // the ramp is driven by the scroll itself, so it must not lag behind it
+    header.classList.toggle('stuck', y > 4);                     // the same soft shadow the live header gets
+    out.textContent = Math.round(a * 100) + '%';
+    meter.style.width = a * 100 + '%';
+  }
+
+  let ticking = false;
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
+
+  document.querySelectorAll('.bar .row').forEach(row => row.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    row.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    if (row.dataset.key === 'opt') { state.opt = b.dataset.v; state.dir = 'start'; what.textContent = DESC[state.opt]; }
+    else state.start = parseFloat(b.dataset.v);
+    update();
+  }));
+  what.textContent = DESC.a; update();
+  window.__hdr = { update, state };                                // for checking the logic without a pointer
+</script>
+</body>
+</html>
