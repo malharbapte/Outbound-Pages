@@ -30,19 +30,32 @@
 /* ---- What sets us apart: the homepage section; only the gap above it follows this artboard ---- */
 .apage .different { padding-top: calc(127.7 * var(--u)); }
 
-/* ---- Come see us: photo from the left edge to just short of the second third line, the words on that line ---- */
-.a-visit { display: grid; min-height: calc(869.3 * var(--u)); background: var(--tyre); color: var(--bone);
-           grid-template-columns: calc(var(--margin) + (100% - 2 * var(--margin)) * 2 / 3 - 52 * var(--u)) calc(52 * var(--u)) 1fr var(--margin); }
-.a-visit .pic { position: relative; overflow: hidden; }
-.a-visit .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
-.a-visit .info { grid-column: 3; padding: calc(90.5 * var(--u)) 0 calc(80 * var(--u)); }
+/* ---- Come see us: the photo fills the section, with the address, a live open/closed line and the week's hours.
+   The card sits on the last third (the same line as the footer's third column). ---- */
+.a-visit { position: relative; overflow: hidden; background: var(--tyre); color: var(--bone); min-height: calc(1100 * var(--u)); }
+.a-visit .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; }
+.a-visit::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(11, 10, 7, .9) 0%, rgba(11, 10, 7, .78) 40%, rgba(11, 10, 7, .12) 100%); }
+.a-visit .grid { position: relative; z-index: 2; display: grid; grid-template-columns: calc(100% * 2 / 3) 1fr; align-items: center; min-height: calc(1100 * var(--u)); padding: calc(110 * var(--u)) 0; }
 .a-visit h2 { font: 700 calc(84 * var(--u))/1.1 var(--oswald); }
-.a-visit .where { margin-top: calc(44.5 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
-.a-visit .where a { color: var(--olive); text-decoration: none; transition: color .25s ease; }
-.a-visit .where a:hover { color: var(--bone); }
-.a-visit .where a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
-.a-visit .label { margin-top: calc(46.9 * var(--u)); font: 700 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
-.a-visit .hrs { margin: calc(28.3 * var(--u)) 0 0; font: 400 calc(36 * var(--u))/calc(48.3 * var(--u)) var(--poppins); }
-.a-visit .hrs dt { font-weight: 600; color: var(--olive); }
-.a-visit .hrs dd { margin: 0; }
-.a-visit .hrs dt + dd + dt { margin-top: calc(25.8 * var(--u)); }
+.a-visit .addr { margin-top: calc(40 * var(--u)); font: 600 calc(36 * var(--u))/calc(46 * var(--u)) var(--poppins); }
+.a-visit .addr a { color: var(--olive); text-decoration: none; transition: color .25s ease; }
+.a-visit .addr a:hover { color: var(--bone); }
+.a-visit .addr a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+.a-visit .pin { display: inline-block; height: .8em; width: auto; margin-right: .22em; vertical-align: -.04em; }
+.a-visit .status { display: inline-flex; align-items: center; gap: .9rem; margin-top: calc(52 * var(--u)); padding: calc(18 * var(--u)) calc(30 * var(--u)); font: 600 calc(30 * var(--u))/1.2 var(--poppins);
+                   background: rgba(11, 10, 7, .62); border: 1px solid rgba(244, 241, 234, .2); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.a-visit .status .dmd { flex: none; width: calc(26 * var(--u)); height: calc(26 * var(--u)); rotate: 45deg; background: var(--warm-grey); transition: background-color .4s ease; }
+.a-visit .status.open .dmd { background: var(--olive); animation: ping 2.4s ease-out infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(139, 155, 77, .6); } 70%, 100% { box-shadow: 0 0 0 calc(22 * var(--u)) rgba(139, 155, 77, 0); } }
+.a-visit .cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: calc(52 * var(--u)); }
+.a-visit .btn.ghost { --wipe: var(--bone); --wipe-text: var(--tyre); background: transparent; color: var(--bone); box-shadow: inset 0 0 0 2px rgba(244, 241, 234, .55); }
+.a-visit .btn.ghost:hover { box-shadow: inset 0 0 0 2px var(--bone); }
+.a-visit .week { background: var(--bone); color: var(--tyre); padding: calc(46 * var(--u)) calc(46 * var(--u)) calc(52 * var(--u)); box-shadow: 0 1.4rem 3rem -1rem rgba(11, 10, 7, .6); }
+.a-visit .week h3 { font: 700 calc(26 * var(--u))/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--warm-grey); }
+.a-visit .week ul { list-style: none; margin: calc(26 * var(--u)) 0 0; padding: 0; }
+.a-visit .week li { display: grid; grid-template-columns: calc(110 * var(--u)) 1fr; align-items: center; padding: calc(17 * var(--u)) 0; border-top: 1px solid rgba(11, 10, 7, .13); font: 400 calc(30 * var(--u))/1.2 var(--poppins); }
+.a-visit .week li b { font-weight: 600; }
+.a-visit .week li span { color: var(--warm-grey); }
+.a-visit .week li.today, .a-visit .week li.today span { color: var(--deep-olive); }
+.a-visit .week li.today span { font-weight: 600; }
+.a-visit .week li.today b::before { content: ""; display: inline-block; width: .5em; height: .5em; margin-right: .5em; rotate: 45deg; background: var(--olive); }

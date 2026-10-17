@@ -92,15 +92,15 @@
   </section>
 
   <section class="a-visit" aria-labelledby="visit-title">
-    <div class="pic"><img src="assets/dealership.png" alt="The Outbound RVs dealership at 58B Lara Way, Campbellfield" loading="lazy" width="2400" height="1695"></div>
-    <div class="info">
-      <h2 id="visit-title">COME SEE US</h2>
-      <p class="where">We are located at<br><a href="https://maps.app.goo.gl/9Ty1RsjTmtA8RR9E7" target="_blank" rel="noopener" aria-label="58B Lara Way, Campbellfield VIC. Opens Outbound RVs in Google Maps">58B Lara Way,<br>Campbellfield VIC.</a><br>You are welcome to visit us</p>
-      <p class="label">TRADING HOURS :</p>
-      <dl class="hrs">
-        <dt>Mon - Fri</dt><dd>9 am - 5 pm</dd>
-        <dt>Sat</dt><dd>Let us know beforehand by<br>booking an appointment</dd>
-      </dl>
+    <img class="bg" src="assets/dealership.png" alt="The Outbound RVs dealership at 58B Lara Way, Campbellfield" loading="lazy" width="2400" height="1695">
+    <div class="container grid">
+      <div>
+        <h2 id="visit-title">COME SEE US</h2>
+        <p class="addr">Unit 58B Lara Way,<br><a href="https://maps.app.goo.gl/9Ty1RsjTmtA8RR9E7" target="_blank" rel="noopener" aria-label="Campbellfield VIC 3061. Opens Outbound RVs in Google Maps"><svg class="pin" viewBox="5 2 14 20" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>Campbellfield VIC 3061</a></p>
+        <p class="status" data-status><i class="dmd" aria-hidden="true"></i><span></span></p>
+        <div class="cta"><a class="btn on-dark" href="https://maps.app.goo.gl/9Ty1RsjTmtA8RR9E7" target="_blank" rel="noopener">Get directions</a><a class="btn ghost on-dark" href="contact.html#contact">Book a Saturday visit</a></div>
+      </div>
+      <aside class="week" aria-label="Trading hours"><h3>This week</h3><ul data-week></ul></aside>
     </div>
   </section>
 
@@ -291,6 +291,28 @@
     wrap.addEventListener('focusin', e => { if (e.target.matches(':focus-visible')) { paused = true; restart(); } }); // keyboard focus only; a click keeps it moving
     wrap.addEventListener('focusout', () => { paused = false; restart(); });
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; restart(); }).observe(wrap);
+  })();
+  // Come see us: open or closed, worked out in Melbourne time from the real trading hours (Mon-Fri 9-5, Sat by appointment, Sun closed).
+  (() => {
+    const DAYS = [['Mon', '9 am - 5 pm'], ['Tue', '9 am - 5 pm'], ['Wed', '9 am - 5 pm'], ['Thu', '9 am - 5 pm'], ['Fri', '9 am - 5 pm'], ['Sat', 'By appointment'], ['Sun', 'Closed']];
+    const status = document.querySelector('[data-status]'), week = document.querySelector('[data-week]');
+    if (!status || !week) return;
+    const clock = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Melbourne', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' });
+    const render = () => {
+      const p = Object.fromEntries(clock.formatToParts(new Date()).map(x => [x.type, x.value]));
+      const d = DAYS.findIndex(([n]) => n === p.weekday), m = +p.hour * 60 + +p.minute;
+      let text, open = false;
+      if (d <= 4) {
+        if (m >= 540 && m < 1020) { open = true; text = 'Open now · closes 5 pm'; }
+        else if (m < 540) text = 'Closed · opens today at 9 am';
+        else text = d === 4 ? 'Closed · opens Monday at 9 am' : 'Closed · opens tomorrow at 9 am';
+      } else if (d === 5) text = 'Saturday · by appointment';
+      else text = 'Closed today · opens Monday at 9 am';
+      status.classList.toggle('open', open);
+      status.querySelector('span').textContent = text;
+      week.innerHTML = DAYS.map(([n, hrs], i) => `<li class="${i === d ? 'today' : ''}"><b>${n}</b><span>${hrs}</span></li>`).join('');
+    };
+    render(); setInterval(render, 60000);
   })();
 </script>
 </body>
