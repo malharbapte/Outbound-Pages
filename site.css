@@ -245,8 +245,8 @@ h1, h2, h3, p { margin: 0; }
 /* ---- Come see us ------------------------------------------------------------------------- */
 /* Full-bleed dealership photo at its own proportion (never so short that the overlay text collides). */
 .visit { position: relative; overflow: hidden; padding-bottom: 4.6rem; }
-.visit-photo { position: relative; margin-top: 1.9vw; aspect-ratio: 2400 / 1695; min-height: 30rem; }
-.visit-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+.visit-photo { position: relative; margin-top: 1.9vw; aspect-ratio: 2376 / 1230; min-height: 30rem; }   /* cropped to the artboard's 2376 x 1230 window: the photo from about 9.6% down to 83%, so the empty sky above and the extra floor below are cut */
+.visit-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 36%; }
 .visit-photo .container { position: relative; height: 100%; }
 .visit-photo .section-title { position: absolute; top: calc(13.3% - 2.9rem); color: #000; }          /* artboard baseline at 13.3% */
 .visit-cta { position: absolute; left: 0; bottom: 3.9%; }                                            /* button ends at 96.1% */
