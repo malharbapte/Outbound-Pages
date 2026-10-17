@@ -21,6 +21,7 @@
 .c-address span { color: var(--olive); }
 .c-address a { color: inherit; text-decoration: none; transition: color .25s ease; }
 .c-address a:hover { color: var(--olive); }
+.c-address .pin { display: inline-block; height: .81em; width: auto; margin-right: .2em; vertical-align: baseline; }
 .c-address a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
 .c-hours { margin-top: calc(94 * var(--u)); }
 .c-hours .label { font: 700 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: #000; }
