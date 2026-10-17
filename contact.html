@@ -91,22 +91,11 @@
   </section>
 
   <section class="stories c-stories" aria-labelledby="stories-title">
-    <svg class="cluster" viewBox="4587.31 13072.67 257.79 99.62" aria-hidden="true"><rect fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" rx="3" transform="rotate(45 4675.125 13122.485)"/><rect fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" rx="3" transform="rotate(45 4714.925 13122.485)"/><polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/><polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/><polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/><rect fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" rx="3" transform="rotate(45 4776.305 13122.475)"/></svg>
+    <svg class="cluster diamond-host" viewBox="4587.31 13072.67 257.79 99.62" aria-hidden="true"><rect class="c-dmd" fill="#f4f1ea" x="4639.97" y="13087.33" width="70.31" height="70.31" rx="3" style="--d:.15s"/><rect class="c-dmd" fill="#8b9b4d" x="4679.77" y="13087.33" width="70.31" height="70.31" rx="3" style="--d:.3s"/><polygon fill="#6b7a32" points="4845.1 13122.48 4795.3 13072.67 4776.3 13091.67 4807.11 13122.48 4776.3 13153.29 4795.3 13172.29 4845.1 13122.48"/><polygon fill="#6b7a32" points="4587.31 13122.48 4637.12 13072.67 4656.11 13091.67 4625.3 13122.48 4656.11 13153.29 4637.12 13172.29 4587.31 13122.48"/><polygon fill="#f4f1ea" points="4776.3 13091.67 4757.31 13072.67 4707.5 13122.48 4757.31 13172.29 4776.3 13153.29 4745.49 13122.48 4776.3 13091.67"/><rect class="c-dmd" fill="#8b9b4d" x="4754.52" y="13100.69" width="43.57" height="43.57" rx="3" style="--d:.45s"/></svg>
     <h2 class="section-title" id="stories-title">STORIES FROM OUR&nbsp;CUSTOMERS</h2>
-    <div class="story-tiles c-tiles">
+    <div class="story-tiles">
       <svg class="stories-chev" viewBox="5561.6 13112.28 481.31 696.85" aria-hidden="true"><polygon fill="#6b7a32" points="5561.6 13460.7 5910.03 13809.13 6042.91 13676.24 5827.37 13460.7 6042.91 13245.16 5910.03 13112.28 5561.6 13460.7"/></svg>
-      <div class="tile edge"><div class="ph">Image to be added.</div></div>
-      <div class="tile">
-        <figure class="tile-layer story shown">
-          <svg class="quote-dmd" viewBox="4319.93 13460.7 262.06 262.06" aria-hidden="true"><path fill="#d5aca9" d="M4450.96,13460.7l-131.03,131.03,131.03,131.03,131.03-131.03-131.03-131.03ZM4450.84,13690.64l-98.8-98.8,98.8-98.8,98.8,98.8-98.8,98.8Z"/></svg>
-          <blockquote>Wonderland is ....</blockquote>
-          <figcaption>Kevin Smalley</figcaption>
-        </figure>
-      </div>
-      <div class="tile olive"></div>
-      <div class="tile olive"></div>
-      <div class="tile edge"><div class="ph">Image to be added.</div></div>
-      <div class="tile edge"><div class="ph">Image to be added.</div></div>
+      <!-- 8 tiles, filled and shuffled by the script below. -->
     </div>
   </section>
 
@@ -227,6 +216,111 @@
     if (e.isIntersecting) { e.target.classList.add('in-view'); seen.unobserve(e.target); }
   }), { threshold: .5 });
   document.querySelectorAll('.diamond-host').forEach(el => seen.observe(el));
+  // Stories tiles: 8 squares showing 1 review, 3 patterned tiles and 4 photos. Every 4.5 seconds two tiles swap at the
+  // same moment, revealed by a ripple of small diamonds in the new tile's colour. Rules: patterned tiles never sit side by
+  // side or stacked (corners are fine) and never swap with each other; photos never swap with photos; the review stays
+  // for 4 turns, then moves on the next one.
+  (() => {
+    const box = document.querySelector('.story-tiles');
+    if (!box) return;
+    const REVIEW = { quote: 'Review text starts here. A few lines from a customer about their caravan and the Outbound&nbsp;team.', name: 'Kevin Smalley' };
+    // Stand-in photos until the customer photos arrive.
+    const PHOTOS = ['range-amaroo.jpg', 'range-hornet.jpg', 'range-solara.jpg', 'range-xtr.jpg', 'hero.jpg', 'dealership.png'];
+    const PATTERNS = {
+      chevrons: { bg: '#6b7a32', fg: '#8b9b4d', op: 1, w: .16, h: .2, vb: '0 0 160 200',   // Offset chevrons, Deep Olive
+        art: c => `<polygon fill="${c}" points="68.8 49.8 19 0 0 19 30.8 49.8 0 80.6 19 99.6"/><polygon fill="${c}" points="148.8 149.8 99 100 80 119 110.8 149.8 80 180.6 99 199.6"/>` },
+      lattice: { bg: '#284b63', fg: '#f4f1ea', op: .2, w: .125, h: .125, vb: '0 0 100 100', // Diamond lattice, Blue
+        art: c => [[50, 50], [0, 0], [100, 0], [0, 100], [100, 100]].map(([x, y]) => `<rect fill="${c}" x="${x - 15}" y="${y - 15}" width="30" height="30" rx="4" transform="rotate(45 ${x} ${y})"/>`).join('') },
+      argyle: { bg: '#d5aca9', fg: '#8e6673', op: .55, w: .25, h: .25, vb: '0 0 100 100',   // Stitched argyle, Rose
+        art: c => `<polygon fill="${c}" opacity=".45" points="50 6 94 50 50 94 6 50"/><g stroke="${c}" stroke-width="3" stroke-dasharray="7 6"><line x1="0" y1="0" x2="100" y2="100"/><line x1="100" y1="0" x2="0" y2="100"/></g>` },
+    };
+    const COLS = 4, COUNT = 8, GAP = 4500, REVIEW_STAYS = 4;
+    const tiles = Array.from({ length: COUNT }, () => { const t = document.createElement('div'); t.className = 'tile'; box.append(t); return t; });
+
+    // Average colour of each photo, so the diamonds that reveal it match it.
+    const toneOf = {};
+    PHOTOS.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement('canvas'); c.width = c.height = 6;
+        const g = c.getContext('2d'); g.drawImage(img, 0, 0, 6, 6);
+        const d = g.getImageData(0, 0, 6, 6).data; let r = 0, gr = 0, b = 0;
+        for (let i = 0; i < d.length; i += 4) { r += d[i]; gr += d[i + 1]; b += d[i + 2]; }
+        toneOf[src] = `rgb(${r / 36 | 0},${gr / 36 | 0},${b / 36 | 0})`;
+      };
+      img.src = 'assets/' + src;
+    });
+
+    let uid = 0, roles, photoOf = [];
+    const patterned = r => r in PATTERNS;
+    const patternSvg = p => { const id = 'story-pat-' + (++uid);
+      return `<svg class="pat" aria-hidden="true"><defs><pattern id="${id}" width="${p.w}" height="${p.h}" patternUnits="objectBoundingBox" viewBox="${p.vb}" preserveAspectRatio="none"><g opacity="${p.op}">${p.art(p.fg)}</g></pattern></defs><rect width="100%" height="100%" fill="${p.bg}"/><rect width="100%" height="100%" fill="url(#${id})"/></svg>`; };
+    const layerFor = i => {
+      const role = roles[i], l = document.createElement('div');
+      l.className = 'tile-layer';
+      if (patterned(role)) l.innerHTML = patternSvg(PATTERNS[role]);
+      else if (role === 'photo') l.innerHTML = `<img src="assets/${photoOf[i]}" alt="">`;
+      else {
+        l.classList.add('story');
+        l.innerHTML = `<svg class="quote-dmd" viewBox="4319.93 13460.7 262.06 262.06" aria-hidden="true"><path fill="#d5aca9" d="M4450.96,13460.7l-131.03,131.03,131.03,131.03,131.03-131.03-131.03-131.03ZM4450.84,13690.64l-98.8-98.8,98.8-98.8,98.8,98.8-98.8,98.8Z"/></svg>`
+                    + `<blockquote>${REVIEW.quote}</blockquote><figcaption>${REVIEW.name}</figcaption>`;
+      }
+      return l;
+    };
+    const toneFor = i => patterned(roles[i]) ? PATTERNS[roles[i]].bg : roles[i] === 'photo' ? (toneOf[photoOf[i]] || '#7a736a') : '#f4f1ea';
+
+    // Diamonds ripple out from the top-left corner to cover the tile, the content changes underneath, then they clear.
+    const reveal = async i => {
+      const tile = tiles[i], m = document.createElement('div');
+      m.className = 'tile-mosaic';
+      m.innerHTML = `<i style="background:${toneFor(i)}"></i>`.repeat(25);
+      tile.append(m);
+      const cells = [...m.children], delay = k => ((k % 5) + (k / 5 | 0)) * 45;
+      const run = (from, to) => Promise.all(cells.map((c, k) => c.animate([{ scale: from }, { scale: to }],
+        { duration: 500, delay: delay(k), easing: 'cubic-bezier(.65, 0, .35, 1)', fill: 'forwards' }).finished));
+      await run(0, 1.5);
+      tile.querySelectorAll('.tile-layer').forEach(o => o.remove());
+      const l = layerFor(i); tile.prepend(l);
+      await run(1.5, 0);
+      m.remove();
+      if (l.classList.contains('story')) l.classList.add('shown');
+    };
+
+    const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    const freshPhoto = () => shuffle(PHOTOS.filter(p => !photoOf.some((q, k) => roles[k] === 'photo' && q === p)))[0] || PHOTOS[0];
+    const valid = rs => rs.every((r, i) => !patterned(r) || (!(i % COLS < COLS - 1 && patterned(rs[i + 1])) && !(i < COLS && patterned(rs[i + COLS]))));
+
+    do roles = shuffle(['review', ...Object.keys(PATTERNS), 'photo', 'photo', 'photo', 'photo']); while (!valid(roles));
+    roles.forEach((r, i) => { if (r === 'photo') photoOf[i] = freshPhoto(); });
+    tiles.forEach((t, i) => { const l = layerFor(i); t.append(l); });
+    // The review's outlined square turns into its diamond once the tiles scroll into view.
+    new IntersectionObserver((entries, obs) => entries.forEach(e => {
+      if (e.isIntersecting) { box.querySelector('.story')?.classList.add('shown'); obs.disconnect(); }
+    }), { threshold: .4 }).observe(box);
+
+    let reviewTurns = 0;
+    const swap = () => {
+      const moveReview = reviewTurns >= REVIEW_STAYS;
+      let a, b, next;
+      do {
+        a = Math.random() * COUNT | 0; b = Math.random() * COUNT | 0;
+        next = roles.slice(); [next[a], next[b]] = [next[b], next[a]];
+      } while (a === b || roles[a] === roles[b] || (patterned(roles[a]) && patterned(roles[b]))
+               || (roles[a] === 'review' || roles[b] === 'review') !== moveReview || !valid(next));
+      reviewTurns = moveReview ? 0 : reviewTurns + 1;
+      roles = next;
+      [a, b].forEach(i => { if (roles[i] === 'photo') { photoOf[i] = null; photoOf[i] = freshPhoto(); } });
+      reveal(a); reveal(b);
+    };
+    // Only animate while the tiles are on screen, and not at all for people who prefer reduced motion.
+    let timer = null;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting && !timer) timer = setInterval(swap, GAP);
+        if (!e.isIntersecting && timer) { clearInterval(timer); timer = null; }
+      }).observe(box);
+    }
+  })();
   // What makes us different: one value at a time. The diamonds advance slowly on their own, pause while the pointer or
   // keyboard is on them, and can be clicked to jump to a value. The selected diamond takes that value's colour.
   (() => {

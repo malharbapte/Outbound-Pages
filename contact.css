@@ -37,16 +37,8 @@
 .c-help .tabs label:has(input:checked)::before,
 .c-help .tabs label:has(input:checked) + label::before { opacity: 0; }
 
-/* ---- Stories: the site's cluster, chevron and tiles, three across and two down --------------- */
+/* ---- Stories: the homepage's gallery section, unchanged. Only the gap above it follows this artboard. ---- */
 .c-stories { padding-top: calc(170.3 * var(--u)); }
-.c-stories .section-title { margin: calc(73.1 * var(--u)) auto calc(123.5 * var(--u)); }
-.c-tiles { grid-template-columns: repeat(3, 1fr); }
-.c-tiles figure { margin: 0; }
-.c-tiles .tile.edge { box-shadow: inset 0 0 0 max(1px, calc(1.5 * var(--u))) var(--tyre); }
-.c-tiles .tile.olive { background: var(--olive); }
-.c-tiles .ph { position: absolute; inset: 0; display: grid; place-items: center; font: 400 4.04cqw/1.2 var(--poppins); color: var(--rose-deep); }
-.c-tiles .story blockquote { font-size: 4.04cqw; }
-.c-tiles .story figcaption { font: 400 4.04cqw/1.2 var(--poppins); }
 
 /* ---- We care ---------------------------------------------------------------------------------- */
 .c-care { position: relative; overflow: hidden; height: calc(597.09 * var(--u)); background: var(--rose); color: var(--bone); text-align: center; }
