@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact Us: thirds sample</title>
+<title>Contact Us: layout sample</title>
 <meta name="description" content="Visit Outbound RVs at 58B Lara Way, Campbellfield VIC, or send us your details and our team will be in touch within 48 hours.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +32,15 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
 :root.t-on .faq-cols { grid-template-columns: calc(100% / 3) 1fr; column-gap: 0; }       /* heading in the first third, questions in the other two */
 :root.t-on .faq-aside { padding-right: 3rem; }
 :root.t-on .foot-cols { grid-template-columns: repeat(3, 1fr); }                         /* three equal footer columns */
+
+/* ---- Dark address section: Tyre background, everything that was black set in Bone (html.d-on). Olive stays olive. ---- */
+:root.d-on .c-visit { background: var(--tyre); color: var(--bone); padding-bottom: calc(137 * var(--u)); }
+:root.d-on .c-address,
+:root.d-on .c-hours .label,
+:root.d-on .c-days { color: var(--bone); }
+:root.d-on .c-days dd { color: var(--olive); }                     /* deep olive is too dim on black (4.2:1); olive is 6.5:1 */
+:root.d-on .c-address a:hover { color: var(--bone); }          /* on black, hover lightens instead of darkening */
+:root.d-on .c-note { color: var(--bone); }                      /* the blue note would be unreadable on black */
 
 .t-lines { position: fixed; inset: 0; z-index: 90; pointer-events: none; display: none; }
 .show-lines .t-lines { display: block; }
@@ -420,6 +429,7 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
   <div class="grp" data-key="m"><b>Margins</b><button data-v="now">Now</button><button data-v="eight">8%</button><button data-v="eleven" class="on">11.4%</button><button data-v="none">None</button></div>
   <div class="grp" data-key="t"><b>Thirds</b><button data-v="off">Off</button><button data-v="on" class="on">On</button></div>
   <div class="grp" data-key="l"><b>Lines</b><button data-v="off">Off</button><button data-v="on" class="on">On</button></div>
+  <div class="grp" data-key="d"><b>Dark</b><button data-v="off">Off</button><button data-v="on" class="on">On</button></div>
   <div class="grp" data-key="s"><b>Scale</b><button data-v="1">100%</button><button data-v=".9" class="on">90%</button><button data-v=".85">85%</button><button data-v=".8">80%</button></div>
 </div>
 <script>
@@ -430,6 +440,7 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
       if (key === 'm') { root.classList.toggle('m-now', v === 'now'); root.classList.toggle('m-eight', v === 'eight'); root.classList.toggle('m-none', v === 'none'); }
       else if (key === 't') root.classList.toggle('t-on', v === 'on');
       else if (key === 'l') root.classList.toggle('show-lines', v === 'on');
+      else if (key === 'd') root.classList.toggle('d-on', v === 'on');
       else root.style.setProperty('--s', v);
       document.querySelectorAll(`.grp[data-key="${key}"] button`).forEach(b => b.classList.toggle('on', b.dataset.v === v));
     };
@@ -443,7 +454,7 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
     };
     place(); addEventListener('resize', place);
     document.querySelectorAll('.sample-bar button').forEach(b => b.addEventListener('click', () => requestAnimationFrame(() => requestAnimationFrame(place))));
-    root.classList.add('t-on', 'show-lines');
+    root.classList.add('t-on', 'show-lines', 'd-on');
   })();
 </script>
 </body>
