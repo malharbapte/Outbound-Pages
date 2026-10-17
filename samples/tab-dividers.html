@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form answer dividers: height samples</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  body { background: #fff; }
+  .page { position: relative; width: var(--content); margin: 4rem auto 8rem; }
+  .page > h1 { font: 700 2.4rem/1.1 var(--oswald); }
+  .page > p { margin-top: .6rem; max-width: 46rem; font: 400 1rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+
+  .opt { margin-top: 3rem; }
+  .opt h2 { font: 600 1.15rem/1.2 var(--poppins); }
+  .opt > p { margin-top: .3rem; font: 400 .9rem/1.45 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .demo { margin-top: 1rem; max-width: 39.54rem; }
+  .demo .tabs { margin-top: 0; }
+
+  /* The real form control from site.css. Only the divider between answers differs from one sample to the next:
+     --top / --bottom: how far the line is held in from the top and bottom of an answer (negative runs into the box's padding),
+     --w: its thickness, --o: its strength. The line beside the selected answer fades out in every sample. */
+  .demo .tabs label + label::before { content: ""; position: absolute; left: 0; top: var(--top); bottom: var(--bottom); width: var(--w, 2px);
+    background: var(--warm-grey); opacity: var(--o, .55); transition: opacity .3s ease; }
+  .demo .tabs label:has(input:checked)::before,
+  .demo .tabs label:has(input:checked) + label::before { opacity: 0; }
+
+  .a { --top: 24%; --bottom: 24%; }
+  .b { --top: 12%; --bottom: 12%; }
+  .c { --top: 0;   --bottom: 0; }
+  .d { --top: -.3rem; --bottom: -.3rem; }
+  .e { --top: -.3rem; --bottom: -.3rem; --w: 3px; --o: 1; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Form answer dividers: height samples</h1>
+  <p>The four answers on the Contact page's form, each with a different divider height. Click through the answers in each one: the line beside the selected answer fades away so it never runs down the olive block.</p>
+
+  <section class="opt"><h2>A. Now: about half the height</h2>
+    <p>What is live today.</p><div class="demo a"></div></section>
+  <section class="opt"><h2>B. Taller: about three quarters</h2>
+    <p>Still floats, with a little air above and below.</p><div class="demo b"></div></section>
+  <section class="opt"><h2>C. Full height of an answer</h2>
+    <p>Runs the full height of the answer row, edge to edge of the olive block, but stops short of the outer border.</p><div class="demo c"></div></section>
+  <section class="opt"><h2>D. All the way: touches the outer border</h2>
+    <p>Runs through the box's padding and meets the border at the top and bottom, so the four answers read as separate cells.</p><div class="demo d"></div></section>
+  <section class="opt"><h2>E. All the way, same weight as the border</h2>
+    <p>Like D, but 3px and full strength, matching the box's own border, so it reads as a table grid.</p><div class="demo e"></div></section>
+</div>
+
+<script>
+  // Build each sample from the site's own markup, then give it the same sliding olive block as the form.
+  document.querySelectorAll('.demo').forEach((demo, n) => {
+    demo.innerHTML = `<fieldset class="tabs"><legend class="sr-only">How can we help?</legend><span class="glide" aria-hidden="true"></span>
+      <label><input type="radio" name="intent-${n}" value="tour"><span>Book a factory&nbsp;tour</span></label>
+      <label><input type="radio" name="intent-${n}" value="virtual"><span>A virtual&nbsp;tour</span></label>
+      <label><input type="radio" name="intent-${n}" value="callback" checked><span>Call back</span></label>
+      <label><input type="radio" name="intent-${n}" value="quote"><span>Get a&nbsp;quote</span></label></fieldset>`;
+    const tabs = demo.querySelector('.tabs'), glide = tabs.querySelector('.glide'), radios = [...tabs.querySelectorAll('input')];
+    let at = Math.max(radios.findIndex(r => r.checked), 0), clear = null;
+    glide.style.translate = `${at * 100}% 0`;
+    glide.addEventListener('transitionend', e => { if (e.propertyName === 'translate') tabs.classList.remove('to-left', 'to-right'); });
+    tabs.addEventListener('change', () => {
+      const i = radios.findIndex(r => r.checked);
+      if (i === at) return;
+      tabs.classList.remove('to-left', 'to-right');
+      tabs.classList.add(i > at ? 'to-right' : 'to-left');
+      at = i;
+      glide.style.translate = `${i * 100}% 0`;
+      clearTimeout(clear);
+      clear = setTimeout(() => tabs.classList.remove('to-left', 'to-right'), 600);
+    });
+  });
+</script>
+</body>
+</html>
