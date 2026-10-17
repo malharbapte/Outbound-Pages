@@ -1,10 +1,8 @@
 /* Contact Us page, built 1:1 from "Contact Us.svg" (artboard 2376 wide).
-   Loads after site.css, so nothing on the homepage moves. Header, form, story tiles and footer reuse the site's own
+   Loads after site.css and subpage.css (which holds what Contact shares with the other sub-pages: the We care band, the
+   footer tweaks and the current-page link), so nothing on the homepage moves. Header, form, story tiles and footer reuse the site's own
    components; this file only adds what is new on this page.
    1u = one artboard unit = .03788rem, the same scale site.css uses. Numbers below are the SVG's own coordinates. */
-
-.cpage { --u: .03788rem; }
-.nav a[aria-current="page"] { color: var(--olive); font-weight: 700; }
 
 /* ---- Hero: the dealership photo, cropped to the artboard's 2376 x 1230 window. The SVG also carries an Amaroo photo
    underneath, but the dealership image is opaque and covers it completely, so it is left out. Offsets are percentages
@@ -41,24 +39,6 @@
 /* ---- Stories: the homepage's gallery section, unchanged. Only the gap above it follows this artboard. ---- */
 .c-stories { padding-top: calc(170.3 * var(--u)); }
 
-/* ---- We care ---------------------------------------------------------------------------------- */
-.c-care { position: relative; overflow: hidden; height: calc(597.09 * var(--u)); background: var(--rose); color: var(--bone); text-align: center; }
-.c-care .chev { position: absolute; width: calc(489.4 * var(--u)); height: calc(729 * var(--u)); overflow: visible; pointer-events: none; }   /* the rounded tips bulge a little past the path's corner points, so the box must not clip them */
-.c-care .chev-l { left: calc(-203.5 * var(--u)); top: calc(-251 * var(--u)); }
-.c-care .chev-r { right: calc(-228.12 * var(--u)); top: calc(64.4 * var(--u)); }
-.c-care .dmd { position: absolute; left: 50%; top: calc(212.4 * var(--u)); width: calc(140.67 * var(--u)); height: calc(140.67 * var(--u)); translate: -50% -50%; rotate: 45deg; border-radius: calc(33.79 * var(--u)); background: var(--rose-deep); }
-.c-care h2 { position: absolute; left: 0; right: 0; top: calc(157.5 * var(--u)); font: 600 calc(79.65 * var(--u))/1.2 var(--poppins); }
-.c-care p { position: absolute; left: 50%; top: calc(341.7 * var(--u)); width: calc(1700 * var(--u)); translate: -50% 0; font: 500 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
-
 /* ---- How we stand apart: the homepage's "What makes us different" section, with this page's heading. Only the gap above
    it follows this artboard. ---- */
 .cpage .different { padding-top: calc(145.2 * var(--u)); }
-
-/* ---- Footer: this artboard's footer is a little more compact than the homepage's, and its logo keeps its shape ---- */
-.cpage .site-footer { padding-bottom: calc(51.7 * var(--u)); }
-.cpage .foot-logo { margin-top: calc(41.2 * var(--u)); }
-.cpage .foot-logo img { width: 100%; height: auto; }
-.cpage .foot-legal { margin-top: calc(38.8 * var(--u)); }
-.cpage .foot-find .foot-text { margin-top: calc(17.8 * var(--u)); }
-.cpage .foot-label-2 { margin-top: calc(26.3 * var(--u)); }
-

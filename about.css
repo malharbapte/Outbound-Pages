@@ -1,0 +1,48 @@
+/* About Us page, built from "About Us.svg" (artboard 2376 wide).
+   Loads after site.css and subpage.css (the We care band, footer tweaks and current-page link shared with Contact).
+   The header, the "What sets us apart" section, the stories gallery and the footer are the site's own components.
+   1u = one artboard unit = .03788rem. Numbers below are the SVG's own coordinates, and every edge sits on the site
+   standard: the content column (11.4% margins) and thirds of it. */
+
+/* ---- Hero: the Amaroo photo, already cropped to the artboard's 2376 x 1736 window, with a dark fade at the bottom for the
+   words. The gradient is the SVG's own (Tyre-grey at the bottom to white at the top, multiplied over the photo). ---- */
+.a-hero { position: relative; overflow: hidden; aspect-ratio: 2376 / 1735.8; background: #000; }
+.a-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.a-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 42.47%; pointer-events: none;
+                 background: linear-gradient(to top, #231f20 3%, #fff 100%); mix-blend-mode: multiply; }
+.a-hero .container { position: absolute; left: 0; right: 0; bottom: calc(96.5 * var(--u)); z-index: 2; }
+.a-hero h1 { font: 700 calc(84 * var(--u))/calc(100.8 * var(--u)) var(--oswald); color: var(--bone); }
+.a-hero h1 span { color: var(--olive); }
+.a-hero p { margin-top: calc(52 * var(--u)); font: 400 calc(48 * var(--u))/calc(57.6 * var(--u)) var(--poppins); color: var(--rose); }
+
+/* ---- Experts of premium caravanning ---------------------------------------------------------- */
+.a-experts { padding: calc(153.1 * var(--u)) 0 calc(156.5 * var(--u)); }
+.a-experts h2 { font: 700 calc(84 * var(--u))/1.1 var(--oswald); color: #000; }
+.a-experts p { margin-top: calc(61.6 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--deep-olive); text-wrap: pretty; }
+
+/* ---- Black band: the line in the first third, the photo from the first third line to the screen's right edge ---- */
+.a-band { display: grid; grid-template-columns: var(--margin) calc((100% - 2 * var(--margin)) / 3) 1fr; min-height: calc(866.05 * var(--u)); background: var(--tyre); }
+.a-band .txt { grid-column: 2; display: flex; align-items: center; padding-right: 1.33rem; }
+.a-band h2 { font: 700 calc(60 * var(--u))/calc(72 * var(--u)) var(--oswald); color: var(--bone); }
+.a-band .pic { grid-column: 3; position: relative; overflow: hidden; }
+.a-band .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- What sets us apart: the homepage section; only the gap above it follows this artboard ---- */
+.apage .different { padding-top: calc(127.7 * var(--u)); }
+
+/* ---- Come see us: photo from the left edge to just short of the second third line, the words on that line ---- */
+.a-visit { display: grid; min-height: calc(869.3 * var(--u)); background: var(--tyre); color: var(--bone);
+           grid-template-columns: calc(var(--margin) + (100% - 2 * var(--margin)) * 2 / 3 - 52 * var(--u)) calc(52 * var(--u)) 1fr var(--margin); }
+.a-visit .pic { position: relative; overflow: hidden; }
+.a-visit .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+.a-visit .info { grid-column: 3; padding: calc(90.5 * var(--u)) 0 calc(80 * var(--u)); }
+.a-visit h2 { font: 700 calc(84 * var(--u))/1.1 var(--oswald); }
+.a-visit .where { margin-top: calc(44.5 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
+.a-visit .where a { color: var(--olive); text-decoration: none; transition: color .25s ease; }
+.a-visit .where a:hover { color: var(--bone); }
+.a-visit .where a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+.a-visit .label { margin-top: calc(46.9 * var(--u)); font: 700 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
+.a-visit .hrs { margin: calc(28.3 * var(--u)) 0 0; font: 400 calc(36 * var(--u))/calc(48.3 * var(--u)) var(--poppins); }
+.a-visit .hrs dt { font-weight: 600; color: var(--olive); }
+.a-visit .hrs dd { margin: 0; }
+.a-visit .hrs dt + dd + dt { margin-top: calc(25.8 * var(--u)); }
