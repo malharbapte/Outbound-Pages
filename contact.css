@@ -32,6 +32,10 @@
 /* ---- Form: the site's own form, with this page's heading ------------------------------------- */
 .c-help { padding-top: calc(168.4 * var(--u)); }
 .c-help .contact-cols { margin-top: 2.91rem; }
+/* Thin dividers between the four answers. A line fades out beside the selected answer, so it never runs down the olive block's edge. */
+.c-help .tabs label + label::before { content: ""; position: absolute; left: 0; top: 24%; bottom: 24%; width: 2px; background: var(--warm-grey); opacity: .55; transition: opacity .3s ease; }
+.c-help .tabs label:has(input:checked)::before,
+.c-help .tabs label:has(input:checked) + label::before { opacity: 0; }
 
 /* ---- Stories: the site's cluster, chevron and tiles, three across and two down --------------- */
 .c-stories { padding-top: calc(170.3 * var(--u)); }
