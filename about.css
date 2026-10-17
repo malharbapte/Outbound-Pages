@@ -4,14 +4,15 @@
    1u = one artboard unit = .03788rem. Numbers below are the SVG's own coordinates, and every edge sits on the site
    standard: the content column (11.4% margins) and thirds of it. */
 
-/* ---- Hero: the Amaroo photo, already cropped to the artboard's 2376 x 1736 window, with a dark fade at the bottom for the
-   words. The gradient is the SVG's own (Tyre-grey at the bottom to white at the top, multiplied over the photo). ---- */
+/* ---- Hero: the Amaroo photo, cropped to the artboard's window, with a black fade under the words so they stay legible. ---- */
 /* The hero is exactly one screen under the header, so the photo and the headline are all there is on arrival. Never taller than the artboard's
    own proportion, never so short the words don't fit. The photo is anchored so the sky is cropped off the top and the horizon sits just under it. */
 .a-hero { position: relative; overflow: hidden; height: min(calc(100svh - var(--header-h)), calc(1735.8 * var(--u))); min-height: calc(780 * var(--u)); background: #000; }
 .a-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 66%; }
-.a-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 42.47%; pointer-events: none;
-                 background: linear-gradient(to top, #231f20 3%, #fff 100%); mix-blend-mode: multiply; }
+.a-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: min(100%, calc(980 * var(--u))); pointer-events: none;
+                 /* A black fade sized to the words, not to the picture: darkest under the headline and subtitle (about the bottom 62% of it),
+                    easing out above so the caravan is untouched. */
+                 background: linear-gradient(to top, rgba(11, 10, 7, .92) 0%, rgba(11, 10, 7, .88) 45%, rgba(11, 10, 7, .78) 62%, rgba(11, 10, 7, .42) 80%, rgba(11, 10, 7, 0) 100%); }
 .a-hero .container { position: absolute; left: 0; right: 0; bottom: calc(96.5 * var(--u)); z-index: 2; }
 .a-hero h1 { font: 700 calc(84 * var(--u))/calc(100.8 * var(--u)) var(--oswald); color: var(--bone); }
 .a-hero h1 span { color: var(--olive); }
