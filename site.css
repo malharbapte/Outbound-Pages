@@ -357,10 +357,6 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
 .bs-desc { position: absolute; left: 1.97rem; top: 10.98rem; width: 32.58rem; font: 400 1.21rem/1.59rem var(--poppins); color: var(--tyre); text-wrap: pretty;
            opacity: 0; transform: translateY(.6rem); transition: opacity .3s ease, transform .3s ease; }
 .bs-item.on .bs-desc { opacity: 1; transform: none; transition: opacity .5s ease .4s, transform .6s var(--ease) .4s; }
-/* Chevrons at 40%, pinned to the screen edges: grey on the left (centred on the section's bottom edge), olive top right. */
-.bs-chev { position: absolute; z-index: 4; opacity: .4; pointer-events: none; }
-.bs-chev-left { left: calc(-147.01 * var(--u)); top: calc(100% - 348.43 * var(--u)); width: calc(481.31 * var(--u)); mix-blend-mode: multiply; }
-.bs-chev-right { right: calc(-239.66 * var(--u)); top: 0; width: calc(535.15 * var(--u)); }
 
 /* ---- Stories from our customers --------------------------------------------------------- */
 .stories { position: relative; overflow-x: clip; padding-top: 3.07rem; --u: .03788rem; }
