@@ -18,9 +18,8 @@
 /* ---- Where we are, and when ------------------------------------------------------------------ */
 .c-visit { padding-top: calc(137 * var(--u)); }
 .c-address { font: 700 calc(84 * var(--u))/calc(100.8 * var(--u)) var(--oswald); color: #000; }
-.c-address span { color: var(--olive); }
-.c-address a { color: inherit; text-decoration: none; transition: color .25s ease; }
-.c-address a:hover { color: var(--olive); }
+.c-address a { color: var(--olive); text-decoration: none; transition: color .25s ease; }
+.c-address a:hover { color: var(--deep-olive); }
 .c-address .pin { display: inline-block; height: .81em; width: auto; margin-right: .2em; vertical-align: baseline; }
 .c-address a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
 .c-hours { margin-top: calc(94 * var(--u)); }
