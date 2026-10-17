@@ -1,0 +1,80 @@
+/* Contact Us page, built 1:1 from "Contact Us.svg" (artboard 2376 wide).
+   Loads after site.css, so nothing on the homepage moves. Header, form, story tiles and footer reuse the site's own
+   components; this file only adds what is new on this page.
+   1u = one artboard unit = .03788rem, the same scale site.css uses. Numbers below are the SVG's own coordinates. */
+
+.cpage { --u: .03788rem; }
+.nav a[aria-current="page"] { color: var(--olive); font-weight: 700; }
+
+/* ---- Hero: the dealership photo, cropped to the artboard's 2376 x 1230 window. The SVG also carries an Amaroo photo
+   underneath, but the dealership image is opaque and covers it completely, so it is left out. Offsets are percentages
+   of that window, so the composition holds at any width. */
+.c-hero { position: relative; overflow: hidden; aspect-ratio: 2376 / 1230; background: #b9c6d2; }
+.c-hero img { position: absolute; max-width: none; height: auto; }
+.c-hero .dealership { left: -0.318%; top: -13.26%; width: 100.926%; }
+.c-hero .container { position: relative; height: 100%; }
+.c-hero h1 { position: absolute; left: 0; bottom: calc(171.6 * var(--u)); font: 700 calc(154.12 * var(--u))/1 var(--oswald); color: #fff; }
+
+/* ---- Where we are, and when ------------------------------------------------------------------ */
+.c-visit { padding-top: calc(137 * var(--u)); }
+.c-address { font: 700 calc(84 * var(--u))/calc(100.8 * var(--u)) var(--oswald); color: #000; }
+.c-address span { color: var(--olive); }
+.c-hours { margin-top: calc(94 * var(--u)); }
+.c-hours .label { font: 700 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: #000; }
+.c-days { margin: calc(34 * var(--u)) 0 0; display: grid; grid-template-columns: calc(540 * var(--u)) 1fr; font: 600 calc(36 * var(--u))/calc(48.4 * var(--u)) var(--poppins); color: #000; }
+.c-days dd { margin: 0; font-weight: 400; color: var(--deep-olive); }
+.c-note { position: relative; margin-top: calc(57.4 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--blue); }
+.c-note .dmd { position: absolute; left: calc(-85.54 * var(--u)); top: 50%; width: calc(50.99 * var(--u)); height: calc(50.99 * var(--u)); translate: 0 -50%; rotate: 45deg; background: var(--blue); }
+
+/* ---- Form: the site's own form, with this page's heading ------------------------------------- */
+.c-help { padding-top: calc(168.4 * var(--u)); }
+.c-help .contact-cols { margin-top: 2.91rem; }
+
+/* ---- Stories: the site's cluster, chevron and tiles, three across and two down --------------- */
+.c-stories { padding-top: calc(170.3 * var(--u)); }
+.c-stories .section-title { margin: calc(73.1 * var(--u)) auto calc(123.5 * var(--u)); }
+.c-tiles { grid-template-columns: repeat(3, 1fr); }
+.c-tiles figure { margin: 0; }
+.c-tiles .tile.edge { box-shadow: inset 0 0 0 max(1px, calc(1.5 * var(--u))) var(--tyre); }
+.c-tiles .tile.olive { background: var(--olive); }
+.c-tiles .ph { position: absolute; inset: 0; display: grid; place-items: center; font: 400 4.04cqw/1.2 var(--poppins); color: var(--rose-deep); }
+.c-tiles .story blockquote { font-size: 4.04cqw; }
+.c-tiles .story figcaption { font: 400 4.04cqw/1.2 var(--poppins); }
+
+/* ---- We care ---------------------------------------------------------------------------------- */
+.c-care { position: relative; overflow: hidden; height: calc(597.09 * var(--u)); background: var(--rose); color: var(--bone); text-align: center; }
+.c-care .chev { position: absolute; width: calc(489.4 * var(--u)); height: calc(729 * var(--u)); pointer-events: none; }
+.c-care .chev-l { left: calc(-203.5 * var(--u)); top: calc(-251 * var(--u)); }
+.c-care .chev-r { right: calc(-228.12 * var(--u)); top: calc(64.4 * var(--u)); }
+.c-care .dmd { position: absolute; left: 50%; top: calc(212.4 * var(--u)); width: calc(140.67 * var(--u)); height: calc(140.67 * var(--u)); translate: -50% -50%; rotate: 45deg; border-radius: calc(33.79 * var(--u)); background: var(--rose-deep); }
+.c-care h2 { position: absolute; left: 0; right: 0; top: calc(157.5 * var(--u)); font: 600 calc(79.65 * var(--u))/1.2 var(--poppins); }
+.c-care p { position: absolute; left: 50%; top: calc(341.7 * var(--u)); width: calc(1700 * var(--u)); translate: -50% 0; font: 500 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
+
+/* ---- How we stand apart ----------------------------------------------------------------------- */
+.c-apart { padding-top: calc(145.2 * var(--u)); }
+.c-apart .sub { margin-top: calc(91.5 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: #000; }
+.c-track { position: relative; height: calc(80 * var(--u)); margin-top: calc(72.1 * var(--u)); }
+.c-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: calc(4 * var(--u)); translate: 0 -50%; background: var(--deep-olive); }
+.c-track i { position: absolute; top: 50%; left: var(--x); width: calc(63.04 * var(--u)); height: calc(63.04 * var(--u)); translate: -50% -50%; rotate: 45deg; border: calc(4 * var(--u)) solid var(--olive); background: var(--bone); }
+.c-track i:first-child { background: var(--olive); }
+.c-values { margin-top: calc(69.6 * var(--u)); display: grid; grid-template-columns: calc(502 * var(--u)) 1fr; color: #000; }
+.c-values h3 { min-height: calc(86.4 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
+.c-values p { margin-top: calc(16.5 * var(--u)); font: 400 calc(24 * var(--u))/calc(28.8 * var(--u)) var(--poppins); }
+.c-more { display: block; margin-top: calc(80.8 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--deep-olive); text-decoration: none; }
+
+/* ---- Footer: this artboard's footer is a little more compact than the homepage's, and its logo keeps its shape ---- */
+.cpage .site-footer { padding-bottom: calc(51.7 * var(--u)); }
+.cpage .foot-logo { margin-top: calc(41.2 * var(--u)); }
+.cpage .foot-logo img { width: 100%; height: auto; }
+.cpage .foot-legal { margin-top: calc(38.8 * var(--u)); }
+.cpage .foot-find .foot-text { margin-top: calc(17.8 * var(--u)); }
+.cpage .foot-label-2 { margin-top: calc(26.3 * var(--u)); }
+
+/* ---- FAQ -------------------------------------------------------------------------------------- */
+.c-faq { padding: calc(186.8 * var(--u)) 0 calc(95.1 * var(--u)); }
+.c-faq-list { margin-top: calc(80.3 * var(--u)); }
+.c-faq-list details + details { margin-top: calc(26 * var(--u)); }
+.c-faq-list summary { list-style: none; cursor: pointer; font: 400 calc(32 * var(--u))/calc(48 * var(--u)) var(--poppins); color: var(--rose-deep); }
+.c-faq-list summary::-webkit-details-marker { display: none; }
+.c-faq-list summary:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+.c-faq-list .ans { margin-top: calc(17.9 * var(--u)); min-height: calc(269.13 * var(--u)); padding: calc(25.9 * var(--u)) calc(34 * var(--u)); background: var(--olive); color: var(--bone); font: 400 calc(32 * var(--u))/1.4 var(--poppins); }
