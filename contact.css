@@ -26,6 +26,7 @@
 .c-hours .label { font: 700 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: #000; }
 .c-days { margin: calc(34 * var(--u)) 0 0; display: grid; grid-template-columns: calc(540 * var(--u)) 1fr; font: 600 calc(36 * var(--u))/calc(48.4 * var(--u)) var(--poppins); color: #000; }
 .c-days dd { margin: 0; font-weight: 400; color: var(--deep-olive); }
+@media (min-width: 861px) { .c-days { grid-template-columns: 1fr 2fr; } }   /* Sat starts on the first third line */
 .c-note { position: relative; margin-top: calc(57.4 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--blue); }
 .c-note .dmd { position: absolute; left: calc(-85.54 * var(--u)); top: 50%; width: calc(50.99 * var(--u)); height: calc(50.99 * var(--u)); translate: 0 -50%; rotate: 45deg; background: var(--blue); }
 
