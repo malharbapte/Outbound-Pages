@@ -13,12 +13,13 @@
 <style>
 /* ---- SAMPLE ONLY: the Contact Us page with its side margins removed and everything scaled. ----
    --s scales the whole page (type, spacing, shapes, all of it, since the site is built in rem).
-   --g is the margin on each side, as a share of the screen width (8% by default, measured from the mock-up); "now" is the live page
-   (60rem, centred) and "none" runs edge to edge. */
-:root { --s: .9; --g: 8%; --content: calc(100% - 2 * var(--g)); }
+   --g is the margin on each side, as a share of the screen width: 11.4% by default (the 227px of 2000px marked on the screenshot),
+   8% as the tighter option; "now" is the live page (60rem, centred) and "none" runs edge to edge. */
+:root { --s: .9; --g: 11.4%; --content: calc(100% - 2 * var(--g)); }
 html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
 .cpage { overflow-x: clip; }   /* with no margin, the FAQ's turning diamonds touch the screen edge */
 :root.m-now { --content: min(100% - 40px, 60rem); }
+:root.m-eight { --g: 8%; }
 :root.m-none { --g: 0px; }
 
 .sample-bar { position: fixed; left: 14px; bottom: 14px; z-index: 100; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
@@ -400,7 +401,7 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
   })();
 </script>
 <div class="sample-bar" role="group" aria-label="Sample controls">
-  <div class="grp" data-key="m"><b>Margins</b><button data-v="now">Now</button><button data-v="eight" class="on">8%</button><button data-v="none">None</button></div>
+  <div class="grp" data-key="m"><b>Margins</b><button data-v="now">Now</button><button data-v="eight">8%</button><button data-v="eleven" class="on">11.4%</button><button data-v="none">None</button></div>
   <div class="grp" data-key="s"><b>Scale</b><button data-v="1">100%</button><button data-v=".9" class="on">90%</button><button data-v=".85">85%</button><button data-v=".8">80%</button></div>
 </div>
 <script>
@@ -408,7 +409,7 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
   (() => {
     const root = document.documentElement;
     const set = (key, v) => {
-      if (key === 'm') { root.classList.toggle('m-now', v === 'now'); root.classList.toggle('m-none', v === 'none'); }
+      if (key === 'm') { root.classList.toggle('m-now', v === 'now'); root.classList.toggle('m-eight', v === 'eight'); root.classList.toggle('m-none', v === 'none'); }
       else root.style.setProperty('--s', v);
       document.querySelectorAll(`.grp[data-key="${key}"] button`).forEach(b => b.classList.toggle('on', b.dataset.v === v));
     };
