@@ -507,8 +507,37 @@
       }
       return best;
     };
-    const stops = STEPS.map(s => lenAt(fills[s.path], s.x, s.y));
-    Object.values(fills).forEach(f => { f.total = f.getTotalLength(); f.style.strokeDasharray = f.total; f.style.strokeDashoffset = f.total; });
+    let stops;
+    const measure = () => {
+      stops = STEPS.map(s => lenAt(fills[s.path], s.x, s.y));
+      Object.values(fills).forEach(f => { f.total = f.getTotalLength(); f.style.strokeDasharray = f.total; f.style.strokeDashoffset = f.total; });
+    };
+    measure();
+
+    // Spread: the artboard draws the diagram for a narrower column than the page now uses. On wide screens its horizontal spacing is
+    // stretched (sizes stay put) so the first diamond's left tip sits on the column's left edge and the merge diamond's right tip on
+    // its right edge. Phones keep the original drawing. Coordinates below are the artboard's own (SVG units, 1 unit = 1 artboard unit).
+    const A0 = 3966.34, SIDE = 30.055, TIP = 42.5, MERGE_X = 5463.43, COL_LEFT = 3923.79;   // first diamond centre, half a diamond's side, its half-diagonal (the turned diamond's tip), merge diamond centre, text column's left edge
+    const pathEls = [...stage.querySelectorAll('.j-svg path')];
+    pathEls.forEach(p => { p.dataset.d0 = p.getAttribute('d'); });
+    diamonds.forEach(d => { if (d) d.dataset.x0 = d.getAttribute('x'); });
+    panels.forEach(p => { p.dataset.x0 = p.dataset.x; });
+    const spread = () => {
+      const wide = matchMedia('(min-width: 861px)').matches;
+      const s = parseFloat(stage.style.getPropertyValue('--s')) || 1;
+      const colW = document.querySelector('.site-header .container').getBoundingClientRect().width;
+      const uPx = .03788 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const k = wide ? Math.max(1, (colW / (uPx * s) - 2 * TIP) / (MERGE_X - A0)) : 1;   // never squeezed, only spread; the tips of the first and last diamonds land on the column's edges
+      const A = wide ? COL_LEFT + TIP : A0;
+      const mx = x => A + (x - A0) * k;
+      pathEls.forEach(p => p.setAttribute('d', p.dataset.d0.replace(/([MHC])([^MHC]*)/g, (_, cmd, args) => {
+        const n = args.trim().split(/[\s,]+/).map(Number);
+        const out = cmd === 'H' ? [mx(n[0])] : n.map((v, i) => i % 2 ? v : mx(v));   // only x is stretched
+        return cmd + out.map(v => +v.toFixed(2)).join(' ') + ' ';
+      }).trim()));
+      diamonds.forEach(d => { if (d) d.setAttribute('x', +(mx(+d.dataset.x0 + SIDE) - SIDE).toFixed(2)); });
+      panels.forEach((p, i) => { STEPS[i].x = mx(+p.dataset.x0); });
+    };
 
     let state = 0;
     const render = () => {
@@ -624,8 +653,9 @@
     };
     const loop = () => { watch(); requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
-    addEventListener('resize', () => { fit(); if (locked) snap(); });
-    fit();
+    const relayout = () => { spread(); measure(); render(); };
+    addEventListener('resize', () => { fit(); relayout(); if (locked) snap(); });
+    fit(); relayout();
   })();
   // Stories tiles: 8 squares showing 1 review, 3 patterned tiles and 4 photos. Every 4.5 seconds two tiles swap at the
   // same moment, revealed by a ripple of small diamonds in the new tile's colour. Rules: patterned tiles never sit side by
