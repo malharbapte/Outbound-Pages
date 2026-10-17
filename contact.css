@@ -51,7 +51,7 @@
 .c-care p { position: absolute; left: 50%; top: calc(341.7 * var(--u)); width: calc(1700 * var(--u)); translate: -50% 0; font: 500 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
 
 /* ---- How we stand apart ----------------------------------------------------------------------- */
-.c-apart { padding-top: calc(145.2 * var(--u)); }
+.c-apart { padding-top: calc(145.2 * var(--u)); padding-bottom: 3rem; }
 .c-apart .sub { margin-top: calc(91.5 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: #000; }
 .c-track { position: relative; height: calc(80 * var(--u)); margin-top: calc(72.1 * var(--u)); }
 .c-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: calc(4 * var(--u)); translate: 0 -50%; background: var(--deep-olive); }
@@ -70,11 +70,3 @@
 .cpage .foot-find .foot-text { margin-top: calc(17.8 * var(--u)); }
 .cpage .foot-label-2 { margin-top: calc(26.3 * var(--u)); }
 
-/* ---- FAQ -------------------------------------------------------------------------------------- */
-.c-faq { padding: calc(186.8 * var(--u)) 0 calc(95.1 * var(--u)); }
-.c-faq-list { margin-top: calc(80.3 * var(--u)); }
-.c-faq-list details + details { margin-top: calc(26 * var(--u)); }
-.c-faq-list summary { list-style: none; cursor: pointer; font: 400 calc(32 * var(--u))/calc(48 * var(--u)) var(--poppins); color: var(--rose-deep); }
-.c-faq-list summary::-webkit-details-marker { display: none; }
-.c-faq-list summary:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
-.c-faq-list .ans { margin-top: calc(17.9 * var(--u)); min-height: calc(269.13 * var(--u)); padding: calc(25.9 * var(--u)) calc(34 * var(--u)); background: var(--olive); color: var(--bone); font: 400 calc(32 * var(--u))/1.4 var(--poppins); }

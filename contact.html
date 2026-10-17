@@ -139,13 +139,30 @@
     </div>
   </section>
 
-  <section class="c-faq" aria-labelledby="faq-title">
-    <div class="container">
-      <h2 class="section-title" id="faq-title">FAQ’S</h2>
-      <div class="c-faq-list">
-        <details><summary>How do I tow?</summary><div class="ans">Answer :</div></details>
-        <details><summary>How can I claim warranty form?</summary><div class="ans">Answer :</div></details>
-        <details open><summary>What components are not covered under warranty?</summary><div class="ans">Answer :</div></details>
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="container faq-cols">
+      <div class="faq-aside">
+        <h2 class="section-title" id="faq-title">FAQ’S</h2>
+        <p>Can’t find what you are after? Our team answers questions every day and is happy to&nbsp;help.</p>
+        <a class="btn" href="#contact">Ask us&nbsp;anything</a>
+      </div>
+      <div class="faq-list">
+          <div class="faq-item on">
+            <button class="faq-q" type="button" aria-expanded="true" aria-controls="faq-a0"><span>How do I tow?</span><span class="faq-dmd" aria-hidden="true"></span></button>
+            <div class="faq-answer" id="faq-a0" role="region"><div class="faq-answer-inner"><div class="faq-text">Answer :</div></div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a1"><span>How can I claim warranty?</span><span class="faq-dmd" aria-hidden="true"></span></button>
+            <div class="faq-answer" id="faq-a1" role="region"><div class="faq-answer-inner"><div class="faq-text">Answer :</div></div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a2"><span>What components are not covered under warranty?</span><span class="faq-dmd" aria-hidden="true"></span></button>
+            <div class="faq-answer" id="faq-a2" role="region"><div class="faq-answer-inner"><div class="faq-text">Answer :</div></div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a3"><span>Can I service my caravan with you?</span><span class="faq-dmd" aria-hidden="true"></span></button>
+            <div class="faq-answer" id="faq-a3" role="region"><div class="faq-answer-inner"><div class="faq-text">Answer :</div></div></div>
+          </div>
       </div>
     </div>
   </section>
@@ -216,6 +233,18 @@
       clearTimeout(clear);
       clear = setTimeout(() => tabs.classList.remove('to-left', 'to-right'), 600);
     });
+  })();
+  // FAQ: one answer open at a time, opening and closing at a steady height.
+  (() => {
+    const items = [...document.querySelectorAll('.faq-item')];
+    items.forEach(item => item.querySelector('.faq-q').addEventListener('click', () => {
+      const opening = !item.classList.contains('on');
+      items.forEach(other => {
+        const on = other === item && opening;
+        other.classList.toggle('on', on);
+        other.querySelector('.faq-q').setAttribute('aria-expanded', on);
+      });
+    }));
   })();
 </script>
 </body>
