@@ -50,17 +50,9 @@
 .c-care h2 { position: absolute; left: 0; right: 0; top: calc(157.5 * var(--u)); font: 600 calc(79.65 * var(--u))/1.2 var(--poppins); }
 .c-care p { position: absolute; left: 50%; top: calc(341.7 * var(--u)); width: calc(1700 * var(--u)); translate: -50% 0; font: 500 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
 
-/* ---- How we stand apart ----------------------------------------------------------------------- */
-.c-apart { padding-top: calc(145.2 * var(--u)); padding-bottom: 3rem; }
-.c-apart .sub { margin-top: calc(91.5 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: #000; }
-.c-track { position: relative; height: calc(80 * var(--u)); margin-top: calc(72.1 * var(--u)); }
-.c-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: calc(4 * var(--u)); translate: 0 -50%; background: var(--deep-olive); }
-.c-track i { position: absolute; top: 50%; left: var(--x); width: calc(63.04 * var(--u)); height: calc(63.04 * var(--u)); translate: -50% -50%; rotate: 45deg; border: calc(4 * var(--u)) solid var(--olive); background: var(--bone); }
-.c-track i:first-child { background: var(--olive); }
-.c-values { margin-top: calc(69.6 * var(--u)); display: grid; grid-template-columns: calc(502 * var(--u)) 1fr; color: #000; }
-.c-values h3 { min-height: calc(86.4 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); }
-.c-values p { margin-top: calc(16.5 * var(--u)); font: 400 calc(24 * var(--u))/calc(28.8 * var(--u)) var(--poppins); }
-.c-more { display: block; margin-top: calc(80.8 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--deep-olive); text-decoration: none; }
+/* ---- How we stand apart: the homepage's "What makes us different" section, with this page's heading. Only the gap above
+   it follows this artboard. ---- */
+.cpage .different { padding-top: calc(145.2 * var(--u)); }
 
 /* ---- Footer: this artboard's footer is a little more compact than the homepage's, and its logo keeps its shape ---- */
 .cpage .site-footer { padding-bottom: calc(51.7 * var(--u)); }

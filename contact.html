@@ -118,24 +118,32 @@
     <p>We understand the growing uncertainty in the Caravan industry, with a lot of<br>companies going under. We assure you your money is safe with us. We ensure that by :</p>
   </section>
 
-  <section class="c-apart" aria-labelledby="apart-title">
+  <section class="different" aria-labelledby="different-title">
+    <svg class="diff-chev" viewBox="8484.97 373.13 1191.93 1725.69" aria-hidden="true"><polygon fill="#7a736a" points="8484.97 1235.97 9347.81 2098.82 9676.9 1769.74 9143.13 1235.97 9676.9 702.21 9347.81 373.13 8484.97 1235.97"/></svg>
     <div class="container">
-      <h2 class="section-title" id="apart-title">HOW WE STAND&nbsp;APART?</h2>
-      <p class="sub">We listen first, guide honestly and stay for the journey.</p>
-      <div class="c-track" aria-hidden="true">
-        <i style="--x:2.42%"></i><i style="--x:33.9%"></i><i style="--x:67%"></i><i style="--x:97.2%"></i>
-      </div>
-      <div class="c-values">
-        <div>
-          <h3>Guidance</h3>
-          <p>We take the time to understand your<br>lifestyle, travel plans and needs before<br>helping you find the right fit.</p>
+      <h2 class="section-title" id="different-title">HOW WE STAND&nbsp;APART?</h2>
+      <p class="diff-lede">We listen first, guide honestly and stay for the&nbsp;journey.</p>
+      <div class="values diamond-host">
+        <div class="value-dots" role="tablist" aria-label="What makes us different">
+          <button type="button" role="tab" id="value-tab-0" aria-controls="value-0" aria-selected="true" tabindex="0" style="--c:#8b9b4d"><span class="step-dmd" aria-hidden="true"></span><span class="sr-only">Guidance</span></button>
+          <button type="button" role="tab" id="value-tab-1" aria-controls="value-1" aria-selected="false" tabindex="-1" style="--c:#284b63"><span class="step-dmd" aria-hidden="true"></span><span class="sr-only">Honest Advice, Without Pressure</span></button>
+          <button type="button" role="tab" id="value-tab-2" aria-controls="value-2" aria-selected="false" tabindex="-1" style="--c:#8e6673"><span class="step-dmd" aria-hidden="true"></span><span class="sr-only">Value three</span></button>
+          <button type="button" role="tab" id="value-tab-3" aria-controls="value-3" aria-selected="false" tabindex="-1" style="--c:#ee964b"><span class="step-dmd" aria-hidden="true"></span><span class="sr-only">Value four</span></button>
         </div>
-        <div>
-          <h3>Honest Advice,<br>Without Pressure</h3>
-          <p>Clear recommendations and transparent<br>conversations, always centred on what is<br>right for you.</p>
+        <div class="value-panels">
+          <div class="value on" id="value-0" role="tabpanel" aria-labelledby="value-tab-0"><svg class="value-ic" viewBox="0 0 24 24" aria-hidden="true" style="--c:#8b9b4d"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg><h3>Guidance</h3><p>We take the time to understand your lifestyle, travel plans and needs before helping you find the right&nbsp;fit.</p></div>
+          <div class="value" id="value-1" role="tabpanel" aria-labelledby="value-tab-1" hidden><svg class="value-ic" viewBox="0 0 24 24" aria-hidden="true" style="--c:#284b63"><path d="M21 12a8 8 0 0 1-8 8H8l-4 3v-4.3A8 8 0 1 1 21 12z"/><path d="m8.8 12.2 2.1 2.1 4.3-4.3"/></svg><h3>Honest Advice, Without&nbsp;Pressure</h3><p>Clear recommendations and transparent conversations, always centred on what is right for&nbsp;you.</p></div>
+          <div class="value" id="value-2" role="tabpanel" aria-labelledby="value-tab-2" hidden><svg class="value-ic" viewBox="0 0 24 24" aria-hidden="true" style="--c:#8e6673"><path d="M12 3 21 8v6c0 4-3.6 6.4-9 7-5.4-.6-9-3-9-7V8z"/><path d="m8.8 12.2 2.1 2.1 4.3-4.3"/></svg><h3>Value three</h3><p>Description to be&nbsp;added.</p></div>
+          <div class="value" id="value-3" role="tabpanel" aria-labelledby="value-tab-3" hidden><svg class="value-ic" viewBox="0 0 24 24" aria-hidden="true" style="--c:#ee964b"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg><h3>Value four</h3><p>Description to be&nbsp;added.</p></div>
         </div>
       </div>
-      <a class="c-more" href="#">Know more,<br>About Us.</a>
+      <div class="diff-cta-wrap">
+        <svg class="diff-tris" viewBox="-3 -3 92.6 141" aria-hidden="true">
+          <polygon fill="#8b9b4d" stroke="#8b9b4d" stroke-width="4.6" stroke-linejoin="round" points="0 0, 86.6 67.5, 0 135"/>
+          <polygon fill="#fff" points="0 39.08, 36.47 67.5, 0 95.92"/>
+        </svg>
+        <a class="btn diff-cta" href="#">Know more about&nbsp;us</a>
+      </div>
     </div>
   </section>
 
@@ -214,6 +222,41 @@
   header.querySelectorAll('.nav a').forEach(a => a.addEventListener('click', () => {
     header.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false');
   }));
+  // Diamonds: squares turn into diamonds when their host is half on screen.
+  const seen = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in-view'); seen.unobserve(e.target); }
+  }), { threshold: .5 });
+  document.querySelectorAll('.diamond-host').forEach(el => seen.observe(el));
+  // What makes us different: one value at a time. The diamonds advance slowly on their own, pause while the pointer or
+  // keyboard is on them, and can be clicked to jump to a value. The selected diamond takes that value's colour.
+  (() => {
+    const wrap = document.querySelector('.values');
+    if (!wrap) return;
+    const tabs = [...wrap.querySelectorAll('[role="tab"]')], panels = [...wrap.querySelectorAll('.value')];
+    const STEP = 6500, dots = wrap.querySelector('.value-dots');
+    let current = 0, timer = null, paused = false, visible = false;
+    const show = i => {
+      current = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, k) => { t.setAttribute('aria-selected', k === current); t.tabIndex = k === current ? 0 : -1; });
+      panels.forEach((p, k) => {
+        if (k === current) { p.hidden = false; requestAnimationFrame(() => p.classList.add('on')); }
+        else { p.classList.remove('on'); p.hidden = true; }
+      });
+    };
+    const restart = () => { clearInterval(timer); timer = null;
+      if (visible && !paused && !matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(() => show(current + 1), STEP); };
+    tabs.forEach((t, k) => t.addEventListener('click', () => { show(k); restart(); }));
+    dots.addEventListener('keydown', e => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!d) return;
+      e.preventDefault(); show(current + d); tabs[current].focus(); restart();
+    });
+    // Pause only while the pointer is on the diamonds themselves.
+    dots.addEventListener('pointerenter', () => { paused = true; restart(); });
+    dots.addEventListener('pointerleave', () => { paused = false; restart(); });
+    wrap.addEventListener('focusin', e => { if (e.target.matches(':focus-visible')) { paused = true; restart(); } }); // keyboard focus only; a click keeps it moving
+    wrap.addEventListener('focusout', () => { paused = false; restart(); });
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; restart(); }).observe(wrap);
+  })();
   // Contact form: the olive highlight slides to the chosen answer, leading with a chevron point while it moves.
   (() => {
     const tabs = document.querySelector('.tabs');
