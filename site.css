@@ -62,9 +62,10 @@ h1, h2, h3, p { margin: 0; }
 
 /* ---- Header -------------------------------------------------------------------------------- */
 .site-header { position: sticky; top: 0; z-index: 50; height: var(--header-h);
-               background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+               background: rgba(255, 255, 255, var(--header-a, .94)); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);   /* --header-a is set by header.js; .94 if it never runs */
                transition: box-shadow .3s ease; }
 .site-header.stuck { box-shadow: 0 6px 24px rgba(11, 10, 7, .08); }
+.site-header.open { background: #fff; }   /* the phone menu is open: keep the bar solid */
 .site-header .container { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
 .logo img { height: 2.25rem; width: auto; }
 
@@ -280,7 +281,7 @@ h1, h2, h3, p { margin: 0; }
 /* The stage fills the window. Its composition is drawn on a canvas in artboard units (--u, on the shared rem scale),
    centred, and scaled down only when the window is too short for it. Edge chevrons stay pinned to the screen edges. */
 html.scroll-locked { overflow: hidden; }
-.site-header { transition: box-shadow .3s ease, opacity .4s ease; }
+.site-header { transition: box-shadow .3s ease, opacity .4s ease, background-color .35s ease; }
 html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out of the way while the journey is locked */
 .journey-scroll { position: relative; z-index: 2; height: 100vh; background: #fff; --u: .03788rem; }
 .journey-stage { position: absolute; inset: 0; overflow: hidden; transition: opacity .3s ease; --s: 1; --ty: 0px; }
