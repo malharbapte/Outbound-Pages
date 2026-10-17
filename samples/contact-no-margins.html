@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact Us: margin sample</title>
+<title>Contact Us: thirds sample</title>
 <meta name="description" content="Visit Outbound RVs at 58B Lara Way, Campbellfield VIC, or send us your details and our team will be in touch within 48 hours.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,22 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
 :root.m-now { --content: min(100% - 40px, 60rem); }
 :root.m-eight { --g: 8%; }
 :root.m-none { --g: 0px; }
+
+/* ---- Rule of thirds: the content column is split into three equal columns and each text section breaks on those lines.
+   Switched by html.t-on. A third = 100% of the column / 3, so every edge below is exact, not approximate. ---- */
+:root.t-on .c-days { grid-template-columns: 1fr 2fr; }                                   /* Sat starts on the first line */
+:root.t-on .contact-cols { grid-template-columns: calc(100% / 3) 1fr; column-gap: 0; }   /* intro in the first third, form in the other two */
+:root.t-on .contact-aside { padding-right: 1.33rem; }
+:root.t-on .contact-form .row { grid-template-columns: calc(50% - 1.33rem) 1fr; }        /* the second field starts on the second line */
+:root.t-on .contact-form .submit { width: 50%; min-width: 0; }                           /* one third wide, from the first line */
+:root.t-on .faq-cols { grid-template-columns: calc(100% / 3) 1fr; column-gap: 0; }       /* heading in the first third, questions in the other two */
+:root.t-on .faq-aside { padding-right: 3rem; }
+:root.t-on .foot-cols { grid-template-columns: repeat(3, 1fr); }                         /* three equal footer columns */
+
+.t-lines { position: fixed; inset: 0; z-index: 90; pointer-events: none; display: none; }
+.show-lines .t-lines { display: block; }
+.t-lines i { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px solid rgba(238,150,75,.95); }
+.t-lines i.edge { border-left-color: rgba(238,150,75,.35); border-left-style: dashed; }
 
 .sample-bar { position: fixed; left: 14px; bottom: 14px; z-index: 100; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
   max-width: calc(100vw - 28px); padding: 10px 12px; background: var(--tyre); color: var(--bone); border-radius: 8px;
@@ -402,6 +418,8 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
 </script>
 <div class="sample-bar" role="group" aria-label="Sample controls">
   <div class="grp" data-key="m"><b>Margins</b><button data-v="now">Now</button><button data-v="eight">8%</button><button data-v="eleven" class="on">11.4%</button><button data-v="none">None</button></div>
+  <div class="grp" data-key="t"><b>Thirds</b><button data-v="off">Off</button><button data-v="on" class="on">On</button></div>
+  <div class="grp" data-key="l"><b>Lines</b><button data-v="off">Off</button><button data-v="on" class="on">On</button></div>
   <div class="grp" data-key="s"><b>Scale</b><button data-v="1">100%</button><button data-v=".9" class="on">90%</button><button data-v=".85">85%</button><button data-v=".8">80%</button></div>
 </div>
 <script>
@@ -410,10 +428,22 @@ html { font-size: calc(clamp(12px, 0.9vw + 3px, 24px) * var(--s)); }
     const root = document.documentElement;
     const set = (key, v) => {
       if (key === 'm') { root.classList.toggle('m-now', v === 'now'); root.classList.toggle('m-eight', v === 'eight'); root.classList.toggle('m-none', v === 'none'); }
+      else if (key === 't') root.classList.toggle('t-on', v === 'on');
+      else if (key === 'l') root.classList.toggle('show-lines', v === 'on');
       else root.style.setProperty('--s', v);
       document.querySelectorAll(`.grp[data-key="${key}"] button`).forEach(b => b.classList.toggle('on', b.dataset.v === v));
     };
     document.querySelectorAll('.sample-bar button').forEach(b => b.addEventListener('click', () => set(b.closest('.grp').dataset.key, b.dataset.v)));
+    // Guide lines: the content column's edges (dashed) and its two thirds (solid), measured from the page itself.
+    const lines = document.createElement('div'); lines.className = 't-lines'; lines.setAttribute('aria-hidden', 'true');
+    lines.innerHTML = '<i class="edge"></i><i></i><i></i><i class="edge"></i>'; document.body.append(lines);
+    const place = () => {
+      const r = document.querySelector('.c-visit .container').getBoundingClientRect();
+      [...lines.children].forEach((el, k) => el.style.left = (r.left + r.width * k / 3) + 'px');
+    };
+    place(); addEventListener('resize', place);
+    document.querySelectorAll('.sample-bar button').forEach(b => b.addEventListener('click', () => requestAnimationFrame(() => requestAnimationFrame(place))));
+    root.classList.add('t-on', 'show-lines');
   })();
 </script>
 </body>
