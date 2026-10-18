@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Van card colours: five options</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  /* SAMPLE ONLY. The live card (composition C), unchanged in layout, in five brand-colour treatments. Every colour is a
+     brand colour or a straight mix of two of them. Contrast figures under each title are measured, not estimated. */
+  .intro { padding: 4rem 0 1rem; }
+  .intro h1 { font: 700 2.6rem/1.1 var(--oswald); }
+  .intro p { margin-top: .8rem; max-width: 52rem; font: 400 .95rem/1.5 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .rules { margin: 1.2rem 0 0; padding: 0; list-style: none; max-width: 52rem; display: grid; gap: .45rem; font: 400 .92rem/1.45 var(--poppins); }
+  .rules li { padding-left: 1.1rem; position: relative; }
+  .rules li::before { content: ""; position: absolute; left: 0; top: .55em; width: .45rem; height: .45rem; border-radius: 1.5px; rotate: 45deg; background: var(--olive); }
+
+  .opt { padding: 3.2rem 0 .6rem; }
+  .opt + .opt { border-top: 1px solid rgba(11,10,7,.12); }
+  .opt .tag { display: block; font: 600 .75rem/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+  .opt h2 { margin-top: .5rem; font: 700 1.8rem/1.1 var(--oswald); }
+  .opt .why { margin-top: .5rem; max-width: 54rem; font: 400 .92rem/1.5 var(--poppins); text-wrap: pretty; }
+  .opt .why b { font-weight: 600; }
+  .swatches { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; font: 500 .8rem/1 var(--poppins); align-items: center; }
+  .swatches span { display: inline-flex; align-items: center; gap: .45rem; }
+  .swatches i { width: 1rem; height: 1rem; border-radius: 3px; background: var(--c); box-shadow: inset 0 0 0 1px rgba(11,10,7,.25); }
+  .contrast { margin-top: .6rem; font: 500 .8rem/1.3 var(--poppins); color: var(--warm-grey); }
+  .contrast b { color: var(--tyre); font-weight: 600; }
+  .row { margin-top: 1.6rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; padding: 2rem 3% 2rem; background: var(--bone); }
+
+  /* ---------- the card: same markup and proportions as the live one, driven by colour variables ---------- */
+  .card { position: relative; container-type: inline-size; display: grid; grid-template-rows: auto auto; overflow: hidden; background: var(--panel); color: var(--text); box-shadow: 0 .5rem 1.2rem -.6rem rgba(11,10,7,.35); }
+  .photo { position: relative; aspect-ratio: 100 / 60; overflow: hidden; }
+  .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(rgba(11,10,7,0), rgba(11,10,7,.85)); }
+  .badge { position: absolute; left: 0; top: 3.15cqw; z-index: 2; background: var(--orange); color: #fff; font: 400 2.91cqw/1 var(--poppins); padding: 1.21cqw 4.6cqw 1.21cqw 2.66cqw; clip-path: polygon(0 0, 100% 0, calc(100% - 2.42cqw) 50%, 100% 100%, 0 100%); }
+  .title { position: absolute; z-index: 1; left: 5.5cqw; right: 5.5cqw; bottom: 4.2cqw; display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqw; color: #f4f1ea; }
+  .kicker { display: flex; align-items: center; gap: 2.18cqw; font: 600 2.18cqw/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; }
+  .kicker::before { content: ""; width: 1.45cqw; height: 1.45cqw; border-radius: 1.5px; background: var(--dot); }
+  .name { margin-top: 1.45cqw; font: 700 9.69cqw/1 var(--oswald); letter-spacing: .01em; color: #fff; }
+  .pricebox { text-align: right; flex: none; }
+  .pricebox .lab { display: block; margin-bottom: 1.3cqw; font: 600 2.4cqw/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; opacity: .9; }
+  .price { display: block; font: 500 9cqw/1 var(--oswald); white-space: nowrap; }
+  .pricebox s { display: block; margin-top: 1.2cqw; font: 300 2.8cqw/1 var(--poppins); opacity: .85; }
+  .body { display: grid; grid-template-columns: 2fr 1fr; }
+  .facts { list-style: none; margin: 0; padding: 3.4cqw 3cqw 3.4cqw 5.5cqw; display: grid; gap: 2.6cqw; align-content: start; }
+  .facts li { display: grid; grid-template-columns: 6cqw 1fr; column-gap: 2.8cqw; align-items: start; }
+  .facts svg { grid-row: 1 / span 2; width: 6cqw; height: 6cqw; margin-top: .6cqw; fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .lab2 { font: 400 2.2cqw/1.2 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--label); }
+  .txt { margin-top: .6cqw; font: 400 3.05cqw/1.25 var(--poppins); color: var(--text); }
+  .nums { margin: 0; padding: 3.4cqw 4cqw 3.4cqw 3.6cqw; display: grid; grid-template-columns: 1fr 1fr; gap: 3.2cqw 2cqw; align-content: start; background: var(--nums); color: var(--ntext); border-left: 1px solid var(--rule); }
+  .nums dt { font: 400 2.2cqw/1.2 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--nlabel); }
+  .nums dd { margin: 1.3cqw 0 0; font: 500 5.4cqw/1 var(--oswald); white-space: nowrap; }
+  .nums dd small { margin-left: .7cqw; font: 500 .34em/1 var(--poppins); letter-spacing: .04em; color: var(--nlabel); }
+  .nums dd.na { opacity: .45; }
+
+  @media (max-width: 1000px) { .row { grid-template-columns: 1fr; padding-inline: 1rem; } .row .card { max-width: 34rem; } }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a class="logo" href="../index.html"><img src="../assets/outbound-logo-tight.png" alt="Outbound RVs" width="740" height="147"></a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="../index.html#drive">CARAVANS</a></li>
+        <li><a href="#">SUPPORT</a></li>
+        <li><a href="../contact.html">CONTACT</a></li>
+        <li><a href="../about.html">ABOUT</a></li>
+        <li><a href="#">REVIEWS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro"><div class="container">
+    <h1>Van card colours: five options</h1>
+    <p>Same card, same layout, same three vans. Only the colour changes, using Tyre, Bone, Olive, Deep Olive, Warm Grey, Rose, Rose Deep, Blue and Orange, and straight mixes of two of them. The card sits on the stock section's Bone background, as it does live; "Today" is the card as it is now, for comparison.</p>
+    <ul class="rules">
+      <li><b>Hierarchy through colour.</b> The price is always the brightest thing on the card, then the figures, then the icon lines. Colour is spent on the few things that matter (price, icons, labels) and nowhere else.</li>
+      <li><b>Harmony.</b> Each option uses one panel colour, one accent and one tint for the numbers, so the two halves of the panel read as one family. The orange tag stays on every card, since it is the site's tag colour.</li>
+      <li><b>Legibility first.</b> Under each title is the measured contrast for the text, the small labels, the icons and the figures. The usual line is 4.5:1 for text and 3:1 for icons and large figures.</li>
+    </ul>
+  </div></section>
+  <div id="opts"></div>
+  <section style="padding:3rem 0 5rem"><div class="container"><p style="font:400 .85rem/1.5 var(--poppins);color:var(--warm-grey);max-width:50rem">Photos and specs are the real listings for the Amaroo 2107, Hornet 1806 and XTR.</p></div></section>
+</main>
+
+<script>
+  const PHOTO = {
+    855: 'https://jealstorage.blob.core.windows.net/easycarsblobcontainer/383/stockphoto/19245118.jpg?sv=2023-11-03&se=2027-01-04T13%3A14%3A37Z&sr=b&sp=r&sig=Cssk%2FxmJtEcoyWLjnQZQD46pNWKYFmrmHF0iM2kVpBc%3D',
+    908: 'https://jealstorage.blob.core.windows.net/easycarsblobcontainer/383/stockphoto/20257240.jpg?sv=2023-11-03&se=2027-03-29T09%3A42%3A35Z&sr=b&sp=r&sig=%2B5MgrA9jsUo%2BntfYSgPdTRTmxdRSWCamjAFjLXrVR7I%3D',
+    846: 'https://jealstorage.blob.core.windows.net/easycarsblobcontainer/383/stockphoto/18330034.jpg?sv=2023-11-03&se=2027-01-04T12%3A50%3A29Z&sr=b&sp=r&sig=PExH6r4TX2ZTLYSFT%2F51hizkXSe7rNen6g2XCFUVIJo%3D'
+  };
+  const VANS = [
+    { id: 855, name: 'AMAROO', kicker: '2026 · 2107', price: '$154,999', was: '$159,999', badge: 'Reduced', susp: 'Tuff-Ride 3.7T coil', water: '200L fresh', elec: '300Ah · 600W solar', atm: ['3.5','t'], tare: null, len: ['9','m'], sleeps: ['6',''] },
+    { id: 908, name: 'HORNET', kicker: '2026 · 1806', price: '$184,999', was: '$187,999', badge: 'Reduced', susp: 'Cruisemaster XT 4.5T air bag', water: '200L fresh + 70L drinking', elec: '600Ah · 1,360W solar', atm: ['3.5','t'], tare: ['2,827','kg'], len: ['8.2','m'], sleeps: null },
+    { id: 846, name: 'XTR', kicker: '2026', price: '$211,562', susp: 'Cruisemaster ATX 4.5T air bag', water: '200L fresh + 90L drinking', elec: '600Ah · 1,000W solar', atm: ['4.5','t'], tare: ['3,201','kg'], len: ['8.3','m'], sleeps: null }
+  ];
+  const ICON = {
+    susp: '<g transform="rotate(30 12 12)"><circle cx="12" cy="3" r="1.4"/><path d="M12 4.4V7M7 7.2h10M7.6 10.4l8.8-1.7M7.6 13.6l8.8-1.7M7.6 16.8l8.8-1.7M7 18h10M12 18v1.6"/><circle cx="12" cy="21" r="1.4"/></g>',
+    water: '<path d="M12 3c3.5 4.2 6 7.2 6 10.2a6 6 0 0 1-12 0C6 10.2 8.5 7.2 12 3z"/>',
+    elec: '<path d="M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z"/>'
+  };
+  // Brand colours, and straight mixes of two of them (mix = share of the second colour).
+  const B = { tyre: '#0b0a07', bone: '#f4f1ea', olive: '#8b9b4d', deep: '#6b7a32', grey: '#7a736a', rose: '#d5aca9', roseDeep: '#8e6673', blue: '#284b63', orange: '#ee964b' };
+  const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+  const mix = (a, b, t) => '#' + hex(a).map((v, i) => Math.round(v * (1 - t) + hex(b)[i] * t).toString(16).padStart(2, '0')).join('');
+  const lum = c => { const [r, g, b] = hex(c).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * r + .7152 * g + .0722 * b; };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return ((x + .05) / (y + .05)).toFixed(1); };
+
+  const OPTS = [
+    { tag: 'Today', name: 'Tyre and Olive (as live)', why: 'For comparison. Black panel, Olive icons, a faint Olive wash behind the figures.',
+      v: { panel: B.tyre, text: B.bone, label: '#bcbec0', accent: B.olive, nums: mix(B.tyre, B.olive, .12), ntext: B.bone, nlabel: '#bcbec0', rule: 'rgba(244,241,234,.14)', dot: B.olive },
+      sw: [['Tyre', B.tyre], ['Bone', B.bone], ['Olive', B.olive]] },
+    { tag: 'Option 1', name: 'Bone', why: '<b>Light.</b> A Bone panel with Tyre text and Deep Olive icons, the figures on a Bone shade one step darker. The card now reads as part of the page, not a block on it, and the dark photo carries the weight. Quietest of the five; the shadow does the separating.',
+      v: { panel: B.bone, text: B.tyre, label: mix(B.bone, B.tyre, .66), accent: B.deep, nums: mix(B.bone, B.grey, .14), ntext: B.tyre, nlabel: mix(B.bone, B.tyre, .66), rule: 'rgba(11,10,7,.14)', dot: B.olive },
+      sw: [['Bone', B.bone], ['Tyre', B.tyre], ['Deep Olive', B.deep]] },
+    { tag: 'Option 2', name: 'Olive and Tyre', why: '<b>Brand colour up front.</b> The descriptive lines sit on Olive with Tyre text and Tyre icons; the figures sit on Tyre with Bone numerals. Two clear blocks, so the figures, which are the part people compare, stand out most.',
+      v: { panel: B.olive, text: B.tyre, label: B.tyre, accent: B.tyre, nums: B.tyre, ntext: B.bone, nlabel: '#bcbec0', rule: 'rgba(11,10,7,.2)', dot: B.olive },
+      sw: [['Olive', B.olive], ['Tyre', B.tyre], ['Bone', B.bone]] },
+    { tag: 'Option 3', name: 'Blue and Orange', why: '<b>Cool, with one warm accent.</b> A Blue panel, Bone text, and the three icons in Orange to echo the tag on the photo. The figures sit on a deeper Blue. Orange is only the icons and the tag, so it stays a signal.',
+      v: { panel: B.blue, text: B.bone, label: mix(B.bone, B.blue, .25), accent: B.orange, nums: mix(B.blue, B.tyre, .35), ntext: B.bone, nlabel: mix(B.bone, B.blue, .25), rule: 'rgba(244,241,234,.16)', dot: B.orange },
+      sw: [['Blue', B.blue], ['Bone', B.bone], ['Orange', B.orange]] },
+    { tag: 'Option 4', name: 'Dusk', why: '<b>Black with Rose.</b> The Tyre panel keeps its weight, and Rose replaces Olive for the icons and the figure labels, with the figures on a Rose Deep tint. It picks up the Stories heading and tiles, so the warm family appears earlier on the page.',
+      v: { panel: B.tyre, text: B.bone, label: mix(B.bone, B.rose, .55), accent: B.rose, nums: mix(B.tyre, B.roseDeep, .5), ntext: B.bone, nlabel: mix(B.bone, B.rose, .55), rule: 'rgba(244,241,234,.16)', dot: B.rose },
+      sw: [['Tyre', B.tyre], ['Rose', B.rose], ['Rose Deep', B.roseDeep]] },
+    { tag: 'Option 5', name: 'Split', why: '<b>Light and dark in one card.</b> The icon lines on Bone, the figures on Tyre with Olive details. The strongest contrast between the two groups of information, so it is the clearest of the five at telling "what it has" from "what it weighs".',
+      v: { panel: B.bone, text: B.tyre, label: mix(B.bone, B.tyre, .66), accent: B.deep, nums: B.tyre, ntext: B.bone, nlabel: '#bcbec0', rule: 'rgba(11,10,7,.18)', dot: B.olive },
+      sw: [['Bone', B.bone], ['Tyre', B.tyre], ['Olive', B.olive]] }
+  ];
+
+  const stat = (l, v) => `<div><dt>${l}</dt><dd${v ? '' : ' class="na"'}>${v ? v[0] + (v[1] ? `<small>${v[1]}</small>` : '') : '—'}</dd></div>`;
+  const fact = (k, l, t) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg><span class="lab2">${l}</span><span class="txt">${t}</span></li>`;
+  const card = (v, o) => `<article class="card" style="--panel:${o.v.panel};--text:${o.v.text};--label:${o.v.label};--accent:${o.v.accent};--nums:${o.v.nums};--ntext:${o.v.ntext};--nlabel:${o.v.nlabel};--rule:${o.v.rule};--dot:${o.v.dot}">
+    <div class="photo"><img src="${PHOTO[v.id]}" alt="" referrerpolicy="no-referrer">${v.badge ? `<span class="badge">${v.badge}</span>` : ''}
+      <div class="title"><div><p class="kicker">${v.kicker}</p><h3 class="name">${v.name}</h3></div>
+        <div class="pricebox"><span class="lab">Drive away</span><span class="price">${v.price}</span>${v.was ? `<s>${v.was}</s>` : ''}</div></div></div>
+    <div class="body"><ul class="facts">${fact('susp', 'Suspension', v.susp)}${fact('water', 'Water', v.water)}${fact('elec', 'Electrical', v.elec)}</ul>
+      <dl class="nums">${stat('ATM', v.atm)}${stat('Tare', v.tare)}${stat('Length', v.len)}${stat('Sleeps', v.sleeps)}</dl></div></article>`;
+
+  document.getElementById('opts').innerHTML = OPTS.map(o => {
+    const c = o.v;
+    return `<section class="opt"><div class="container"><span class="tag">${o.tag}</span><h2>${o.name}</h2><p class="why">${o.why}</p>
+      <div class="swatches">${o.sw.map(([n, h]) => `<span><i style="--c:${h}"></i>${n}</span>`).join('')}</div>
+      <p class="contrast">Contrast: text <b>${ratio(c.text, c.panel)}</b> &middot; small labels <b>${ratio(c.label, c.panel)}</b> &middot; icons <b>${ratio(c.accent, c.panel)}</b> &middot; figures <b>${ratio(c.ntext, c.nums)}</b> &middot; figure labels <b>${ratio(c.nlabel, c.nums)}</b></p></div>
+      <div class="row">${VANS.map(v => card(v, o)).join('')}</div></section>`;
+  }).join('');
+</script>
+<script src="../header.js"></script>
+</body>
+</html>
