@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home flow: two options</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  /* SAMPLE ONLY. Uses the site's real tokens, header, buttons and photos. The specs and prices are real, taken from
+     wonderlandrv.com.au/range (standard spec) and outboundrvs.com.au (stock on hand), so the sample shows how much
+     detail fits. A dash means the sample did not capture that line; the real build reads it from the stock sheet. */
+  .sample-note { font: 400 .95rem/1.5 var(--poppins); color: var(--warm-grey); max-width: 46rem; text-wrap: pretty; }
+  .intro { padding: 4rem 0 2rem; }
+  .intro h1 { font: 700 2.6rem/1.1 var(--oswald); }
+  .intro .sample-note { margin-top: .8rem; }
+
+  .picker { position: sticky; top: var(--header-h); z-index: 40; background: #fff; border-bottom: 1px solid rgba(11,10,7,.12); }
+  .picker .container { display: flex; gap: .6rem; align-items: center; padding: .8rem 0; flex-wrap: wrap; }
+  .picker button { border: 1.5px solid var(--warm-grey); background: none; border-radius: 6px; padding: .6rem 1rem; font: 600 .9rem/1 var(--poppins); cursor: pointer; color: var(--tyre); }
+  .picker button.on { background: var(--olive); border-color: var(--olive); color: #fff; }
+  .picker button:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+  .picker span { font: 500 .85rem/1.2 var(--poppins); color: var(--warm-grey); margin-left: .6rem; }
+
+  /* Order of sections, as chips. Changed ones are olive. */
+  .order { padding: 2rem 0 0; }
+  .order h2 { font: 600 1rem/1.2 var(--poppins); margin-bottom: .8rem; }
+  .order ol { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem; counter-reset: s; }
+  .order li { counter-increment: s; font: 500 .82rem/1 var(--poppins); padding: .5rem .7rem; border-radius: 5px; background: var(--bone); color: var(--tyre); }
+  .order li::before { content: counter(s) ". "; opacity: .55; }
+  .order li.new { background: var(--olive); color: #fff; }
+  .order li.moved { background: var(--tyre); color: var(--bone); }
+  .legend { margin-top: .8rem; font: 400 .82rem/1.4 var(--poppins); color: var(--warm-grey); }
+  .legend b { display: inline-block; width: .8rem; height: .8rem; border-radius: 3px; vertical-align: -1px; margin-right: .3rem; }
+
+  .opt:not(.on) { display: none !important; }
+  .why { margin: 1.4rem 0 0; padding: 1rem 1.2rem; border-left: 4px solid var(--olive); background: var(--bone); font: 400 .95rem/1.5 var(--poppins); max-width: 52rem; text-wrap: pretty; }
+  .why b { font-weight: 600; }
+
+  .band { position: relative; padding: 5rem 0; }
+  .band.dark { background: var(--tyre); color: var(--bone); }
+  .band h2.t { font: 700 3.18rem/1.1 var(--oswald); }
+  .band .lede { margin-top: .8rem; font: 400 1.05rem/1.5 var(--poppins); max-width: 40rem; color: var(--warm-grey); text-wrap: pretty; }
+  .band.dark .lede { color: rgba(244,241,234,.75); }
+  .tag { display: inline-block; margin-bottom: 1rem; font: 600 .7rem/1 var(--poppins); letter-spacing: .1em; text-transform: uppercase; padding: .4rem .6rem; border: 1.5px dashed var(--warm-grey); border-radius: 4px; color: var(--warm-grey); }
+
+  /* Model filter */
+  .models { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 2rem; }
+  .models button { border: 1.5px solid var(--warm-grey); background: none; padding: .7rem 1.2rem; border-radius: 6px; font: 600 .95rem/1 var(--poppins); cursor: pointer; color: inherit; }
+  .models button.on { background: var(--olive); border-color: var(--olive); color: #fff; }
+  .band.dark .models button { border-color: rgba(244,241,234,.4); }
+  .models button:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+  /* Stock cards */
+  .cards { margin-top: 2rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .card { background: #fff; border: 1.5px solid rgba(11,10,7,.18); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; text-align: left; font: inherit; color: var(--tyre); padding: 0; cursor: pointer; }
+  .card[aria-expanded="true"] { border-color: var(--olive); box-shadow: 0 0 0 1.5px var(--olive); }
+  .card:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+  .card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .card .body { padding: 1rem 1rem 1.1rem; }
+  .card .name { font: 700 1.25rem/1.1 var(--oswald); letter-spacing: .01em; }
+  .card .sub { margin-top: .25rem; font: 400 .8rem/1.3 var(--poppins); color: var(--warm-grey); }
+  .card .price { margin-top: .8rem; font: 700 1.5rem/1 var(--poppins); color: var(--olive); }
+  .card .price s { font: 400 .85rem/1 var(--poppins); color: var(--warm-grey); margin-left: .4rem; }
+  .card .price small { display: block; margin-top: .3rem; font: 500 .7rem/1 var(--poppins); letter-spacing: .08em; text-transform: uppercase; color: var(--warm-grey); }
+  .card dl { margin-top: .9rem; display: grid; grid-template-columns: auto 1fr; gap: .35rem .8rem; font: 400 .82rem/1.3 var(--poppins); border-top: 1px solid rgba(11,10,7,.12); padding-top: .8rem; }
+  .card dt { color: var(--warm-grey); }
+  .card dd { margin: 0; font-weight: 500; }
+  .card .more { margin-top: .9rem; font: 600 .82rem/1 var(--poppins); color: var(--olive); }
+  .card .more::after { content: " +"; }
+  .card[aria-expanded="true"] .more::after { content: " \2212"; }
+
+  /* Full spec drawer: the headings are the ones on the live stock listing. */
+  .drawer { margin-top: 1rem; border: 1.5px solid var(--olive); border-radius: 4px; background: #fff; padding: 1.8rem 2rem; display: none; }
+  .drawer.on { display: block; }
+  .drawer h3 { font: 700 1.6rem/1.1 var(--oswald); }
+  .drawer .meta { margin-top: .3rem; font: 400 .85rem/1.4 var(--poppins); color: var(--warm-grey); }
+  .groups { margin-top: 1.4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem 2.4rem; }
+  .groups h4 { font: 700 .8rem/1 var(--poppins); letter-spacing: .1em; text-transform: uppercase; color: var(--olive); padding-bottom: .55rem; border-bottom: 1.5px solid var(--olive); }
+  .groups ul { list-style: none; margin-top: .7rem; font: 400 .88rem/1.45 var(--poppins); }
+  .groups li + li { margin-top: .3rem; }
+  .groups li.dim { color: var(--warm-grey); font-style: italic; }
+  .drawer .actions { margin-top: 1.6rem; display: flex; gap: .8rem; flex-wrap: wrap; }
+
+  /* Range cards (option B): what comes standard, by model */
+  .rcards { margin-top: 2.2rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .rcard { background: var(--bone); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+  .rcard img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .rcard .body { padding: 1rem 1.1rem 1.3rem; }
+  .rcard .name { font: 700 1.5rem/1 var(--oswald); }
+  .rcard .tagline { margin-top: .3rem; font: 500 .72rem/1.2 var(--poppins); letter-spacing: .08em; text-transform: uppercase; color: var(--warm-grey); }
+  .rcard dl { margin-top: .9rem; font: 400 .82rem/1.35 var(--poppins); }
+  .rcard dt { margin-top: .6rem; font: 700 .68rem/1 var(--poppins); letter-spacing: .1em; text-transform: uppercase; color: var(--olive); }
+  .rcard dd { margin: .2rem 0 0; }
+  .rcard .btn { margin-top: 1.1rem; align-self: flex-start; }
+  .rcard a.link { margin-top: 1rem; font: 600 .85rem/1 var(--poppins); color: var(--olive); text-decoration: none; }
+
+  /* A thin stand-in for the Stories gallery */
+  .stories-bar { padding: 4.5rem 0 0; background: #fff; }
+  .stories-bar h2 { font: 700 3.18rem/1.1 var(--oswald); text-align: center; color: var(--rose-deep); }
+  .tiles { margin-top: 2.4rem; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .tiles div { aspect-ratio: 1 / .62; background: var(--bone) center / cover; }
+  .tiles .a { background-image: url("../assets/range-amaroo.jpg"); } .tiles .b { background-image: url("../assets/hero.jpg"); }
+  .tiles .c { background-image: url("../assets/range-xtr.jpg"); } .tiles .d { background-image: url("../assets/range-solara.jpg"); }
+
+  .next { padding: 2rem 0; text-align: center; font: 500 .85rem/1.4 var(--poppins); color: var(--warm-grey); background: var(--bone); }
+  .foot-note { padding: 2.5rem 0 5rem; }
+  .foot-note p { font: 400 .85rem/1.5 var(--poppins); color: var(--warm-grey); max-width: 52rem; }
+
+  @media (max-width: 1100px) { .cards, .rcards { grid-template-columns: repeat(2, 1fr); } .groups { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a class="logo" href="../index.html"><img src="../assets/outbound-logo-tight.png" alt="Outbound RVs" width="740" height="147"></a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#">CARAVANS</a></li>
+        <li><a href="#">SUPPORT</a></li>
+        <li><a href="../contact.html">CONTACT</a></li>
+        <li><a href="../about.html">ABOUT</a></li>
+        <li><a href="#">REVIEWS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro"><div class="container">
+    <h1>Home flow: two options</h1>
+    <p class="sample-note">Two ways to answer points 5 and 6: should Range and Stock be one section or two, and where should Stories sit. The mock shows the changed stretch of the homepage at full width, with real specs and drive-away prices from the two live sites. Photos and wording are placeholders; the photos repeat because the stock photos are still to come.</p>
+  </div></section>
+
+  <div class="picker" role="group" aria-label="Option">
+    <div class="container">
+      <button data-opt="a" class="on">A. One section: Find your van</button>
+      <button data-opt="b">B. Two sections, each with a job</button>
+      <span id="count"></span>
+    </div>
+  </div>
+
+  <!-- ===================================================== OPTION A ===================================================== -->
+  <div class="opt on" id="opt-a">
+    <section class="order"><div class="container">
+      <h2>Homepage order, option A (11 sections instead of 12)</h2>
+      <ol>
+        <li>Hero</li><li>Exclusive dealership</li><li class="new">Find your van (Range + Stock together)</li><li class="moved">Stories</li><li>Come see us</li><li>Ownership journey</li><li>Beyond sale</li><li>What makes us different</li><li>Contact</li><li>Instagram</li><li>FAQ</li>
+      </ol>
+      <p class="legend"><b style="background:var(--olive)"></b>new or merged &nbsp; <b style="background:var(--tyre)"></b>moved</p>
+      <p class="why"><b>Why:</b> the visitor chooses a model and sees what is on the floor in the same place, so nothing is shown twice. Stories follow straight away, while the shopper is still weighing a van. The cost: one busier section, and a model with nothing in stock has nothing to show.</p>
+    </div></section>
+
+    <section class="band">
+      <div class="container">
+        <span class="tag">Replaces: The Wonderland RV Range + Drive Away</span>
+        <h2 class="t">FIND YOUR VAN</h2>
+        <p class="lede">Pick a model, then see what is on the floor now. Every van shows its real price and what it carries.</p>
+        <div class="models" role="group" aria-label="Model" id="models-a"></div>
+        <div class="cards" id="cards-a"></div>
+        <div class="drawer" id="drawer-a" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="stories-bar"><div class="container"><h2>STORIES FROM OUR CUSTOMERS</h2></div>
+      <div class="tiles"><div class="a"></div><div class="b"></div><div class="c"></div><div class="d"></div></div></section>
+    <div class="next">Then: Come see us, the Ownership journey, Beyond sale …</div>
+  </div>
+
+  <!-- ===================================================== OPTION B ===================================================== -->
+  <div class="opt" id="opt-b">
+    <section class="order"><div class="container">
+      <h2>Homepage order, option B (12 sections, same count as today)</h2>
+      <ol>
+        <li>Hero</li><li>Exclusive dealership</li><li class="new">The range (what comes standard)</li><li class="moved">Stories</li><li class="new">Drive away (what is on the floor)</li><li>Come see us</li><li>Ownership journey</li><li>Beyond sale</li><li>What makes us different</li><li>Contact</li><li>Instagram</li><li>FAQ</li>
+      </ol>
+      <p class="legend"><b style="background:var(--olive)"></b>re-purposed &nbsp; <b style="background:var(--tyre)"></b>moved</p>
+      <p class="why"><b>Why:</b> the two sections stop repeating each other. The Range answers "which model is for me", using Wonderland's own headings (Electrical, Suspension, Water). Stories sit between it and the stock, so proof arrives right before the price. Drive away answers "what can I buy this week", with price first. More scrolling than A, but each part has one clear question.</p>
+    </div></section>
+
+    <section class="band">
+      <div class="container">
+        <span class="tag">Section 1 of 3: The range</span>
+        <h2 class="t">THE WONDERLAND RV RANGE</h2>
+        <p class="lede">Four models, and what comes standard on each. Pick the one that fits the trips you want to take.</p>
+        <div class="rcards" id="rcards"></div>
+      </div>
+    </section>
+
+    <section class="stories-bar"><div class="container"><h2>STORIES FROM OUR CUSTOMERS</h2></div>
+      <div class="tiles"><div class="a"></div><div class="b"></div><div class="c"></div><div class="d"></div></div></section>
+
+    <section class="band dark" id="drive" style="margin-top:4.5rem">
+      <div class="container">
+        <span class="tag" style="color:var(--bone);border-color:rgba(244,241,234,.5)">Section 3 of 3: Drive away</span>
+        <h2 class="t">DRIVE AWAY</h2>
+        <p class="lede">What is on the floor in Campbellfield now. Prices are drive-away.</p>
+        <div class="models" role="group" aria-label="Model" id="models-b"></div>
+        <div class="cards" id="cards-b"></div>
+        <div class="drawer" id="drawer-b" aria-live="polite"></div>
+      </div>
+    </section>
+    <div class="next">Then: Come see us, the Ownership journey, Beyond sale …</div>
+  </div>
+
+  <section class="foot-note"><div class="container">
+    <p>Sources: standard specs from wonderlandrv.com.au/range (Amaroo, Hornet, Solara, XTR overview); stock, prices and the full Hornet 1806 sheet from outboundrvs.com.au (read in October 2026). The prices will go stale, so the real build should read them from the stock feed rather than typing them in. A dash means the sample did not capture that line.</p>
+  </div></section>
+</main>
+
+<script>
+  /* ---- Real data ---- */
+  const STOCK = [
+    { id: 908, model: 'Hornet', name: 'HORNET 1806', year: 2026, layout: 'Rugged off-road', img: 'range-hornet.jpg', price: '$184,999', was: '$187,999',
+      battery: '600Ah', solar: '1,360W', susp: '4.5T Cruisemaster XT air bag', atm: '3,500 kg', tare: '2,827 kg',
+      groups: {
+        'Construction': ['Aluminium Renrob riveted 25mm C-section', 'One-piece 35mm sandwich-panel composite roof, wraps front and back, no joins', 'XPS insulation', 'One-piece honeycomb floor, lightweight and waterproof'],
+        'Chassis': ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster XT air bag suspension with BCS', 'Disc brakes', 'Method 305 17" wheels, 265/75R16 Yokohama', 'Cruisemaster DO35 hitch', 'Drop-down corner stabilisers'],
+        'Electrical': ['600Ah battery', '1,360W solar plus rear solar wing', '3,000VA inverter-charger (Victron)', 'Dometic Fresh Jet 3kW air conditioner', 'Starlink provision, reverse camera'],
+        'Plumbing': ['2 x 100L fresh water, 1 x 70L isolated drinking water', '1 x 100L grey water', 'Autotherm 10kW hot water and heater', '216L Dometic compressor fridge', 'Portable induction cooktop'],
+        'External': ['Dometic electric awning', 'Fully lined tunnel boot, high-access doors', 'External pantry with light, GPO and USB', 'Double-glazed windows, dark tint'],
+        'Weights': ['ATM 3,500 kg', 'Ball weight 177 kg', 'Tare 2,827 kg', 'Travel length 8.2 m, height 3.2 m']
+      } },
+    { id: 846, model: 'XTR', name: 'XTR', year: 2026, layout: 'Extreme off-road', img: 'range-xtr.jpg', price: '$211,562', was: '',
+      battery: '600Ah lithium', solar: '—', susp: '—', atm: '4,500 kg', tare: '3,201 kg' },
+    { id: 855, model: 'Amaroo', name: 'AMAROO 2107', year: 2026, layout: 'Quad bunk', img: 'range-amaroo.jpg', price: '$154,999', was: '$159,999',
+      battery: '300Ah lithium', solar: '3 x 200W', susp: '—', atm: '3,500 kg', tare: '—' },
+    { id: 882, model: 'Amaroo', name: 'AMAROO', year: 2026, layout: 'Available November 2026', img: 'range-amaroo.jpg', price: '$154,999', was: '',
+      battery: '300Ah lithium', solar: '—', susp: '—', atm: '3,500 kg', tare: '2,900 kg' }
+  ];
+  const RANGE = [
+    { name: 'AMAROO', tag: 'Luxury off-road', img: 'range-amaroo.jpg',
+      Electrical: 'Redarc Alpha 50 off-grid system, 2000W inverter, 600W solar, 300Ah lithium', Suspension: 'Cruisemaster ATX 3.0T (single axle), XT 3.7T or Tuff-Ride (tandem)', Water: '200L fresh water', Brakes: '12" drum brakes' },
+    { name: 'HORNET', tag: 'Rugged off-road', img: 'range-hornet.jpg',
+      Electrical: 'Redarc Alpha 75 off-grid system, 2600W inverter, 800W solar, 400Ah lithium', Suspension: 'Cruisemaster XT Level 3 manual airbag, 4.5T', Water: '200L fresh and 90L drinking water', Brakes: '12" drum brakes' },
+    { name: 'SOLARA', tag: 'Off-road composite', img: 'range-solara.jpg',
+      Electrical: 'Victron off-grid system, 3000VA inverter, 1000W solar, 400Ah lithium', Suspension: 'Cruisemaster XT Level 3 manual airbag, 4.5T', Water: '200L fresh and 90L drinking water', Brakes: '12" drum brakes' },
+    { name: 'XTR', tag: 'Extreme off-road', img: 'range-xtr.jpg',
+      Electrical: 'Victron 24V off-grid system, 5000VA inverter, 1000W solar, 11kWh battery', Suspension: 'Cruisemaster ATX Level 5 BCS airbag, 4.5T', Water: '200L fresh and 90L drinking water', Brakes: 'Disc brakes' }
+  ];
+  const ORDER = ['Construction', 'Chassis', 'Electrical', 'Plumbing', 'External', 'Weights'];
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+
+  /* ---- Stock section (used by both options) ---- */
+  function stockSection(suffix) {
+    const models = document.getElementById('models-' + suffix), cards = document.getElementById('cards-' + suffix), drawer = document.getElementById('drawer-' + suffix);
+    let model = 'All', open = null;
+    const names = ['All', ...new Set(STOCK.map(s => s.model))];
+    models.innerHTML = names.map(n => `<button type="button" data-m="${n}" class="${n === model ? 'on' : ''}">${n}</button>`).join('');
+    function draw() {
+      const list = STOCK.filter(s => model === 'All' || s.model === model);
+      cards.innerHTML = list.map(s => `
+        <button type="button" class="card" data-id="${s.id}" aria-expanded="${open === s.id}">
+          <img src="../assets/${s.img}" alt="">
+          <span class="body">
+            <span class="name">${s.year} ${esc(s.name)}</span><br>
+            <span class="sub">${esc(s.layout)} &middot; Stock #${s.id}</span>
+            <span class="price" style="display:block">${s.price}${s.was ? `<s>${s.was}</s>` : ''}<small>Drive away</small></span>
+            <dl><dt>Battery</dt><dd>${esc(s.battery)}</dd><dt>Solar</dt><dd>${esc(s.solar)}</dd><dt>Suspension</dt><dd>${esc(s.susp)}</dd><dt>ATM / Tare</dt><dd>${esc(s.atm)} / ${esc(s.tare)}</dd></dl>
+            <span class="more" style="display:block">Full specs</span>
+          </span>
+        </button>`).join('');
+      const s = STOCK.find(x => x.id === open);
+      drawer.classList.toggle('on', !!s);
+      if (!s) { drawer.innerHTML = ''; return; }
+      drawer.innerHTML = `<h3>${s.year} ${esc(s.name)} &middot; ${s.price} drive away</h3>
+        <p class="meta">Stock #${s.id} &middot; ${esc(s.layout)}</p>
+        <div class="groups">${ORDER.map(g => `<div><h4>${g}</h4><ul>${(s.groups && s.groups[g] ? s.groups[g] : ['Read from the stock sheet in the real build']).map((l, i) => `<li class="${s.groups ? '' : 'dim'}">${esc(l)}</li>`).join('')}</ul></div>`).join('')}</div>
+        <div class="actions"><a class="btn" href="#">Enquire about this van</a><a class="btn" href="#" style="--wipe:var(--tyre);--wipe-text:#fff">Book a viewing</a></div>`;
+    }
+    models.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; model = b.dataset.m; open = null; models.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); draw(); });
+    cards.addEventListener('click', e => { const c = e.target.closest('.card'); if (!c) return; const id = +c.dataset.id; open = open === id ? null : id; draw(); if (open) drawer.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); });
+    open = 908; draw();
+  }
+  stockSection('a'); stockSection('b');
+
+  /* ---- Range cards (option B) ---- */
+  document.getElementById('rcards').innerHTML = RANGE.map(r => `
+    <article class="rcard"><img src="../assets/${r.img}" alt="">
+      <div class="body"><div class="name">${r.name}</div><div class="tagline">${r.tag}</div>
+        <dl><dt>Electrical</dt><dd>${esc(r.Electrical)}</dd><dt>Suspension</dt><dd>${esc(r.Suspension)}</dd><dt>Water</dt><dd>${esc(r.Water)}</dd><dt>Brakes</dt><dd>${esc(r.Brakes)}</dd></dl>
+        <a class="link" href="#drive">See ${r.name[0] + r.name.slice(1).toLowerCase()} in stock &rarr;</a></div></article>`).join('');
+
+  /* ---- Option picker ---- */
+  const picker = document.querySelector('.picker');
+  picker.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    picker.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    ['a', 'b'].forEach(o => document.getElementById('opt-' + o).classList.toggle('on', o === b.dataset.opt));
+    scrollTo({ top: 0 });
+  });
+</script>
+<script src="../header.js"></script>
+</body>
+</html>
