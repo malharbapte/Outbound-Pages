@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Van cards: three compositions</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  /* SAMPLE ONLY. Three ways to put the OLD facts (ATM, Tare, Length, Sleeps) and the NEW ones (price, suspension, water,
+     electrical) on one card. Same data, same colours and type, so only the composition differs.
+     Everything inside a card is sized from the card's own width (cqw), as on the live site. */
+  .intro { padding: 4rem 0 1rem; }
+  .intro h1 { font: 700 2.6rem/1.1 var(--oswald); }
+  .intro p { margin-top: .8rem; max-width: 50rem; font: 400 .95rem/1.5 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .legend { margin-top: 1.4rem; display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; font: 500 .85rem/1.2 var(--poppins); }
+  .legend span::before { content: ""; display: inline-block; width: .7rem; height: .7rem; margin-right: .5rem; border-radius: 2px; background: var(--c); vertical-align: -1px; }
+
+  .opt { padding: 3.4rem 0 1rem; }
+  .opt + .opt { border-top: 1px solid rgba(11, 10, 7, .12); }
+  .opt h2 { font: 700 1.9rem/1.1 var(--oswald); }
+  .opt .tag { display: block; margin-bottom: .6rem; font: 600 .75rem/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+  .opt .why { margin-top: .7rem; max-width: 52rem; font: 400 .95rem/1.5 var(--poppins); text-wrap: pretty; }
+  .opt .why b { font-weight: 600; }
+  .levels { margin: .9rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; font: 500 .8rem/1 var(--poppins); }
+  .levels li { list-style: none; padding: .5rem .7rem; border-radius: 4px; background: var(--bone); }
+  .levels li b { color: var(--olive); margin-right: .35rem; }
+  .row { margin-top: 2rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; padding: 0 3%; }
+
+  /* ---------- shared card parts ---------- */
+  .card { position: relative; container-type: inline-size; background: var(--tyre); color: var(--bone); overflow: hidden; display: block; }
+  .photo { position: relative; overflow: hidden; }
+  .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 58%; background: linear-gradient(rgba(11,10,7,0), rgba(11,10,7,.86)); }
+  .badge { position: absolute; left: 0; top: 3.15cqw; z-index: 2; background: var(--orange); color: #fff; font: 400 2.91cqw/1 var(--poppins);
+           padding: 1.21cqw 4.6cqw 1.21cqw 2.66cqw; clip-path: polygon(0 0, 100% 0, calc(100% - 2.42cqw) 50%, 100% 100%, 0 100%); }
+  .kicker { display: flex; align-items: center; gap: 2.18cqw; font: 600 2.18cqw/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--bone); }
+  .kicker::before { content: ""; width: 1.45cqw; height: 1.45cqw; border-radius: 1.5px; background: var(--olive); }
+  .name { margin-top: 1.45cqw; font: 700 9.69cqw/1 var(--oswald); letter-spacing: .01em; color: #fff; }
+  .lab { font: 400 2.2cqw/1.2 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: #bcbec0; }
+  .price-lab { font: 600 2.4cqw/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--olive); }
+  .price { font: 500 8.2cqw/1 var(--oswald); color: var(--bone); white-space: nowrap; }
+  .price s { margin-left: 2.2cqw; font: 300 3cqw/1 var(--poppins); color: #bcbec0; }
+  .num { font: 500 6cqw/1 var(--oswald); color: var(--bone); white-space: nowrap; }
+  .num small { margin-left: .7cqw; font: 500 .34em/1 var(--poppins); letter-spacing: .04em; color: #bcbec0; }
+  .num.na { color: #6f6d68; }
+  .txt { font: 400 3.15cqw/1.25 var(--poppins); color: var(--bone); }
+  .pad { padding-left: 5.5cqw; padding-right: 5.5cqw; }
+
+  /* ================= A. Stacked: price, then a four-up number strip, then three lines ================= */
+  .a .photo { aspect-ratio: 100 / 54; }
+  .a .title { position: absolute; z-index: 1; left: 5.5cqw; right: 5.5cqw; bottom: 4cqw; }
+  .a .pricebar { display: flex; align-items: baseline; justify-content: space-between; padding-top: 3.2cqw; padding-bottom: 3.2cqw; background: rgba(139,155,77,.14); }
+  .a .strip { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(244,241,234,.14); }
+  .a .strip > div { padding: 3cqw 0 3cqw 3.2cqw; }
+  .a .strip > div:first-child { padding-left: 5.5cqw; }
+  .a .strip > div + div { border-left: 1px solid rgba(244,241,234,.14); }
+  .a .strip .num { display: block; margin-top: 1.6cqw; }
+  .a .lines > div { display: grid; grid-template-columns: 33.333% 1fr; align-items: baseline; padding-top: 2.3cqw; padding-bottom: 2.3cqw; border-top: 1px solid rgba(244,241,234,.14); }
+
+  /* ================= B. The original card (photo + number rail), with the new facts as a footer ================= */
+  .b .top { display: grid; grid-template-columns: 2fr 1fr; aspect-ratio: 100 / 66; }
+  .b .photo { min-height: 0; }
+  .b .title { position: absolute; z-index: 1; left: 6.18cqw; right: 3cqw; bottom: 4cqw; }
+  .b .name { font-size: 8.4cqw; }
+  .b .rail { display: grid; grid-template-rows: 1fr 1fr 1fr; }
+  .b .rail > div { padding: 0 2.9cqw 0 3.6cqw; display: flex; flex-direction: column; justify-content: center; gap: 1.2cqw; }
+  .b .rail > div + div { border-top: 1px solid rgba(244,241,234,.16); }
+  .b .rail .two { flex-direction: row; align-items: center; gap: 0; padding-right: 0; }
+  .b .rail .two > div { flex: 1; display: flex; flex-direction: column; gap: 1.2cqw; }
+  .b .rail .two > div + div { padding-left: 2.2cqw; border-left: 1px solid rgba(244,241,234,.16); }
+  .b .rail .num { font-size: 6.6cqw; }
+  .b .rail .two .num { font-size: 5cqw; }
+  .b .foot { background: #1a1914; }
+  .b .pricebar { display: flex; align-items: baseline; justify-content: space-between; padding-top: 3.2cqw; padding-bottom: 3.2cqw; background: rgba(139,155,77,.16); }
+  .b .lines > div { display: grid; grid-template-columns: 33.333% 1fr; align-items: baseline; padding-top: 2.3cqw; padding-bottom: 2.3cqw; border-top: 1px solid rgba(244,241,234,.14); }
+
+  /* ================= C. Price on the picture; text left two-thirds, numbers right third ================= */
+  .c .photo { aspect-ratio: 100 / 58; }
+  .c .title { position: absolute; z-index: 1; left: 5.5cqw; right: 5.5cqw; bottom: 4cqw; display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqw; }
+  .c .pricebox { text-align: right; }
+  .c .pricebox .price { font-size: 9cqw; }
+  .c .pricebox .price-lab { display: block; margin-bottom: 1.3cqw; color: var(--bone); opacity: .85; }   /* olive is too faint over a photo */
+  .c .pricebox s { display: block; margin: 1.2cqw 0 0; }
+  .c .panel { display: grid; grid-template-columns: 2fr 1fr; }
+  .c .left { padding: 3.4cqw 3cqw 3.4cqw 5.5cqw; display: grid; gap: 2.4cqw; align-content: start; }
+  .c .left .txt { margin-top: 1cqw; }
+  .c .right { border-left: 1px solid rgba(244,241,234,.14); background: rgba(139,155,77,.1); padding: 3.4cqw 4cqw 3.4cqw 3.6cqw; display: grid; grid-template-columns: 1fr 1fr; gap: 3.2cqw 2cqw; align-content: start; }
+  .c .right .num { display: block; margin-top: 1.3cqw; font-size: 5.4cqw; }
+
+  @media (max-width: 1000px) { .row { grid-template-columns: 1fr; max-width: 34rem; } }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a class="logo" href="../index.html"><img src="../assets/outbound-logo-tight.png" alt="Outbound RVs" width="740" height="147"></a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="../index.html#drive">CARAVANS</a></li>
+        <li><a href="#">SUPPORT</a></li>
+        <li><a href="../contact.html">CONTACT</a></li>
+        <li><a href="../about.html">ABOUT</a></li>
+        <li><a href="#">REVIEWS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro"><div class="container">
+    <h1>Van cards: three compositions</h1>
+    <p>Each card carries everything: the old facts (ATM, Tare, Length, Sleeps) and the new ones (drive-away price, suspension, water, electrical). Same three vans, same data, same type and colours. Only the composition changes. A dash means the van's listing doesn't give that figure; Sleeps isn't on any listing, so it is filled from the layout notes where they imply it (the Amaroo's queen bed plus two bunks) and left blank elsewhere. Photos repeat because the stock photos are still to come.</p>
+    <p class="legend" style="margin-top:1.2rem;max-width:none">
+      <span style="--c:var(--olive)">Hierarchy: what the eye reads first, second, third</span>
+      <span style="--c:var(--bone);--x:0">Harmony: one label style, one number style, one set of paddings, the thirds of the card</span>
+    </p>
+  </div></section>
+
+  <!-- A -->
+  <section class="opt"><div class="container">
+    <span class="tag">Option A</span><h2>Stacked: price, then numbers, then three lines</h2>
+    <p class="why"><b>Hierarchy:</b> the card reads top to bottom in one clear order. The name sits on the picture, the price is the loudest figure, and the four number cells come next. The three plain-language lines sit last, as supporting detail. <b>Harmony:</b> every band shares the same left edge and padding, and the four number cells split the width into equal quarters. The cost: it is the tallest card.</p>
+    <ol class="levels"><li><b>1</b>Photo + name</li><li><b>2</b>Price</li><li><b>3</b>ATM · Tare · Length · Sleeps</li><li><b>4</b>Suspension · Water · Electrical</li></ol>
+  </div><div class="row" id="a"></div></section>
+
+  <!-- B -->
+  <section class="opt"><div class="container">
+    <span class="tag">Option B</span><h2>The original card, with the new facts underneath</h2>
+    <p class="why"><b>Hierarchy:</b> the top of the card is the card as it has always been: photo and name on the left two thirds, the number rail on the right third. Under it, a lighter footer carries the price first, then the three lines. <b>Harmony:</b> it keeps the thirds layout the site already uses, so nothing the team knows changes. The cost: the price is the second thing the eye meets, not the first, and the footer has to be clearly separate so the card does not read as two cards.</p>
+    <ol class="levels"><li><b>1</b>Photo + name</li><li><b>2</b>ATM · Tare · Sleeps · Length (rail)</li><li><b>3</b>Price</li><li><b>4</b>Suspension · Water · Electrical</li></ol>
+  </div><div class="row" id="b"></div></section>
+
+  <!-- C -->
+  <section class="opt"><div class="container">
+    <span class="tag">Option C</span><h2>Price on the picture, then a two-thirds / one-third panel</h2>
+    <p class="why"><b>Hierarchy:</b> name and price share one baseline on the photo, so the two things a buyer looks for first are read together. Below, the panel splits on thirds: the three descriptive lines take the left two thirds, and the four numbers sit as a tidy two-by-two in the right third. <b>Harmony:</b> one split line, used once; lines and numbers each have their own zone, so nothing competes. It is the most compact card, but the smallest type of the three, so it leans on the card being large enough.</p>
+    <ol class="levels"><li><b>1</b>Name + price (on the photo)</li><li><b>2</b>Suspension · Water · Electrical</li><li><b>3</b>ATM · Tare · Length · Sleeps</li></ol>
+  </div><div class="row" id="c"></div></section>
+
+  <section style="padding:3rem 0 5rem"><div class="container"><p style="font:400 .85rem/1.5 var(--poppins);color:var(--warm-grey);max-width:50rem">Data: Outbound RVs' live stock listings (Amaroo 2200, Hornet 1806, XTR). The real build would read it from the stock feed.</p></div></section>
+</main>
+
+<script>
+  const VANS = [
+    { id: 909, name: 'AMAROO', kicker: '2026 · 2200', img: 'range-amaroo.jpg', pos: '50% 62%', price: '$164,999', susp: 'Cruisemaster XT 4.5T', water: '200L fresh', elec: '600Ah · 1,000W solar',
+      atm: ['3.5', 't'], tare: ['2,874', 'kg'], len: ['8.8', 'm'], sleeps: ['4', ''] },
+    { id: 908, name: 'HORNET', kicker: '2026 · 1806', img: 'range-hornet.jpg', pos: '50% 64%', price: '$184,999', was: '$187,999', badge: 'Reduced', susp: 'Cruisemaster XT 4.5T air bag', water: '200L fresh + 70L drinking', elec: '600Ah · 1,360W solar',
+      atm: ['3.5', 't'], tare: ['2,827', 'kg'], len: ['8.2', 'm'], sleeps: null },
+    { id: 846, name: 'XTR', kicker: '2026', img: 'range-xtr.jpg', pos: '40% 60%', price: '$211,562', susp: 'Cruisemaster ATX 4.5T air bag', water: '200L fresh + 90L drinking', elec: '600Ah · 1,000W solar',
+      atm: ['4.5', 't'], tare: ['3,201', 'kg'], len: ['8.3', 'm'], sleeps: null }
+  ];
+  const num = (v, label, cls = '') => `<div><span class="lab">${label}</span><span class="num ${v ? '' : 'na'}" style="display:block;margin-top:1.4cqw">${v ? v[0] + (v[1] ? `<small>${v[1]}</small>` : '') : '—'}</span></div>`;
+  const photo = (v, inner) => `<div class="photo"><img src="../assets/${v.img}" alt="" style="object-position:${v.pos}">${v.badge ? `<span class="badge">${v.badge}</span>` : ''}${inner}</div>`;
+  const ident = v => `<div><p class="kicker">${v.kicker}</p><h3 class="name">${v.name}</h3></div>`;
+  const priceHTML = v => `<span class="price">${v.price}${v.was ? `<s>${v.was}</s>` : ''}</span>`;
+  const lines = v => `<div class="lines"><div class="pad"><span class="lab">Suspension</span><span class="txt">${v.susp}</span></div><div class="pad"><span class="lab">Water</span><span class="txt">${v.water}</span></div><div class="pad"><span class="lab">Electrical</span><span class="txt">${v.elec}</span></div></div>`;
+
+  document.getElementById('a').innerHTML = VANS.map(v => `<article class="card a">
+    ${photo(v, `<div class="title">${ident(v)}</div>`)}
+    <div class="pricebar pad"><span class="price-lab">Drive away</span>${priceHTML(v)}</div>
+    <div class="strip">${num(v.atm, 'ATM')}${num(v.tare, 'Tare')}${num(v.len, 'Length')}${num(v.sleeps, 'Sleeps')}</div>
+    ${lines(v)}</article>`).join('');
+
+  document.getElementById('b').innerHTML = VANS.map(v => `<article class="card b">
+    <div class="top">${photo(v, `<div class="title">${ident(v)}</div>`)}
+      <div class="rail">${num(v.atm, 'ATM')}${num(v.tare, 'Tare')}<div class="two">${num(v.sleeps, 'Sleeps')}${num(v.len, 'Length')}</div></div></div>
+    <div class="foot"><div class="pricebar pad"><span class="price-lab">Drive away</span>${priceHTML(v)}</div>${lines(v)}</div></article>`).join('');
+
+  document.getElementById('c').innerHTML = VANS.map(v => `<article class="card c">
+    ${photo(v, `<div class="title">${ident(v)}<div class="pricebox"><span class="price-lab">Drive away</span><span class="price">${v.price}</span>${v.was ? `<s class="lab" style="text-decoration:line-through;letter-spacing:0;font-size:2.8cqw">${v.was}</s>` : ''}</div></div>`)}
+    <div class="panel"><div class="left"><div><span class="lab">Suspension</span><div class="txt">${v.susp}</div></div><div><span class="lab">Water</span><div class="txt">${v.water}</div></div><div><span class="lab">Electrical</span><div class="txt">${v.elec}</div></div></div>
+      <div class="right">${num(v.atm, 'ATM')}${num(v.tare, 'Tare')}${num(v.len, 'Length')}${num(v.sleeps, 'Sleeps')}</div></div></article>`).join('');
+</script>
+<script src="../header.js"></script>
+</body>
+</html>
