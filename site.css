@@ -344,19 +344,19 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
 #after-journey.fading-out { opacity: 0; transition: opacity .5s ease; }
 
 /* ---- Beyond sale (expanding panels) ------------------------------------------------------ */
-.beyond { position: relative; z-index: 2; overflow-x: clip; background: #fff; padding: 6.6rem 0 4.96rem; --u: .03788rem; }
-.beyond .section-title { color: #000; margin-bottom: 3.03rem; }
+.beyond { position: relative; z-index: 2; overflow-x: clip; background: var(--tyre); padding: 6.6rem 0 4.96rem; --u: .03788rem; }
+.beyond .section-title { color: var(--bone); margin-bottom: 3.03rem; }
 .bs-items { height: 21.97rem; display: flex; gap: .76rem; }
-.bs-item { position: relative; flex: 1 1 0; min-width: 0; background: var(--bone); padding: 1.97rem; overflow: hidden; cursor: default;
+.bs-item { position: relative; flex: 1 1 0; min-width: 0; background: rgba(244, 241, 234, .09); padding: 1.97rem; overflow: hidden; cursor: default;
            transition: flex-grow .75s var(--ease), background-color .5s ease, box-shadow .5s ease; }
-.bs-item.on { flex-grow: 4; background: #fff; box-shadow: inset 0 0 0 3px var(--olive); }
+.bs-item.on { flex-grow: 4; background: var(--tyre); box-shadow: inset 0 0 0 3px var(--olive); }
 .bs-item:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
 .bs-icon { display: block; width: 3.64rem; height: 3.64rem; fill: none; stroke: var(--olive); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
-.bs-item h3 { position: absolute; left: 1.97rem; bottom: 1.97rem; font: 700 1.82rem/1.15 var(--poppins); color: #000; white-space: nowrap;
+.bs-item h3 { position: absolute; left: 1.97rem; bottom: 1.97rem; font: 700 1.82rem/1.15 var(--poppins); color: var(--bone); white-space: nowrap;
               transform-origin: 0 100%; transform: rotate(-90deg) translate(0, 100%);
               transition: transform .65s var(--ease), bottom .65s var(--ease), color .45s ease; }
 .bs-item.on h3 { transform: none; bottom: 12.05rem; color: var(--olive); }
-.bs-desc { position: absolute; left: 1.97rem; top: 10.98rem; width: 32.58rem; font: 400 1.21rem/1.59rem var(--poppins); color: var(--tyre); text-wrap: pretty;
+.bs-desc { position: absolute; left: 1.97rem; top: 10.98rem; width: 32.58rem; font: 400 1.21rem/1.59rem var(--poppins); color: var(--bone); text-wrap: pretty;
            opacity: 0; transform: translateY(.6rem); transition: opacity .3s ease, transform .3s ease; }
 .bs-item.on .bs-desc { opacity: 1; transform: none; transition: opacity .5s ease .4s, transform .6s var(--ease) .4s; }
 
