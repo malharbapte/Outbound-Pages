@@ -450,10 +450,10 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
 .contact-form .row + .row { margin-top: 1.02rem; }
 .contact-form .row:last-of-type { align-items: end; }
 .contact-form input.line, .contact-form select.boxed, .contact-form textarea { width: 100%; font: 300 .91rem/1.2 var(--poppins); color: var(--tyre); border-radius: 0; background: transparent; }
-.contact-form input.line { height: 2.59rem; padding: .6rem .48rem 0; border: 0; border-bottom: 3px solid var(--warm-grey); outline: none; transition: border-color .3s ease; }
+.contact-form input.line { height: 2.59rem; padding: .6rem .48rem 0; border: 0; border-bottom: 1.5px solid var(--warm-grey); outline: none; transition: border-color .3s ease; }
 .contact-form input.line:focus { border-bottom-color: var(--olive); }
 .contact-form ::placeholder { color: var(--warm-grey); opacity: 1; }
-.contact-form select.boxed { height: 2.55rem; padding: 0 .48rem; border: 3px solid var(--warm-grey); appearance: none; color: var(--warm-grey);
+.contact-form select.boxed { height: 2.55rem; padding: 0 .48rem; border: 1.5px solid var(--warm-grey); appearance: none; color: var(--warm-grey);
   background-image: linear-gradient(45deg, transparent 50%, var(--warm-grey) 50%), linear-gradient(135deg, var(--warm-grey) 50%, transparent 50%);
   background-position: right 1.1rem center, right .75rem center; background-size: .35rem .35rem; background-repeat: no-repeat; }
 .contact-form select.boxed:valid { color: var(--tyre); }
@@ -470,7 +470,7 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
 .contact-form .req select.boxed { padding-right: 3rem; }
 /* "How can we help?": one olive block slides to the chosen answer. While it travels its leading edge is a chevron point,
    which settles back to a straight edge when it arrives. */
-.tabs { position: relative; margin: 2.17rem 0 0; padding: .3rem; border: 3px solid var(--warm-grey); border-radius: 6px; min-inline-size: 0;
+.tabs { position: relative; margin: 2.17rem 0 0; padding: .3rem; border: 1.5px solid var(--warm-grey); border-radius: 6px; min-inline-size: 0;
         display: grid; grid-template-columns: repeat(4, 1fr); }
 .tabs .glide { position: absolute; z-index: 0; left: .3rem; top: .3rem; bottom: .3rem; width: calc((100% - .6rem) / 4); background: var(--olive); border-radius: 4px;
                will-change: translate, clip-path; clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%, 0 50%);
@@ -486,11 +486,11 @@ html.scroll-locked .site-header { opacity: 0; pointer-events: none; }   /* out o
 .tabs label:hover span { color: var(--olive); }
 .tabs input:checked + span { color: var(--bone); font-weight: 600; }
 .tabs input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 3px; }
-.contact-form textarea { display: block; margin-top: 1.23rem; height: 6.3rem; padding: .45rem .42rem; border: 3px solid var(--warm-grey); resize: none; outline: none; transition: border-color .3s ease; }
+.contact-form textarea { display: block; margin-top: 1.23rem; height: 6.3rem; padding: .45rem .42rem; border: 1.5px solid var(--warm-grey); resize: none; outline: none; transition: border-color .3s ease; }
 .contact-form textarea:focus { border-color: var(--olive); }
 .consent { margin-top: .88rem; display: flex; gap: .32rem; font: 300 .91rem/1.2 var(--poppins); color: var(--warm-grey); cursor: pointer; text-wrap: pretty; }
 /* The tick box draws a white check when it is ticked. */
-.consent input { appearance: none; flex: none; position: relative; width: 1.18rem; height: 1.18rem; margin: 0; border: 3px solid var(--warm-grey); cursor: pointer;
+.consent input { appearance: none; flex: none; position: relative; width: 1.18rem; height: 1.18rem; margin: 0; border: 1.5px solid var(--warm-grey); cursor: pointer;
                  transition: background-color .25s ease, border-color .25s ease; }
 .consent input::after { content: ""; position: absolute; left: 50%; top: 44%; width: .72rem; height: .38rem; translate: -50% -50%;
                         border: solid #fff; border-width: 0 0 .17rem .17rem; rotate: -45deg; opacity: 0; transition: opacity .2s ease; }

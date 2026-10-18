@@ -32,7 +32,7 @@
 .c-help { padding-top: calc(168.4 * var(--u)); }
 .c-help .contact-cols { margin-top: 2.91rem; }
 /* Thin dividers between the four answers. A line fades out beside the selected answer, so it never runs down the olive block's edge. */
-.c-help .tabs label + label::before { content: ""; position: absolute; left: 0; top: 12%; bottom: 12%; width: 2px; background: var(--warm-grey); opacity: .55; transition: opacity .3s ease; }
+.c-help .tabs label + label::before { content: ""; position: absolute; left: 0; top: 12%; bottom: 12%; width: 1px; background: var(--warm-grey); opacity: .55; transition: opacity .3s ease; }
 .c-help .tabs label:has(input:checked)::before,
 .c-help .tabs label:has(input:checked) + label::before { opacity: 0; }
 
