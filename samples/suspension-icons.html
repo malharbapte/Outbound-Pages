@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suspension icon: four options</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  /* SAMPLE ONLY. Four suspension icons, all drawn on the same 24 grid with the same 1.5 stroke, round caps and joins as the
+     Water and Electrical icons they sit beside. Each is shown big, then at card size in the real card's row. */
+  .intro { padding: 4rem 0 1rem; }
+  .intro h1 { font: 700 2.6rem/1.1 var(--oswald); }
+  .intro p { margin-top: .8rem; max-width: 52rem; font: 400 .95rem/1.5 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .notes { margin: 1.4rem 0 0; padding: 0; list-style: none; max-width: 52rem; display: grid; gap: .5rem; font: 400 .92rem/1.45 var(--poppins); }
+  .notes li { padding-left: 1.1rem; position: relative; }
+  .notes li::before { content: ""; position: absolute; left: 0; top: .55em; width: .45rem; height: .45rem; border-radius: 1.5px; rotate: 45deg; background: var(--olive); }
+
+  .grid { margin: 2.4rem 0 4rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; }
+  .opt { background: var(--tyre); color: var(--bone); border-radius: 4px; overflow: hidden; }
+  .opt .big { display: grid; place-items: center; padding: 2.4rem 0 1.6rem; }
+  .opt .big svg { width: 8.5rem; height: 8.5rem; }
+  .opt h2 { padding: 0 1.4rem; font: 700 1.4rem/1.1 var(--oswald); letter-spacing: .01em; }
+  .opt p { padding: .5rem 1.4rem 1.2rem; font: 400 .85rem/1.45 var(--poppins); color: #bcbec0; text-wrap: pretty; }
+  .opt .tag { display: block; padding: 1.2rem 1.4rem .4rem; font: 600 .72rem/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+  .opt.now .tag { color: var(--orange); }
+
+  svg.ic2 { fill: none; stroke: var(--olive); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* the real card row: three icon lines, as on the live card, at the live size (card 460px wide: icon 6cqw = 27px) */
+  .row { margin: 0 1.4rem 1.6rem; padding: 1.1rem 1.2rem; background: rgba(244,241,234,.05); container-type: inline-size; }
+  .row ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.6cqw; }
+  .row li { display: grid; grid-template-columns: 6.6cqw 1fr; column-gap: 3cqw; align-items: start; }
+  .row li svg { grid-row: 1 / span 2; width: 6.6cqw; height: 6.6cqw; margin-top: .6cqw; fill: none; stroke: var(--olive); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .row .lab { font: 400 2.8cqw/1.2 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: #bcbec0; }
+  .row .txt { font: 400 3.8cqw/1.25 var(--poppins); margin-top: .6cqw; }
+  @media (max-width: 1000px) { .grid { grid-template-columns: 1fr; max-width: 30rem; } }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a class="logo" href="../index.html"><img src="../assets/outbound-logo-tight.png" alt="Outbound RVs" width="740" height="147"></a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="../index.html#drive">CARAVANS</a></li>
+        <li><a href="#">SUPPORT</a></li>
+        <li><a href="../contact.html">CONTACT</a></li>
+        <li><a href="../about.html">ABOUT</a></li>
+        <li><a href="#">REVIEWS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro"><div class="container">
+    <h1>Suspension icon: four options</h1>
+    <p>What I looked at first: stock icon libraries and design-system guides for how suspension is normally drawn, and what makes a small icon read. The notes:</p>
+    <ul class="notes">
+      <li><b>How suspension is usually drawn.</b> Three metaphors recur: the shock absorber (a damper with a ring at each end), a coil spring seen side-on, and a wheel under a spring. A spring on its own is the weak one. Drawn as a zigzag it reads as barbed wire or a lightning bolt, which is exactly what the current icon does.</li>
+      <li><b>Make the spring read as a spring.</b> The reliable trick is to draw it as a few parallel slanted strokes between two flat seats, with a rod through the middle, rather than a pointed zigzag. The flat seats and mounting rings are what say "mechanical part".</li>
+      <li><b>Icon rules from the design systems (Atlassian, Sky, Morningstar, Singapore Gov).</b> Use the least detail that carries the metaphor, keep one stroke weight across the set, and match the set before you match the concept. So all four here are 24 grid, 1.5 stroke, round caps, and drawn to sit beside the droplet and bolt.</li>
+      <li><b>Wonderland's vans mostly run airbag suspension</b> (Cruisemaster and Tuff-Ride, with coil on the Amaroo), so one option shows an airbag instead of a spring.</li>
+    </ul>
+
+    <div class="grid" id="grid"></div>
+  </div></section>
+</main>
+
+<script>
+  const DROP = '<path d="M12 3c3.5 4.2 6 7.2 6 10.2a6 6 0 0 1-12 0C6 10.2 8.5 7.2 12 3z"/>';
+  const BOLT = '<path d="M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z"/>';
+  const OPTS = [
+    { tag: 'Now', cls: 'now', name: 'Current: zigzag spring',
+      why: 'One pointed zigzag, no seats and no rod, so it reads as barbed wire or an arrow. This is what we are replacing.',
+      svg: '<path d="M12 2.5v3M12 18.5v3M7.5 6.5l9 2-9 2 9 2-9 2 9 2"/>' },
+    { tag: 'Option 1', name: 'Coilover',
+      why: 'Mounting ring, rod, a flat seat each end, and three slanted coil strokes. The most literal and the most recognisable; reads as a spring at once.',
+      svg: '<circle cx="12" cy="3" r="1.4"/><path d="M12 4.4V7M7 7.2h10M7.6 10.4l8.8-1.7M7.6 13.6l8.8-1.7M7.6 16.8l8.8-1.7M7 18h10M12 18v1.6"/><circle cx="12" cy="21" r="1.4"/>' },
+    { tag: 'Option 2', name: 'Shock absorber',
+      why: 'A damper: ring, rod, cylinder with a piston line, ring. The simplest of the four, so it holds up smallest, but it says "damper" more than "suspension system".',
+      svg: '<circle cx="12" cy="3" r="1.4"/><path d="M12 4.4V9"/><rect x="8" y="9" width="8" height="8.4" rx="1.4"/><path d="M8 12.4h8M12 17.4v2.2"/><circle cx="12" cy="21" r="1.4"/>' },
+    { tag: 'Option 3', name: 'Airbag',
+      why: 'Two bulges between two plates, with a stud at each end: a double bellows. Right for the air-suspension vans, which are most of the stock; less obvious to someone who has not seen an airbag kit.',
+      svg: '<path d="M12 2.4V5M12 17v2.6M7 5h10M7 17h10"/><path d="M8 5C4.4 5.9 4.4 10.1 8 11c-3.6.9-3.6 5.1 0 6M16 5c3.6.9 3.6 5.1 0 6 3.6.9 3.6 5.1 0 6M8 11h8"/><path d="M9.4 21.4h5.2"/>' },
+    { tag: 'Option 4', name: 'Wheel and spring',
+      why: 'A spring over a wheel: it carries the "vehicle" idea and the "springing" idea together. Busiest of the four, so it needs the most size to stay clean.',
+      svg: '<path d="M8 3.4h8M8.6 6.2l6.8-1.1M8.6 8.8l6.8-1.1M8.6 11.4l6.8-1.1M8 12.6h8"/><path d="M12 12.6V14"/><circle cx="12" cy="18.2" r="4"/><circle cx="12" cy="18.2" r="1" />' }
+  ];
+  document.getElementById('grid').innerHTML = OPTS.map(o => `<article class="opt ${o.cls || ''}">
+    <span class="tag">${o.tag}</span>
+    <div class="big"><svg class="ic2" viewBox="0 0 24 24" aria-hidden="true">${o.svg}</svg></div>
+    <h2>${o.name}</h2><p>${o.why}</p>
+    <div class="row"><ul>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true">${o.svg}</svg><span class="lab">Suspension</span><span class="txt">Cruisemaster XT 4.5T air bag</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true">${DROP}</svg><span class="lab">Water</span><span class="txt">200L fresh + 70L drinking</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true">${BOLT}</svg><span class="lab">Electrical</span><span class="txt">600Ah · 1,360W solar</span></li>
+    </ul></div></article>`).join('');
+</script>
+<script src="../header.js"></script>
+</body>
+</html>
