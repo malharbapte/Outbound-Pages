@@ -14,19 +14,19 @@
 .c-hero h1 { position: absolute; left: 0; bottom: calc(171.6 * var(--u)); font: 700 calc(154.12 * var(--u))/1 var(--oswald); color: #fff; }
 
 /* ---- Where we are, and when ------------------------------------------------------------------ */
-.c-visit { padding-top: calc(137 * var(--u)); }
-.c-address { font: 700 calc(84 * var(--u))/calc(100.8 * var(--u)) var(--oswald); color: #000; }
+.c-visit { padding: calc(137 * var(--u)) 0; background: var(--tyre); color: var(--bone); }
+.c-address { font: 700 calc(84 * var(--u))/calc(100.8 * var(--u)) var(--oswald); color: var(--bone); }
 .c-address a { color: var(--olive); text-decoration: none; transition: color .25s ease; }
-.c-address a:hover { color: var(--deep-olive); }
+.c-address a:hover { color: var(--bone); }   /* on black, hover lightens */
 .c-address .pin { display: inline-block; height: .81em; width: auto; margin-right: .2em; vertical-align: baseline; }
 .c-address a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
 .c-hours { margin-top: calc(94 * var(--u)); }
-.c-hours .label { font: 700 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: #000; }
-.c-days { margin: calc(34 * var(--u)) 0 0; display: grid; grid-template-columns: calc(540 * var(--u)) 1fr; font: 600 calc(36 * var(--u))/calc(48.4 * var(--u)) var(--poppins); color: #000; }
-.c-days dd { margin: 0; font-weight: 400; color: var(--deep-olive); }
+.c-hours .label { font: 700 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--bone); }
+.c-days { margin: calc(34 * var(--u)) 0 0; display: grid; grid-template-columns: calc(540 * var(--u)) 1fr; font: 600 calc(36 * var(--u))/calc(48.4 * var(--u)) var(--poppins); color: var(--bone); }
+.c-days dd { margin: 0; font-weight: 400; color: var(--olive); }   /* deep olive is only 4.2:1 on black; olive is 6.5:1 */
 @media (min-width: 861px) { .c-days { grid-template-columns: 1fr 2fr; } }   /* Sat starts on the first third line */
-.c-note { position: relative; margin-top: calc(57.4 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--blue); }
-.c-note .dmd { position: absolute; left: calc(-85.54 * var(--u)); top: 50%; width: calc(50.99 * var(--u)); height: calc(50.99 * var(--u)); translate: 0 -50%; rotate: 45deg; background: var(--blue); }
+.c-note { position: relative; margin-top: calc(57.4 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--bone); }
+.c-note .dmd { position: absolute; left: calc(-85.54 * var(--u)); top: 50%; width: calc(50.99 * var(--u)); height: calc(50.99 * var(--u)); translate: 0 -50%; rotate: 45deg; background: var(--olive); }
 
 /* ---- Form: the site's own form, with this page's heading ------------------------------------- */
 .c-help { padding-top: calc(168.4 * var(--u)); }
