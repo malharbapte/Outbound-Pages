@@ -374,7 +374,7 @@
     const BASE = 'https://www.outboundrvs.com.au/stock/';
     const VANS = [
       { id: 928, model: 'XTR', year: 2025, code: '', price: 219999, photo: 'https://jealstorage.blob.core.windows.net/easycarsblobcontainer/383/stockphoto/20360972.jpg?sv=2023-11-03&se=2027-04-11T12%3A24%3A02Z&sr=b&sp=r&sig=P1XqtUPhJwS3fgUTD%2BlMkWcitgt9L5VWKc2Kin%2BMxXg%3D', slug: '2025-wonderlandrv-xtr----630137',
-        susp: 'Cruisemaster ATX 4.5T air bag', water: '300L fresh + 90L drinking', elec: '460Ah (24V) \u00b7 1,560W solar',
+        susp: 'Cruisemaster ATX 4.5T air bag', water: '300L fresh + 90L drinking', elec: '460Ah \u00b7 1,560W solar',
         atm: ['4.5', 't'], tare: ['2,540', 'kg'], len: null, sleeps: null },
       { id: 909, model: 'Amaroo', year: 2026, code: '2200', price: 164999, photo: 'https://jealstorage.blob.core.windows.net/easycarsblobcontainer/383/stockphoto/20257298.jpg?sv=2023-11-03&se=2027-03-29T09%3A54%3A32Z&sr=b&sp=r&sig=PEw63W2XP0MX8jaBsz8cpybX2toUmDdMiNOywPKmlSo%3D', slug: '2026-wonderlandrv-amaroo---2200q3f_2,4-608863',
         susp: 'Cruisemaster XT 4.5T', water: '200L fresh', elec: '600Ah \u00b7 1,000W solar',
@@ -383,7 +383,7 @@
         susp: 'Cruisemaster XT 4.5T air bag', water: '200L fresh + 70L drinking', elec: '600Ah \u00b7 1,360W solar',
         atm: ['3.5', 't'], tare: ['2,827', 'kg'], len: ['8.2', 'm'], sleeps: null },
       { id: 905, model: 'XTR', year: 2024, code: '2100', price: 159999, was: 169999, photo: 'https://jealstorage.blob.core.windows.net/easycarsblobcontainer/383/stockphoto/19357716.jpg?sv=2023-11-03&se=2027-01-04T13%3A17%3A38Z&sr=b&sp=r&sig=BDUrfTzadZYnaSetA%2BXxv5wgKUbJa%2FwzpYDq49Eg3dI%3D', slug: '2024-wonderlandrv-xtr---2100q2f_2-601112',
-        susp: 'Cruisemaster ATX air bag', water: '200L fresh + 55L drinking', elec: '600Ah lithium \u00b7 3,000W inverter',
+        susp: 'Cruisemaster ATX air bag', water: '200L fresh + 55L drinking', elec: '600Ah \u00b7 3,000W inverter',
         atm: ['4.5', 't'], tare: null, len: ['8.8', 'm'], sleeps: ['4', ''] },
       { id: 882, model: 'Amaroo', year: 2026, code: '', price: 154999, photo: 'https://jealstorage.blob.core.windows.net/easycarsblobcontainer/383/stockphoto/18330682.jpg?sv=2023-11-03&se=2027-01-04T12%3A50%3A32Z&sr=b&sp=r&sig=9o9GUbPlpy4rcVmqvwsnmwzMq8r7HnItHwseeuXD%2BEE%3D', slug: '2026-wonderlandrv-amaroo----574453', badge: 'Arriving Nov 2026',
         susp: 'Cruisemaster XT 3.7T coil', water: '200L fresh', elec: '300Ah \u00b7 600W solar',
@@ -432,7 +432,7 @@
       `<div class="stock-photo"><img src="${v.photo}" alt="" draggable="false" loading="lazy" referrerpolicy="no-referrer">` +
       (v.badge ? `<span class="stock-badge">${esc(v.badge)}</span>` : '') +
       `<div class="stock-title"><div><p class="stock-layout">${v.kicker}</p><h3 class="stock-name">${v.name}</h3></div>` +
-      `<div class="stock-pricebox"><span class="lab">Drive away</span><span class="stock-price">${money(v.price)}</span>${v.was ? `<s>${money(v.was)}</s>` : ''}</div></div></div>` +
+      `<div class="stock-pricebox"><span class="top"><span class="lab">Drive away</span>${v.was ? `<s>${money(v.was)}</s>` : ''}</span><span class="stock-price">${money(v.price)}</span></div></div></div>` +
       `<div class="stock-body"><ul class="stock-facts">${fact('susp', 'Suspension', v.susp)}${fact('water', 'Water', v.water)}${fact('elec', 'Electrical', v.elec)}</ul>` +
       `<dl class="stock-nums">${stat('ATM', v.atm)}${stat('Tare', v.tare)}${stat('Length', v.len)}${stat('Sleeps', v.sleeps)}</dl></div></a>`;
 
