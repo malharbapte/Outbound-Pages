@@ -26,7 +26,7 @@
 .c-days dd { margin: 0; font-weight: 400; color: var(--olive); }   /* deep olive is only 4.2:1 on black; olive is 6.5:1 */
 @media (min-width: 861px) { .c-days { grid-template-columns: 1fr 2fr; } }   /* Sat starts on the first third line */
 .c-note { position: relative; margin-top: calc(57.4 * var(--u)); font: 600 calc(36 * var(--u))/calc(43.2 * var(--u)) var(--poppins); color: var(--bone); }
-.c-note .dmd { position: absolute; left: calc(-85.54 * var(--u)); top: 50%; width: calc(50.99 * var(--u)); height: calc(50.99 * var(--u)); translate: 0 -50%; rotate: 45deg; background: var(--olive); }
+.c-note .dmd { position: absolute; left: calc(-85.54 * var(--u)); top: 50%; width: calc(50.99 * var(--u)); height: calc(50.99 * var(--u)); translate: 0 -50%; rotate: 45deg; background: var(--blue); }
 
 /* ---- Form: the site's own form, with this page's heading ------------------------------------- */
 .c-help { padding-top: calc(168.4 * var(--u)); }
