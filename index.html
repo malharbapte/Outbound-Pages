@@ -20,7 +20,7 @@
     </button>
     <nav class="nav" id="site-nav" aria-label="Main">
       <ul>
-        <li><a href="#">CARAVANS</a></li>
+        <li><a href="#drive">CARAVANS</a></li>
         <li><a href="#">SUPPORT</a></li>
         <li><a href="contact.html">CONTACT</a></li>
         <li><a href="about.html">ABOUT</a></li>
@@ -34,64 +34,24 @@
   <section class="hero" aria-label="Inspiring journeys">
     <img src="assets/hero.jpg" alt="Wonderland RV caravan on an outback road" fetchpriority="high">
     <div class="container">
-      <h1>IGNITING THE SPIRIT OF<br>ADVENTURE &amp; INSPIRING<br>PEOPLE TO EXPLORE</h1>
+      <div class="hero-copy">
+        <h1>IGNITING THE SPIRIT OF<br>ADVENTURE &amp; INSPIRING<br>PEOPLE TO EXPLORE</h1>
+        <a class="btn hero-cta" href="#drive" aria-label="Drive away: see the vans in stock">DRIVE AWAY<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+      </div>
       <p class="credit">JESSICA ISSABELLE</p>
     </div>
     <span class="thirds" aria-hidden="true"></span>
   </section>
 
-  <section class="exclusive" aria-labelledby="exclusive-title">
-    <div class="container"><h2 class="section-title" id="exclusive-title">EXCLUSIVE DEALERSHIP OF</h2></div>
-    <div class="dealer">
-      <div class="band"><img src="assets/wonderland-stacked-white.png" alt="Wonderland RV" width="1200" height="337"></div>
-      <img class="van van-shadow" src="assets/van-shadow.png" alt="">
-      <img class="van van-right" src="assets/van-right.png" alt="Wonderland RV caravan, front three-quarter view">
-      <img class="van van-left" src="assets/van-left.png" alt="Wonderland RV Solara caravan, side view">
-      <div class="container">
-        <p class="body-lg">We are the Victorian dealership of Wonderland RV Caravans. While Wonderland RV is a caravan manufacturer, we are exclusively dedicated to selling their&nbsp;caravans.</p>
-      </div>
-    </div>
-    <span class="thirds" aria-hidden="true"></span>
-  </section>
-
-  <section class="range" aria-labelledby="range-title">
-    <svg class="swoosh" viewBox="3528.15 3168.16 370 546" aria-hidden="true"><path fill="#ee964b" d="M3745.53,3383.54l-217.39,217.39v112.94l330.33-330.33c36.61-36.61,36.61-95.97,0-132.58l-82.8-82.8h-112.94l82.8,82.8c54.03,54.03,54.8,77.78,0,132.58Z"/></svg>
-    <div class="container"><h2 class="section-title" id="range-title">The Wonderland RV&nbsp;Range</h2></div>
-    <ul class="range-cards">
-        <li><a class="range-card" href="#">
-          <img src="assets/range-amaroo.jpg" alt="Wonderland RV Amaroo" loading="lazy" style="width:106.92%;left:-3.46%;top:-19.29%">
-          
-          <span class="name"><h3>AMAROO</h3><p class="kind">Classic&nbsp;Offroad</p></span>
-        </a></li>
-        <li><a class="range-card" href="#">
-          <img src="assets/range-hornet.jpg" alt="Wonderland RV Hornet" loading="lazy" style="width:111.79%;left:-10.35%;top:-4.00%">
-          
-          <span class="name"><h3>HORNET</h3><p class="kind">Rugged&nbsp;Offroad</p></span>
-        </a></li>
-        <li><a class="range-card" href="#">
-          <img src="assets/range-solara.jpg" alt="Wonderland RV Solara" loading="lazy" style="width:133.84%;left:-32.01%;top:-22.29%">
-          <span class="tag">Full Composite</span>
-          <span class="name"><h3>SOLARA</h3><p class="kind">Luxury&nbsp;Offroad</p></span>
-        </a></li>
-        <li><a class="range-card" href="#">
-          <img src="assets/range-xtr.jpg" alt="Wonderland RV Xtr" loading="lazy" style="width:135.47%;left:-19.08%;top:-46.61%">
-          
-          <span class="name"><h3>XTR</h3><p class="kind">Extreme&nbsp;Offroad</p></span>
-        </a></li>
-    </ul>
-    <div class="container">
-      <p class="lede">You can always customise the van to suit your needs. The length and features will vary depending on your&nbsp;customisation.</p>
-      <div class="actions"><a class="btn" href="#">BUILD YOUR&nbsp;CARAVAN</a></div>
-    </div>
-    <span class="thirds" aria-hidden="true"></span>
-  </section>
-
-  <section class="drive" aria-labelledby="drive-title">
+  <section class="drive" id="drive" aria-labelledby="drive-title">
     <div class="container">
       <h2 class="section-title" id="drive-title">DRIVE AWAY</h2>
       <div class="drive-controls">
-        <input class="search" type="search" placeholder="Search" aria-label="Search stock">
-        <button class="filter" type="button">Filter</button>
+        <input class="search" type="search" placeholder="Search by model or feature" aria-label="Search stock">
+        <div class="filter-wrap">
+          <button class="filter" type="button" aria-haspopup="true" aria-expanded="false"><span>All models</span></button>
+          <div class="filter-menu" role="group" aria-label="Model" hidden></div>
+        </div>
         <div class="views">
           <span class="views-label">View</span>
           <div class="view-toggle" role="group" aria-label="Stock view">
@@ -101,22 +61,66 @@
           </div>
         </div>
       </div>
+      <p class="stock-count" id="stock-count" aria-live="polite"></p>
     </div>
     <div class="stock-panel diamond-host" data-view="slide">
-      <div class="stock-viewport"><div class="stock-track">
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Amaroo, couples layout"><div class="stock-photo"><img src="assets/range-amaroo.jpg" alt="" draggable="false" loading="lazy" style="object-position:50% 62%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">AMAROO</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,300<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,500<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>16'6"</dd></div></div></dl></a>
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Hornet, couples layout"><div class="stock-photo"><img src="assets/range-hornet.jpg" alt="" draggable="false" loading="lazy" style="object-position:50% 64%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">HORNET</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,650<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl></a>
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Solara, couples layout"><div class="stock-photo"><img src="assets/range-solara.jpg" alt="" draggable="false" loading="lazy" style="object-position:45% 70%"><span class="stock-badge">Composite</span><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">SOLARA</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,580<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>18'6"</dd></div></div></dl></a>
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Xtr, family layout"><div class="stock-photo"><img src="assets/range-xtr.jpg" alt="" draggable="false" loading="lazy" style="object-position:40% 60%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">XTR</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,950<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>5</dd></div><div class="length"><dt>Length</dt><dd>20'6"</dd></div></div></dl></a>
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Amaroo, family layout"><div class="stock-photo"><img src="assets/range-amaroo.jpg" alt="" draggable="false" loading="lazy" style="object-position:50% 62%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">AMAROO</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,780<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>4</dd></div><div class="length"><dt>Length</dt><dd>19'6"</dd></div></div></dl></a>
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Hornet, family layout"><div class="stock-photo"><img src="assets/range-hornet.jpg" alt="" draggable="false" loading="lazy" style="object-position:50% 64%"><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">HORNET</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,950<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>5</dd></div><div class="length"><dt>Length</dt><dd>20'6"</dd></div></div></dl></a>
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Solara, family layout"><div class="stock-photo"><img src="assets/range-solara.jpg" alt="" draggable="false" loading="lazy" style="object-position:45% 70%"><span class="stock-badge">Composite</span><div class="stock-title"><p class="stock-layout">Family Layout</p><h3 class="stock-name">SOLARA</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,800<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,890<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>4</dd></div><div class="length"><dt>Length</dt><dd>21'6"</dd></div></div></dl></a>
-        <a class="stock-card" href="#" draggable="false" aria-label="Wonderland RV Xtr, couples layout"><div class="stock-photo"><img src="assets/range-xtr.jpg" alt="" draggable="false" loading="lazy" style="object-position:40% 60%"><div class="stock-title"><p class="stock-layout">Couples Layout</p><h3 class="stock-name">XTR</h3></div></div><dl class="stock-rail"><div class="row r1"><div><dt>ATM</dt><dd>3,500<small>kg</small></dd></div></div><div class="row r2"><div><dt>Tare</dt><dd>2,700<small>kg</small></dd></div></div><div class="row r3"><div class="sleeps"><dt>Sleeps</dt><dd>2</dd></div><div class="length"><dt>Length</dt><dd>19'6"</dd></div></div></dl></a>
-      </div></div>
+      <div class="stock-viewport"><div class="stock-track"></div></div>
       <div class="stock-progress" aria-hidden="true"><span></span></div>
+    </div>
+    <div class="stock-empty" id="stock-empty" hidden><div class="container"><p></p><a class="btn" href="#contact">Ask about incoming stock</a></div></div>
+    <div class="stock-detail" id="stock-detail" tabindex="-1" hidden></div>
+    <span class="thirds" aria-hidden="true"></span>
+  </section>
+
+  <section class="dealer-strip" aria-label="Exclusive Victorian dealership of Wonderland RV">
+    <div class="container">
+      <p>EXCLUSIVE VICTORIAN DEALERSHIP OF</p>
+      <img src="assets/wonderland-line-white.png" alt="Wonderland RV" width="700" height="100">
+    </div>
+  </section>
+
+  <section class="stories" aria-labelledby="stories-title">
+    <h2 class="section-title" id="stories-title">STORIES FROM OUR&nbsp;CUSTOMERS</h2>
+    <div class="story-tiles">
+      <!-- 8 tiles, filled and shuffled by the script below. -->
     </div>
     <span class="thirds" aria-hidden="true"></span>
   </section>
+
+  <section class="range" aria-labelledby="range-title">
+    <svg class="swoosh" viewBox="3528.15 3168.16 370 546" aria-hidden="true"><path fill="#ee964b" d="M3745.53,3383.54l-217.39,217.39v112.94l330.33-330.33c36.61-36.61,36.61-95.97,0-132.58l-82.8-82.8h-112.94l82.8,82.8c54.03,54.03,54.8,77.78,0,132.58Z"/></svg>
+    <div class="container"><h2 class="section-title" id="range-title">The Wonderland RV&nbsp;Range</h2></div>
+    <ul class="range-cards">
+        <li><a class="range-card" href="#drive" data-model="Amaroo">
+          <img src="assets/range-amaroo.jpg" alt="Wonderland RV Amaroo" loading="lazy" style="width:106.92%;left:-3.46%;top:-19.29%">
+          
+          <span class="name"><h3>AMAROO</h3><p class="kind">Classic&nbsp;Offroad</p></span>
+        </a></li>
+        <li><a class="range-card" href="#drive" data-model="Hornet">
+          <img src="assets/range-hornet.jpg" alt="Wonderland RV Hornet" loading="lazy" style="width:111.79%;left:-10.35%;top:-4.00%">
+          
+          <span class="name"><h3>HORNET</h3><p class="kind">Rugged&nbsp;Offroad</p></span>
+        </a></li>
+        <li><a class="range-card" href="#drive" data-model="Solara">
+          <img src="assets/range-solara.jpg" alt="Wonderland RV Solara" loading="lazy" style="width:133.84%;left:-32.01%;top:-22.29%">
+          <span class="tag">Full Composite</span>
+          <span class="name"><h3>SOLARA</h3><p class="kind">Luxury&nbsp;Offroad</p></span>
+        </a></li>
+        <li><a class="range-card" href="#drive" data-model="XTR">
+          <img src="assets/range-xtr.jpg" alt="Wonderland RV Xtr" loading="lazy" style="width:135.47%;left:-19.08%;top:-46.61%">
+          
+          <span class="name"><h3>XTR</h3><p class="kind">Extreme&nbsp;Offroad</p></span>
+        </a></li>
+    </ul>
+    <div class="container">
+      <p class="lede">You can always customise the van to suit your needs. The length and features will vary depending on your&nbsp;customisation.</p>
+      <div class="actions"><a class="btn" href="#contact">BUILD YOUR&nbsp;CARAVAN</a></div>
+    </div>
+    <span class="thirds" aria-hidden="true"></span>
+  </section>
+
+
+
 
   <section class="visit" aria-labelledby="visit-title">
     <div class="visit-photo">
@@ -197,13 +201,6 @@
     <span class="thirds" aria-hidden="true"></span>
   </section>
 
-  <section class="stories" aria-labelledby="stories-title">
-    <h2 class="section-title" id="stories-title">STORIES FROM OUR&nbsp;CUSTOMERS</h2>
-    <div class="story-tiles">
-      <!-- 8 tiles, filled and shuffled by the script below. -->
-    </div>
-    <span class="thirds" aria-hidden="true"></span>
-  </section>
 
   <section class="different" aria-labelledby="different-title">
     <div class="container">
@@ -367,40 +364,169 @@
   }), { threshold: .5 });
   document.querySelectorAll('.diamond-host').forEach(el => seen.observe(el));
 
-  // Drive Away: continuous card slider with a progress line, plus three layout views.
+  // Drive Away: the vans on the floor (real stock, from outboundrvs.com.au), search, a model filter, a spec sheet per van,
+  // and the continuous card slider with its three layout views. Prices and specs are typed in here for now; the real
+  // build should read them from the stock feed.
   (() => {
+    const BASE = 'https://www.outboundrvs.com.au/stock/';
+    const POS = { Amaroo: '50% 62%', Hornet: '50% 64%', XTR: '40% 60%', Solara: '45% 70%' };
+    const IMG = { Amaroo: 'range-amaroo.jpg', Hornet: 'range-hornet.jpg', XTR: 'range-xtr.jpg', Solara: 'range-solara.jpg' };
+    const VANS = [
+      { id: 928, model: 'XTR', year: 2025, code: '', price: 219999, ah: 460, kw: 1.56, atm: 4.5, slug: '2025-wonderlandrv-xtr----630137',
+        chassis: ['Heavy-duty off-road RHS steel, hot-dip galvanised', '4.5T Cruisemaster ATX air bag suspension with BCS', '6" x 2100mm A-frame, 12" truss chassis', 'Cruisemaster DO45 hitch', 'Dirty Life Theory 17" wheels, Cooper AT3 tyres'],
+        electrical: ['Victron 24V off-grid system (Touch 70)', '2 x 24V 230Ah lithium batteries', '1,560W solar', '5,000VA inverter', 'Dual Dometic Fresh Jet air conditioners', 'Starlink provision, reverse camera'],
+        water: ['3 x 100L fresh water', '90L dedicated drinking water', '1 x 100L grey water, with bypass', 'Hydronic diesel hot water and heater (gasless)', '224L Dometic compressor fridge'],
+        weights: ['ATM 4,500 kg', 'Ball weight 280 kg', 'Tare 2,540 kg', 'Travel height 3.2 m'] },
+      { id: 909, model: 'Amaroo', year: 2026, code: '2200', price: 164999, ah: 600, kw: 1.0, atm: 3.5, slug: '2026-wonderlandrv-amaroo---2200q3f_2,4-608863',
+        note: '21ft rear bunk layout with a 6’8" main bed',
+        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster XT L3 manual suspension', '12" drum brakes', 'Cruisemaster DO35 hitch', '16" 265/75R16 all-terrain tyres'],
+        electrical: ['Redarc Alpha 50 battery management', '600Ah battery', '1,000W solar', '2,600W inverter', 'Dometic Fresh Jet 3kW air conditioner'],
+        water: ['2 x 100L fresh water', '1 x 100L grey water, with bypass', '216L Dometic compressor fridge', 'External hot and cold shower'],
+        weights: ['ATM 3,500 kg', 'Ball weight 180 kg', 'Tare 2,874 kg', 'Travel length 8.8 m, height 3.2 m'] },
+      { id: 908, model: 'Hornet', year: 2026, code: '1806', price: 184999, was: 187999, ah: 600, kw: 1.36, atm: 3.5, slug: '2026-wonderlandrv-hornet---1806q_r_l-608795',
+        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster XT air bag suspension with BCS', 'Disc brakes', 'Method 305 17" wheels, 265/75R16 Yokohama', 'Cruisemaster DO35 hitch'],
+        electrical: ['Victron board, 600Ah battery', '1,360W solar plus rear solar wing', '3,000VA inverter-charger', 'Dometic Fresh Jet 3kW air conditioner', 'Starlink provision, reverse camera'],
+        water: ['2 x 100L fresh water', '1 x 70L isolated drinking water', '1 x 100L grey water', 'Autotherm 10kW hot water and heater', '216L Dometic compressor fridge'],
+        weights: ['ATM 3,500 kg', 'Ball weight 177 kg', 'Tare 2,827 kg', 'Travel length 8.2 m, height 3.2 m'] },
+      { id: 905, model: 'XTR', year: 2024, code: '2100', price: 159999, was: 169999, ah: 600, kw: null, atm: 4.5, slug: '2024-wonderlandrv-xtr---2100q2f_2-601112',
+        note: '2024 plated, two bunk layout',
+        chassis: ['12" truss chassis, S&M Chassis', 'Cruisemaster ATX Unleashed air bag suspension, BCS levelling', '12" drum brakes, Bosch ABS stability control', '17" wheels, Mickey Thompson Baja Boss A/T'],
+        electrical: ['Victron Micro GX Touch, Multiplus II', '600Ah lithium batteries', '3,000W inverter, 120A charger', 'Dometic Harrier air conditioner', 'Starlink connection point, GPS tracker'],
+        water: ['2 x 100L fresh water', '1 x 55L drinking water', '1 x 100L grey water, with bypass', '224L Dometic compressor fridge and freezer', 'Gas and electric hot water, diesel heater'],
+        weights: ['ATM 4,500 kg', 'Travel length 8.8 m, height 3.1 m'] },
+      { id: 882, model: 'Amaroo', year: 2026, code: '', price: 154999, ah: 300, kw: 0.6, atm: 3.5, slug: '2026-wonderlandrv-amaroo----574453', badge: 'Arriving Nov 2026',
+        chassis: ['Heavy-duty off-road RHS steel, Australian made', '3.7T Cruisemaster XT coil suspension', '12" drum brakes', 'Cruisemaster DO35 hitch', '16" 265/75R16 all-terrain tyres'],
+        electrical: ['Redarc Alpha 50 battery management', '300Ah lithium battery', '3 x 200W solar', '2,000W inverter', 'Dometic Fresh Jet 3kW air conditioner'],
+        water: ['2 x 100L fresh water', '1 x 100L grey water, with bypass', '216L Dometic compressor fridge', 'Swift gas and electric hot water'],
+        weights: ['ATM 3,500 kg', 'Tare 2,900 kg', 'Travel length 9.2 m, height 3.2 m'] },
+      { id: 824, model: 'Hornet', year: 2026, code: '1907', price: 169800, ah: 600, kw: 1.0, atm: null, slug: '2026-wonderlandrv-hornet---1907q1_f_b2-571724', badge: 'Arriving mid Nov 2026',
+        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster XT L3 manual suspension', '12" drum brakes', 'Cruisemaster DO35 hitch', 'Dirty Life Theory 16" wheels, Cooper AT3 tyres'],
+        electrical: ['Victron board, 600Ah lithium battery', '1,000W solar', '3,000VA inverter', 'Dometic Fresh Jet 3kW air conditioner', 'Starlink provision'],
+        water: ['2 x 100L fresh water', '1 x 70L isolated drinking water', '1 x 100L grey water', '216L Dometic compressor fridge', 'Gas hot water system'],
+        weights: ['Weights confirmed on arrival'] },
+      { id: 855, model: 'Amaroo', year: 2026, code: '2107', price: 154999, was: 159999, ah: 300, kw: 0.6, atm: 3.5, slug: '2026-wonderlandrv-amaroo---2107-555567',
+        note: 'Quad bunk layout, four 1.9m bunks',
+        chassis: ['Heavy-duty off-road RHS steel, Australian made', '3.7T Tuff-Ride coil suspension (airbag ready)', '12" drum brakes', 'Cruisemaster DO35 hitch', '16" 265/75R16 all-terrain tyres'],
+        electrical: ['Redarc Alpha 50 battery management', '300Ah lithium battery', '3 x 200W solar', '2,000W inverter', 'Dometic Fresh Jet 3kW air conditioner'],
+        water: ['2 x 100L fresh water', '1 x 100L grey water, with bypass', '216L Dometic compressor fridge', 'External hot and cold shower'],
+        weights: ['ATM 3,500 kg', 'Travel length 9 m, height 3.1 m'] },
+      { id: 846, model: 'XTR', year: 2026, code: '', price: 211562, ah: 600, kw: 1.0, atm: 4.5, slug: '2026-wonderlandrv-xtr----550764',
+        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster ATX with BCS', 'Disc brakes', '6" x 2050mm A-frame, 12" truss chassis', 'Method 305 17" wheels, 265/70R17 tyres'],
+        electrical: ['Victron 24V off-grid system (Touch 70)', '7.2kWh / 600Ah @ 12V lithium', '5 x 200W solar, 16ft solar awning, rear solar wing', '5,000VA inverter', 'Dometic Fresh Jet 3kW air conditioner'],
+        water: ['2 x 100L fresh water', '1 x 90L drinking water', '1 x 100L grey water, with bypass', 'Hydronic diesel hot water and heater (gasless)', 'Dometic compressor fridge and freezer'],
+        weights: ['ATM 4,500 kg', 'Ball weight 265 kg', 'Tare 3,201 kg', 'Travel length 8.3 m, height 3.1 m'] }
+    ];
+    VANS.forEach(v => { v.name = v.model.toUpperCase(); v.kicker = v.code ? `${v.year} · ${v.code}` : String(v.year); if (v.was && !v.badge) v.badge = 'Reduced'; });
+    const money = n => '$' + n.toLocaleString('en-AU');
+    const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+
     const panel = document.querySelector('.stock-panel');
+    const drive = document.getElementById('drive');
     const viewport = panel.querySelector('.stock-viewport');
     const track = panel.querySelector('.stock-track');
     const bar = panel.querySelector('.stock-progress span');
-    const originals = [...track.children];
+    const detail = document.getElementById('stock-detail');
+    const empty = document.getElementById('stock-empty');
+    const count = document.getElementById('stock-count');
+    const search = drive.querySelector('.search');
+    const filterBtn = drive.querySelector('.filter');
+    const filterMenu = drive.querySelector('.filter-menu');
     const SPEED = 2.6;   // rem per second, so the pace scales with the page
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
-    // A second copy of the cards makes the loop seamless.
-    originals.forEach(card => {
-      const copy = card.cloneNode(true);
-      copy.classList.add('clone');
-      copy.setAttribute('aria-hidden', 'true');
-      copy.tabIndex = -1;
-      track.append(copy);
-    });
-
-    // Offset is kept as a fraction of one lap, so resizing or zooming never jumps the cards.
-    let lap = 0, last = null, hovering = false, drag = null, moved = false;
+    let originals = [], looping = false, lap = 0, last = null, hovering = false, drag = null, moved = false;
+    let query = '', model = 'All', openId = null;
     const isSlide = () => panel.dataset.view === 'slide';
-    const lapWidth = () => originals.length ? track.children[originals.length].offsetLeft - originals[0].offsetLeft : 1;
+    const lapWidth = () => looping ? track.children[originals.length].offsetLeft - originals[0].offsetLeft : 1;
 
-    const render = () => {
+    const cardHTML = v => `<a class="stock-card" href="#van-${v.id}" data-id="${v.id}" draggable="false" aria-label="${esc(`${v.year} Wonderland RV ${v.name} ${v.code}, ${money(v.price)} drive away. Open the spec sheet.`)}">` +
+      `<div class="stock-photo"><img src="assets/${IMG[v.model]}" alt="" draggable="false" loading="lazy" style="object-position:${POS[v.model]}">` +
+      (v.badge ? `<span class="stock-badge">${esc(v.badge)}</span>` : '') +
+      `<div class="stock-title"><p class="stock-layout">${v.kicker}</p><h3 class="stock-name">${v.name}</h3></div></div>` +
+      `<dl class="stock-rail"><div class="row r1"><div><dt>Drive away</dt><dd>${money(v.price)}</dd></div></div>` +
+      `<div class="row r2"><div><dt>Battery</dt><dd>${v.ah}<small>Ah</small></dd></div></div>` +
+      `<div class="row r3"><div class="sleeps"><dt>Solar</dt><dd>${v.kw ? v.kw.toFixed(2).replace(/0$/, '') + '<small>kW</small>' : 'TBC'}</dd></div>` +
+      `<div class="length"><dt>ATM</dt><dd>${v.atm ? v.atm.toFixed(1) + '<small>t</small>' : 'TBC'}</dd></div></div></dl></a>`;
+
+    const matches = v => (model === 'All' || v.model === model) &&
+      (!query || [v.model, v.year, v.code, v.note, v.badge, ...v.chassis, ...v.electrical, ...v.water].join(' ').toLowerCase().includes(query));
+
+    function render() {
+      const list = VANS.filter(matches);
+      track.innerHTML = list.map(cardHTML).join('');
+      originals = [...track.children];
+      looping = list.length >= 4;                                  // fewer than four cards cannot fill the loop, so they stand still
+      if (looping) originals.forEach(card => {
+        const copy = card.cloneNode(true);
+        copy.classList.add('clone'); copy.setAttribute('aria-hidden', 'true'); copy.tabIndex = -1;
+        track.append(copy);
+      });
+      lap = 0; track.style.transform = ''; bar.style.transform = 'scaleX(0)';
+      panel.classList.toggle('still', !looping);
+      count.textContent = list.length ? `${list.length} ${list.length === 1 ? 'van' : 'vans'} in stock · drive-away prices` : '';
+      empty.hidden = list.length > 0;
+      panel.hidden = list.length === 0;
+      if (!list.length) empty.querySelector('p').textContent = model !== 'All' && !query ? `No ${model} in stock right now. Ask us about incoming vans and build times.` : 'No vans match that search. Try fewer words, or ask us what is arriving.';
+      if (openId && !list.some(v => v.id === openId)) closeDetail();
+      else markOpen();
+    }
+
+    // ---- Spec sheet
+    const group = (title, lines) => `<div class="sd-group"><h4>${title}</h4><ul>${lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul></div>`;
+    function openDetail(id, scroll = true) {
+      const v = VANS.find(x => x.id === id); if (!v) return;
+      openId = id;
+      detail.innerHTML = `<div class="container">
+        <div class="sd-head"><div><p class="sd-kicker">${v.kicker} · Stock #${v.id}${v.badge ? ' · ' + esc(v.badge) : ''}</p><h3>${v.name}${v.code ? ' ' + v.code : ''}</h3>${v.note ? `<p class="sd-note">${esc(v.note)}</p>` : ''}</div>
+          <p class="sd-price">${money(v.price)}${v.was ? `<s>${money(v.was)}</s>` : ''}<small>Drive away</small></p>
+          <button class="sd-close" type="button" aria-label="Close the spec sheet"><span aria-hidden="true"></span></button></div>
+        <div class="sd-cols">${group('Chassis &amp; suspension', v.chassis)}${group('Electrical', v.electrical)}<div class="sd-stack">${group('Water &amp; kitchen', v.water)}${group('Weights', v.weights)}</div></div>
+        <div class="sd-actions"><a class="btn" href="#contact" data-enquire="${esc(`${v.year} ${v.name}${v.code ? ' ' + v.code : ''} (stock #${v.id})`)}">Enquire about this van</a><a class="sd-link" href="${BASE}${v.slug}" target="_blank" rel="noopener">Full listing<span class="sr-only"> (opens in a new tab)</span></a></div>
+        <p class="sd-fine">Specs as listed by Outbound RVs. Errors and omissions excepted; confirm details with the team before you buy.</p></div>`;
+      detail.hidden = false; drive.classList.add('has-detail'); markOpen();
+      history.replaceState(null, '', '#van-' + id);                // a shareable link to this van
+      if (scroll) detail.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
+    }
+    function closeDetail() { if (openId) history.replaceState(null, '', '#drive'); openId = null; detail.hidden = true; detail.innerHTML = ''; drive.classList.remove('has-detail'); markOpen(); }
+    function markOpen() { track.querySelectorAll('.stock-card').forEach(c => { const on = +c.dataset.id === openId; c.classList.toggle('open', on); c.setAttribute('aria-expanded', on); }); }
+
+    track.addEventListener('click', e => {
+      const card = e.target.closest('.stock-card'); if (!card) return;
+      e.preventDefault();
+      const id = +card.dataset.id; openId === id ? closeDetail() : openDetail(id);
+    });
+    detail.addEventListener('click', e => {
+      if (e.target.closest('.sd-close')) { const c = track.querySelector('.stock-card.open'); closeDetail(); (c || drive).scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' }); }
+      const enq = e.target.closest('[data-enquire]');
+      if (enq) { const ta = document.querySelector('.contact-form textarea'); if (ta && !ta.value.trim()) ta.value = `I’m interested in the ${enq.dataset.enquire}.`; }
+    });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && openId) { closeDetail(); } });
+
+    // ---- Search and filter
+    search.addEventListener('input', () => { query = search.value.trim().toLowerCase(); render(); });
+    const models = ['All', ...new Set(VANS.map(v => v.model))];
+    const drawMenu = () => { filterMenu.innerHTML = models.map(m => `<button type="button" data-m="${m}" aria-pressed="${m === model}">${m === 'All' ? 'All models' : m}<span>${m === 'All' ? VANS.length : VANS.filter(v => v.model === m).length}</span></button>`).join(''); };
+    const setModel = m => { model = m; filterBtn.firstElementChild.textContent = m === 'All' ? 'All models' : m; drawMenu(); render(); };
+    drawMenu();
+    const toggleMenu = open => { filterMenu.hidden = !open; filterBtn.setAttribute('aria-expanded', open); };
+    filterBtn.addEventListener('click', () => toggleMenu(filterMenu.hidden));
+    filterMenu.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; setModel(b.dataset.m); toggleMenu(false); filterBtn.focus(); });
+    document.addEventListener('click', e => { if (!filterMenu.hidden && !e.target.closest('.filter-wrap')) toggleMenu(false); });
+    drive.addEventListener('keydown', e => { if (e.key === 'Escape' && !filterMenu.hidden) { toggleMenu(false); filterBtn.focus(); e.stopPropagation(); } }, true);
+    // The range cards above jump here, already filtered to that model.
+    document.querySelectorAll('.range-card[data-model]').forEach(a => a.addEventListener('click', () => { search.value = ''; query = ''; setModel(a.dataset.model); }));
+
+    // ---- Slider
+    const renderPos = () => {
       lap = ((lap % 1) + 1) % 1;
       track.style.transform = `translateX(${-lap * lapWidth()}px)`;
       bar.style.transform = `scaleX(${lap})`;
     };
     const tick = now => {
-      if (isSlide()) {
+      if (isSlide() && looping) {
         if (last !== null && !hovering && !drag && !reduced) lap += SPEED * rem() * (now - last) / 1000 / lapWidth();
-        render();
+        renderPos();
       }
       last = now;
       requestAnimationFrame(tick);
@@ -414,7 +540,7 @@
 
     // Drag to move the cards manually.
     viewport.addEventListener('pointerdown', e => {
-      if (!isSlide() || e.button !== 0) return;
+      if (!isSlide() || !looping || e.button !== 0) return;
       drag = { x: e.clientX, start: lap }; moved = false;
     });
     addEventListener('pointermove', e => {
@@ -424,11 +550,11 @@
       if (moved) lap = drag.start - dx / lapWidth();
     });
     addEventListener('pointerup', () => { drag = null; viewport.classList.remove('dragging'); });
-    viewport.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; } }, true);
+    viewport.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
 
     // Horizontal trackpad scroll moves the cards; vertical scroll still scrolls the page.
     viewport.addEventListener('wheel', e => {
-      if (!isSlide() || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      if (!isSlide() || !looping || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
       lap += e.deltaX / lapWidth();
     }, { passive: false });
@@ -464,6 +590,15 @@
     fitCards();
     addEventListener('resize', fitCards);
     buttons.forEach(btn => btn.addEventListener('click', fitCards));
+
+    render();
+    const deep = location.hash.match(/^#van-(\d+)$/);            // opened from a shared link
+    if (deep && VANS.some(v => v.id === +deep[1])) {
+      openDetail(+deep[1], false);
+      // Photos finishing loading move things, so land once, after they have.
+      const land = () => detail.scrollIntoView({ block: 'start', behavior: 'auto' });
+      document.readyState === 'complete' ? land() : addEventListener('load', land, { once: true });
+    }
   })();
   // Ownership journey: while the stage is locked the page stays still and each scroll moves one step.
   (() => {

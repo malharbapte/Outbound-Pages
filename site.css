@@ -99,8 +99,13 @@ h1, h2, h3, p { margin: 0; }
 /* Title: three lines, left on the column margin, up in the empty sky. The size follows the hero's own height (cqh), so the
    block always ends above the mountains and never reaches the caravan, whatever the window. */
 .hero { container-type: size; }
-.hero h1 { position: absolute; left: 0; top: 11cqh; text-align: left; text-transform: uppercase;
-           font: 700 min(7.4cqh, 4.3vw)/1.1 var(--oswald); letter-spacing: .005em; text-shadow: 0 2px 30px rgba(11, 10, 7, .15); }
+.hero-copy { position: absolute; left: 0; top: 8cqh; }
+.hero h1 { text-align: left; text-transform: uppercase; font: 700 min(6.8cqh, 4vw)/1.1 var(--oswald); letter-spacing: .005em; text-shadow: 0 2px 30px rgba(11, 10, 7, .15); }
+/* The one call to action on the picture: orange, so nothing else on the page competes with it. Tyre label (8.5:1 on orange). */
+.hero-cta { margin-top: min(3.6cqh, 2rem); min-height: 3.3rem; padding: 0 1.7em; gap: .7em; background: var(--orange); color: var(--tyre);
+            font: 700 1.2rem/1 var(--poppins); letter-spacing: .08em; --wipe: var(--tyre); --wipe-text: #fff; box-shadow: 0 8px 22px -10px rgba(11, 10, 7, .5); }
+.hero-cta svg { width: 1.3em; height: 1.3em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .4s var(--ease); }
+.hero-cta:hover svg { transform: translateX(.25em); }
 .hero .credit { position: absolute; right: 0; bottom: max(1rem, 5.5%); font: 600 .91rem/1 var(--poppins);
                 color: var(--bone); letter-spacing: .02em; }
 
@@ -114,25 +119,12 @@ h1, h2, h3, p { margin: 0; }
 .section-title { font: 700 3.18rem/1.1 var(--oswald); text-wrap: balance; }
 .body-lg { font: 400 1.36rem/1.35 var(--poppins); text-wrap: pretty; }
 
-/* ---- Exclusive dealership ----------------------------------------------------------------- */
-/* Artboard proportions: the band and vans are sized to the window width (vw) so the composition holds;
-   the heading and paragraph use fluid type so they respond to zoom. */
-.exclusive { position: relative; overflow: hidden; padding-top: 6.2rem; }
-.exclusive .section-title { text-align: center; margin-bottom: 3.07rem; }
-.dealer { position: relative; min-height: 48.57vw; padding-bottom: 4.5rem; }
-.dealer .band { position: relative; background: var(--tyre); padding-block: 2.3vw; display: grid; place-items: center; }
-.dealer .band img { width: min(41.3vw, 980px); height: auto; } /* part of the van composition, so it scales with the vans */
-.dealer .van { position: absolute; max-width: none; transition: transform .6s var(--ease); }
-.dealer .van-left { left: -18.72vw; top: -3.08vw; width: 57.82vw; z-index: 2; }
-.dealer .van-right { left: 59.56vw; top: 8.08vw; width: 50vw; z-index: 2; }
-.dealer .van-shadow { left: 67.88vw; top: 26.55vw; width: 30.07vw; opacity: .7; mix-blend-mode: multiply; z-index: 1; pointer-events: none; }
-/* Hover: each van grows slightly from where its wheels meet the ground; the right van's shadow grows with it. */
-.dealer .van-left, .dealer .van-right { transform-origin: 50% 90%; }
-.dealer .van-shadow { transform-origin: 16.68vw 10.95vw; }   /* same ground point as the right van */
-.dealer .van-left:hover, .dealer .van-right:hover, .dealer:has(.van-right:hover) .van-shadow { transform: scale(1.04); }
-.dealer .container { position: relative; z-index: 3; pointer-events: none; }
-.dealer .container p { pointer-events: auto; }
-.dealer p { margin-top: 14.2vw; max-width: 33.5rem; }   /* artboard measure: four lines, clear of the van */
+/* ---- Exclusive dealership: a slim strip, deliberately quiet ------------------------------------------------- */
+.dealer-strip { background: var(--tyre); color: var(--bone); padding: 1.5rem 0; }
+.dealer-strip .container { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+.dealer-strip p { font: 600 .91rem/1.2 var(--poppins); letter-spacing: .14em; }
+.dealer-strip img { display: block; height: 1.6rem; width: auto; }
+@media (max-width: 600px) { .dealer-strip .container { flex-direction: column; align-items: flex-start; gap: 1rem; } }
 
 /* ---- The Wonderland RV Range ------------------------------------------------------------- */
 .range { position: relative; background: var(--bone); padding: 3rem 0 4.24rem; }
@@ -249,6 +241,62 @@ h1, h2, h3, p { margin: 0; }
 .stock-panel[data-view="slide"] .stock-track.swap { animation-name: stock-fade; }
 @keyframes stock-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes stock-swap { from { opacity: 0; transform: translateY(1rem); } to { opacity: 1; transform: none; } }
+
+/* ---- Drive Away: live stock (price first), filter, spec sheet --------------------------------------------------- */
+.filter-wrap { position: relative; }
+.filter { display: flex; align-items: center; justify-content: space-between; }
+.filter::after { content: ""; width: .5rem; height: .5rem; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; rotate: 45deg; translate: 0 -.12rem; transition: rotate .3s var(--ease); }
+.filter[aria-expanded="true"]::after { rotate: -135deg; translate: 0 .1rem; }
+.filter:focus-visible { outline: 3px solid var(--olive); outline-offset: 2px; }
+.filter-menu { position: absolute; z-index: 20; left: 0; right: 0; top: calc(100% + 2px); background: #000; color: #e6e7e8; box-shadow: 0 .8rem 1.6rem rgba(11, 10, 7, .3); }
+.filter-menu[hidden] { display: none; }
+.filter-menu button { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: .85rem .9rem; border: 0; background: none; color: inherit; cursor: pointer; font: 300 .8rem/1 var(--poppins); text-align: left; }
+.filter-menu button + button { border-top: 1px solid rgba(244, 241, 234, .14); }
+.filter-menu button span { color: #bcbec0; }
+.filter-menu button[aria-pressed="true"] { color: var(--olive); }
+.filter-menu button:hover, .filter-menu button:focus-visible { background: rgba(244, 241, 234, .1); outline: none; }
+.stock-count { margin-top: 1rem; min-height: 1.2em; font: 300 .91rem/1.2 var(--poppins); color: var(--warm-grey); }
+.stock-panel { margin-top: 1.4rem; }
+.stock-panel[hidden] { display: none; }
+.stock-empty { padding: 3rem 0 1rem; }
+.stock-empty[hidden] { display: none; }
+.stock-empty p { font: 600 1.36rem/1.25 var(--poppins); color: var(--blue); max-width: 36rem; margin-bottom: 1.6rem; text-wrap: balance; }
+.stock-panel.still .stock-viewport { padding-right: 3.56rem; }
+.stock-panel.still[data-view="slide"] .stock-viewport { cursor: default; }
+.stock-panel.still .stock-progress { display: none; }
+/* Price leads: label olive, figure a touch smaller so a six-figure price fits the rail. */
+.stock-rail .r1 dd { font-size: 6.3cqw; }
+.stock-rail .r3 dd { white-space: nowrap; }
+.stock-card.open { box-shadow: 0 0 0 .35rem var(--olive); }
+.drive.has-detail .stock-panel::after { display: none; }
+
+/* Spec sheet: opens under the cards, on the same Bone as the panel, so it reads as the card unfolding. */
+.stock-detail { background: var(--bone); padding: 3.4rem 0 4rem; }
+.stock-detail[hidden] { display: none; }
+.stock-detail:focus { outline: none; }
+.sd-head { display: grid; grid-template-columns: 1fr auto 2.75rem; gap: 2rem; align-items: start; }
+.sd-kicker { font: 600 .8rem/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+.sd-head h3 { margin-top: .7rem; font: 700 3.18rem/1.05 var(--oswald); color: #000; }
+.sd-note { margin-top: .6rem; font: 400 1rem/1.4 var(--poppins); color: var(--warm-grey); }
+.sd-price { text-align: right; font: 700 2.4rem/1 var(--oswald); color: var(--tyre); }
+.sd-price s { margin-left: .6rem; font: 300 1rem/1 var(--poppins); color: var(--warm-grey); }
+.sd-price small { display: block; margin-top: .5rem; font: 600 .75rem/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+.sd-close { position: relative; width: 2.75rem; height: 2.75rem; border: 1.5px solid var(--warm-grey); border-radius: 50%; background: none; cursor: pointer; }
+.sd-close span, .sd-close span::before { position: absolute; left: 50%; top: 50%; width: 1.1rem; height: 1.5px; background: var(--tyre); translate: -50% -50%; rotate: 45deg; }
+.sd-close span::before { content: ""; translate: -50% -50%; rotate: 90deg; left: 50%; top: 50%; }
+.sd-close:hover { background: var(--tyre); }
+.sd-close:hover span, .sd-close:hover span::before { background: var(--bone); }
+.sd-close:focus-visible, .sd-link:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.sd-cols { margin-top: 2.6rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 3rem; }
+.sd-stack { display: grid; gap: 2rem; align-content: start; }
+.sd-group h4 { padding-bottom: .7rem; border-bottom: 1.5px solid var(--olive); font: 700 .8rem/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+.sd-group ul { list-style: none; margin: .9rem 0 0; padding: 0; font: 400 1rem/1.4 var(--poppins); color: var(--tyre); }
+.sd-group li + li { margin-top: .45rem; }
+.sd-actions { margin-top: 2.8rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.sd-link { font: 600 1rem/1 var(--poppins); color: var(--olive); text-decoration: none; border-bottom: 1.5px solid currentColor; padding-bottom: .25rem; transition: color .25s ease; }
+.sd-link:hover { color: var(--deep-olive); }
+.sd-fine { margin-top: 1.6rem; font: 300 .8rem/1.4 var(--poppins); color: var(--warm-grey); }
+@media (max-width: 860px) { .sd-cols { grid-template-columns: 1fr; } .sd-head { grid-template-columns: 1fr 2.75rem; } .sd-price { grid-column: 1; grid-row: 2; text-align: left; } }
 
 /* ---- Come see us ------------------------------------------------------------------------- */
 /* Full-bleed dealership photo at its own proportion (never so short that the overlay text collides). */
