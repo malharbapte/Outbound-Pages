@@ -36,7 +36,7 @@
     <div class="container">
       <div class="hero-copy">
         <h1>IGNITING THE SPIRIT OF<br>ADVENTURE &amp; INSPIRING<br>PEOPLE TO EXPLORE</h1>
-        <a class="btn hero-cta" href="#drive" aria-label="Drive away: see the vans in stock">DRIVE AWAY<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        <a class="btn hero-cta" href="#drive" aria-label="Drive away: see the vans in stock">DRIVE AWAY<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
       </div>
       <p class="credit">JESSICA ISSABELLE</p>
     </div>
@@ -68,7 +68,6 @@
       <div class="stock-progress" aria-hidden="true"><span></span></div>
     </div>
     <div class="stock-empty" id="stock-empty" hidden><div class="container"><p></p><a class="btn" href="#contact">Ask about incoming stock</a></div></div>
-    <div class="stock-detail" id="stock-detail" tabindex="-1" hidden></div>
     <span class="thirds" aria-hidden="true"></span>
   </section>
 
@@ -364,7 +363,7 @@
   }), { threshold: .5 });
   document.querySelectorAll('.diamond-host').forEach(el => seen.observe(el));
 
-  // Drive Away: the vans on the floor (real stock, from outboundrvs.com.au), search, a model filter, a spec sheet per van,
+  // Drive Away: the vans on the floor (real stock, from outboundrvs.com.au), search, a model filter, a short spec line set per van,
   // and the continuous card slider with its three layout views. Prices and specs are typed in here for now; the real
   // build should read them from the stock feed.
   (() => {
@@ -372,51 +371,24 @@
     const POS = { Amaroo: '50% 62%', Hornet: '50% 64%', XTR: '40% 60%', Solara: '45% 70%' };
     const IMG = { Amaroo: 'range-amaroo.jpg', Hornet: 'range-hornet.jpg', XTR: 'range-xtr.jpg', Solara: 'range-solara.jpg' };
     const VANS = [
-      { id: 928, model: 'XTR', year: 2025, code: '', price: 219999, ah: 460, kw: 1.56, atm: 4.5, slug: '2025-wonderlandrv-xtr----630137',
-        chassis: ['Heavy-duty off-road RHS steel, hot-dip galvanised', '4.5T Cruisemaster ATX air bag suspension with BCS', '6" x 2100mm A-frame, 12" truss chassis', 'Cruisemaster DO45 hitch', 'Dirty Life Theory 17" wheels, Cooper AT3 tyres'],
-        electrical: ['Victron 24V off-grid system (Touch 70)', '2 x 24V 230Ah lithium batteries', '1,560W solar', '5,000VA inverter', 'Dual Dometic Fresh Jet air conditioners', 'Starlink provision, reverse camera'],
-        water: ['3 x 100L fresh water', '90L dedicated drinking water', '1 x 100L grey water, with bypass', 'Hydronic diesel hot water and heater (gasless)', '224L Dometic compressor fridge'],
-        weights: ['ATM 4,500 kg', 'Ball weight 280 kg', 'Tare 2,540 kg', 'Travel height 3.2 m'] },
-      { id: 909, model: 'Amaroo', year: 2026, code: '2200', price: 164999, ah: 600, kw: 1.0, atm: 3.5, slug: '2026-wonderlandrv-amaroo---2200q3f_2,4-608863',
-        note: '21ft rear bunk layout with a 6’8" main bed',
-        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster XT L3 manual suspension', '12" drum brakes', 'Cruisemaster DO35 hitch', '16" 265/75R16 all-terrain tyres'],
-        electrical: ['Redarc Alpha 50 battery management', '600Ah battery', '1,000W solar', '2,600W inverter', 'Dometic Fresh Jet 3kW air conditioner'],
-        water: ['2 x 100L fresh water', '1 x 100L grey water, with bypass', '216L Dometic compressor fridge', 'External hot and cold shower'],
-        weights: ['ATM 3,500 kg', 'Ball weight 180 kg', 'Tare 2,874 kg', 'Travel length 8.8 m, height 3.2 m'] },
-      { id: 908, model: 'Hornet', year: 2026, code: '1806', price: 184999, was: 187999, ah: 600, kw: 1.36, atm: 3.5, slug: '2026-wonderlandrv-hornet---1806q_r_l-608795',
-        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster XT air bag suspension with BCS', 'Disc brakes', 'Method 305 17" wheels, 265/75R16 Yokohama', 'Cruisemaster DO35 hitch'],
-        electrical: ['Victron board, 600Ah battery', '1,360W solar plus rear solar wing', '3,000VA inverter-charger', 'Dometic Fresh Jet 3kW air conditioner', 'Starlink provision, reverse camera'],
-        water: ['2 x 100L fresh water', '1 x 70L isolated drinking water', '1 x 100L grey water', 'Autotherm 10kW hot water and heater', '216L Dometic compressor fridge'],
-        weights: ['ATM 3,500 kg', 'Ball weight 177 kg', 'Tare 2,827 kg', 'Travel length 8.2 m, height 3.2 m'] },
-      { id: 905, model: 'XTR', year: 2024, code: '2100', price: 159999, was: 169999, ah: 600, kw: null, atm: 4.5, slug: '2024-wonderlandrv-xtr---2100q2f_2-601112',
-        note: '2024 plated, two bunk layout',
-        chassis: ['12" truss chassis, S&M Chassis', 'Cruisemaster ATX Unleashed air bag suspension, BCS levelling', '12" drum brakes, Bosch ABS stability control', '17" wheels, Mickey Thompson Baja Boss A/T'],
-        electrical: ['Victron Micro GX Touch, Multiplus II', '600Ah lithium batteries', '3,000W inverter, 120A charger', 'Dometic Harrier air conditioner', 'Starlink connection point, GPS tracker'],
-        water: ['2 x 100L fresh water', '1 x 55L drinking water', '1 x 100L grey water, with bypass', '224L Dometic compressor fridge and freezer', 'Gas and electric hot water, diesel heater'],
-        weights: ['ATM 4,500 kg', 'Travel length 8.8 m, height 3.1 m'] },
-      { id: 882, model: 'Amaroo', year: 2026, code: '', price: 154999, ah: 300, kw: 0.6, atm: 3.5, slug: '2026-wonderlandrv-amaroo----574453', badge: 'Arriving Nov 2026',
-        chassis: ['Heavy-duty off-road RHS steel, Australian made', '3.7T Cruisemaster XT coil suspension', '12" drum brakes', 'Cruisemaster DO35 hitch', '16" 265/75R16 all-terrain tyres'],
-        electrical: ['Redarc Alpha 50 battery management', '300Ah lithium battery', '3 x 200W solar', '2,000W inverter', 'Dometic Fresh Jet 3kW air conditioner'],
-        water: ['2 x 100L fresh water', '1 x 100L grey water, with bypass', '216L Dometic compressor fridge', 'Swift gas and electric hot water'],
-        weights: ['ATM 3,500 kg', 'Tare 2,900 kg', 'Travel length 9.2 m, height 3.2 m'] },
-      { id: 824, model: 'Hornet', year: 2026, code: '1907', price: 169800, ah: 600, kw: 1.0, atm: null, slug: '2026-wonderlandrv-hornet---1907q1_f_b2-571724', badge: 'Arriving mid Nov 2026',
-        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster XT L3 manual suspension', '12" drum brakes', 'Cruisemaster DO35 hitch', 'Dirty Life Theory 16" wheels, Cooper AT3 tyres'],
-        electrical: ['Victron board, 600Ah lithium battery', '1,000W solar', '3,000VA inverter', 'Dometic Fresh Jet 3kW air conditioner', 'Starlink provision'],
-        water: ['2 x 100L fresh water', '1 x 70L isolated drinking water', '1 x 100L grey water', '216L Dometic compressor fridge', 'Gas hot water system'],
-        weights: ['Weights confirmed on arrival'] },
-      { id: 855, model: 'Amaroo', year: 2026, code: '2107', price: 154999, was: 159999, ah: 300, kw: 0.6, atm: 3.5, slug: '2026-wonderlandrv-amaroo---2107-555567',
-        note: 'Quad bunk layout, four 1.9m bunks',
-        chassis: ['Heavy-duty off-road RHS steel, Australian made', '3.7T Tuff-Ride coil suspension (airbag ready)', '12" drum brakes', 'Cruisemaster DO35 hitch', '16" 265/75R16 all-terrain tyres'],
-        electrical: ['Redarc Alpha 50 battery management', '300Ah lithium battery', '3 x 200W solar', '2,000W inverter', 'Dometic Fresh Jet 3kW air conditioner'],
-        water: ['2 x 100L fresh water', '1 x 100L grey water, with bypass', '216L Dometic compressor fridge', 'External hot and cold shower'],
-        weights: ['ATM 3,500 kg', 'Travel length 9 m, height 3.1 m'] },
-      { id: 846, model: 'XTR', year: 2026, code: '', price: 211562, ah: 600, kw: 1.0, atm: 4.5, slug: '2026-wonderlandrv-xtr----550764',
-        chassis: ['Heavy-duty off-road RHS steel, Australian made', '4.5T Cruisemaster ATX with BCS', 'Disc brakes', '6" x 2050mm A-frame, 12" truss chassis', 'Method 305 17" wheels, 265/70R17 tyres'],
-        electrical: ['Victron 24V off-grid system (Touch 70)', '7.2kWh / 600Ah @ 12V lithium', '5 x 200W solar, 16ft solar awning, rear solar wing', '5,000VA inverter', 'Dometic Fresh Jet 3kW air conditioner'],
-        water: ['2 x 100L fresh water', '1 x 90L drinking water', '1 x 100L grey water, with bypass', 'Hydronic diesel hot water and heater (gasless)', 'Dometic compressor fridge and freezer'],
-        weights: ['ATM 4,500 kg', 'Ball weight 265 kg', 'Tare 3,201 kg', 'Travel length 8.3 m, height 3.1 m'] }
+      { id: 928, model: 'XTR', year: 2025, code: '', price: 219999, slug: '2025-wonderlandrv-xtr----630137',
+        susp: 'Cruisemaster ATX 4.5T air bag', water: '300L fresh + 90L drinking', elec: '460Ah (24V) \u00b7 1,560W solar' },
+      { id: 909, model: 'Amaroo', year: 2026, code: '2200', price: 164999, slug: '2026-wonderlandrv-amaroo---2200q3f_2,4-608863',
+        susp: 'Cruisemaster XT 4.5T', water: '200L fresh', elec: '600Ah \u00b7 1,000W solar' },
+      { id: 908, model: 'Hornet', year: 2026, code: '1806', price: 184999, was: 187999, slug: '2026-wonderlandrv-hornet---1806q_r_l-608795',
+        susp: 'Cruisemaster XT 4.5T air bag', water: '200L fresh + 70L drinking', elec: '600Ah \u00b7 1,360W solar' },
+      { id: 905, model: 'XTR', year: 2024, code: '2100', price: 159999, was: 169999, slug: '2024-wonderlandrv-xtr---2100q2f_2-601112',
+        susp: 'Cruisemaster ATX air bag', water: '200L fresh + 55L drinking', elec: '600Ah lithium \u00b7 3,000W inverter' },
+      { id: 882, model: 'Amaroo', year: 2026, code: '', price: 154999, slug: '2026-wonderlandrv-amaroo----574453', badge: 'Arriving Nov 2026',
+        susp: 'Cruisemaster XT 3.7T coil', water: '200L fresh', elec: '300Ah \u00b7 600W solar' },
+      { id: 824, model: 'Hornet', year: 2026, code: '1907', price: 169800, slug: '2026-wonderlandrv-hornet---1907q1_f_b2-571724', badge: 'Arriving mid Nov 2026',
+        susp: 'Cruisemaster XT 4.5T', water: '200L fresh + 70L drinking', elec: '600Ah \u00b7 1,000W solar' },
+      { id: 855, model: 'Amaroo', year: 2026, code: '2107', price: 154999, was: 159999, slug: '2026-wonderlandrv-amaroo---2107-555567',
+        susp: 'Tuff-Ride 3.7T coil', water: '200L fresh', elec: '300Ah \u00b7 600W solar' },
+      { id: 846, model: 'XTR', year: 2026, code: '', price: 211562, slug: '2026-wonderlandrv-xtr----550764',
+        susp: 'Cruisemaster ATX 4.5T air bag', water: '200L fresh + 90L drinking', elec: '600Ah \u00b7 1,000W solar' }
     ];
-    VANS.forEach(v => { v.name = v.model.toUpperCase(); v.kicker = v.code ? `${v.year} · ${v.code}` : String(v.year); if (v.was && !v.badge) v.badge = 'Reduced'; });
+    VANS.forEach(v => { v.name = v.model.toUpperCase(); v.kicker = v.code ? `${v.year} \u00b7 ${v.code}` : String(v.year); if (v.was && !v.badge) v.badge = 'Reduced'; });
     const money = n => '$' + n.toLocaleString('en-AU');
     const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
@@ -425,7 +397,6 @@
     const viewport = panel.querySelector('.stock-viewport');
     const track = panel.querySelector('.stock-track');
     const bar = panel.querySelector('.stock-progress span');
-    const detail = document.getElementById('stock-detail');
     const empty = document.getElementById('stock-empty');
     const count = document.getElementById('stock-count');
     const search = drive.querySelector('.search');
@@ -436,21 +407,21 @@
     const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
     let originals = [], looping = false, lap = 0, last = null, hovering = false, drag = null, moved = false;
-    let query = '', model = 'All', openId = null;
+    let query = '', model = 'All';
     const isSlide = () => panel.dataset.view === 'slide';
     const lapWidth = () => looping ? track.children[originals.length].offsetLeft - originals[0].offsetLeft : 1;
 
-    const cardHTML = v => `<a class="stock-card" href="#van-${v.id}" data-id="${v.id}" draggable="false" aria-label="${esc(`${v.year} Wonderland RV ${v.name} ${v.code}, ${money(v.price)} drive away. Open the spec sheet.`)}">` +
+    const cardHTML = v => `<a class="stock-card" href="${BASE}${v.slug}" target="_blank" rel="noopener" draggable="false" aria-label="${esc(`${v.year} Wonderland RV ${v.name} ${v.code}, ${money(v.price)} drive away. Full listing opens in a new tab.`)}">` +
       `<div class="stock-photo"><img src="assets/${IMG[v.model]}" alt="" draggable="false" loading="lazy" style="object-position:${POS[v.model]}">` +
       (v.badge ? `<span class="stock-badge">${esc(v.badge)}</span>` : '') +
       `<div class="stock-title"><p class="stock-layout">${v.kicker}</p><h3 class="stock-name">${v.name}</h3></div></div>` +
-      `<dl class="stock-rail"><div class="row r1"><div><dt>Drive away</dt><dd>${money(v.price)}</dd></div></div>` +
-      `<div class="row r2"><div><dt>Battery</dt><dd>${v.ah}<small>Ah</small></dd></div></div>` +
-      `<div class="row r3"><div class="sleeps"><dt>Solar</dt><dd>${v.kw ? v.kw.toFixed(2).replace(/0$/, '') + '<small>kW</small>' : 'TBC'}</dd></div>` +
-      `<div class="length"><dt>ATM</dt><dd>${v.atm ? v.atm.toFixed(1) + '<small>t</small>' : 'TBC'}</dd></div></div></dl></a>`;
+      `<dl class="stock-specs"><div class="price"><dt>Drive away</dt><dd>${money(v.price)}${v.was ? `<s>${money(v.was)}</s>` : ''}</dd></div>` +
+      `<div class="line"><dt>Suspension</dt><dd>${esc(v.susp)}</dd></div>` +
+      `<div class="line"><dt>Water</dt><dd>${esc(v.water)}</dd></div>` +
+      `<div class="line"><dt>Electrical</dt><dd>${esc(v.elec)}</dd></div></dl></a>`;
 
     const matches = v => (model === 'All' || v.model === model) &&
-      (!query || [v.model, v.year, v.code, v.note, v.badge, ...v.chassis, ...v.electrical, ...v.water].join(' ').toLowerCase().includes(query));
+      (!query || [v.model, v.year, v.code, v.badge, v.susp, v.water, v.elec].join(' ').toLowerCase().includes(query));
 
     function render() {
       const list = VANS.filter(matches);
@@ -468,40 +439,7 @@
       empty.hidden = list.length > 0;
       panel.hidden = list.length === 0;
       if (!list.length) empty.querySelector('p').textContent = model !== 'All' && !query ? `No ${model} in stock right now. Ask us about incoming vans and build times.` : 'No vans match that search. Try fewer words, or ask us what is arriving.';
-      if (openId && !list.some(v => v.id === openId)) closeDetail();
-      else markOpen();
     }
-
-    // ---- Spec sheet
-    const group = (title, lines) => `<div class="sd-group"><h4>${title}</h4><ul>${lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul></div>`;
-    function openDetail(id, scroll = true) {
-      const v = VANS.find(x => x.id === id); if (!v) return;
-      openId = id;
-      detail.innerHTML = `<div class="container">
-        <div class="sd-head"><div><p class="sd-kicker">${v.kicker} · Stock #${v.id}${v.badge ? ' · ' + esc(v.badge) : ''}</p><h3>${v.name}${v.code ? ' ' + v.code : ''}</h3>${v.note ? `<p class="sd-note">${esc(v.note)}</p>` : ''}</div>
-          <p class="sd-price">${money(v.price)}${v.was ? `<s>${money(v.was)}</s>` : ''}<small>Drive away</small></p>
-          <button class="sd-close" type="button" aria-label="Close the spec sheet"><span aria-hidden="true"></span></button></div>
-        <div class="sd-cols">${group('Chassis &amp; suspension', v.chassis)}${group('Electrical', v.electrical)}<div class="sd-stack">${group('Water &amp; kitchen', v.water)}${group('Weights', v.weights)}</div></div>
-        <div class="sd-actions"><a class="btn" href="#contact" data-enquire="${esc(`${v.year} ${v.name}${v.code ? ' ' + v.code : ''} (stock #${v.id})`)}">Enquire about this van</a><a class="sd-link" href="${BASE}${v.slug}" target="_blank" rel="noopener">Full listing<span class="sr-only"> (opens in a new tab)</span></a></div>
-        <p class="sd-fine">Specs as listed by Outbound RVs. Errors and omissions excepted; confirm details with the team before you buy.</p></div>`;
-      detail.hidden = false; drive.classList.add('has-detail'); markOpen();
-      history.replaceState(null, '', '#van-' + id);                // a shareable link to this van
-      if (scroll) detail.scrollIntoView({ block: 'start', behavior: reduced ? 'auto' : 'smooth' });
-    }
-    function closeDetail() { if (openId) history.replaceState(null, '', '#drive'); openId = null; detail.hidden = true; detail.innerHTML = ''; drive.classList.remove('has-detail'); markOpen(); }
-    function markOpen() { track.querySelectorAll('.stock-card').forEach(c => { const on = +c.dataset.id === openId; c.classList.toggle('open', on); c.setAttribute('aria-expanded', on); }); }
-
-    track.addEventListener('click', e => {
-      const card = e.target.closest('.stock-card'); if (!card) return;
-      e.preventDefault();
-      const id = +card.dataset.id; openId === id ? closeDetail() : openDetail(id);
-    });
-    detail.addEventListener('click', e => {
-      if (e.target.closest('.sd-close')) { const c = track.querySelector('.stock-card.open'); closeDetail(); (c || drive).scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' }); }
-      const enq = e.target.closest('[data-enquire]');
-      if (enq) { const ta = document.querySelector('.contact-form textarea'); if (ta && !ta.value.trim()) ta.value = `I’m interested in the ${enq.dataset.enquire}.`; }
-    });
-    addEventListener('keydown', e => { if (e.key === 'Escape' && openId) { closeDetail(); } });
 
     // ---- Search and filter
     search.addEventListener('input', () => { query = search.value.trim().toLowerCase(); render(); });
@@ -592,13 +530,6 @@
     buttons.forEach(btn => btn.addEventListener('click', fitCards));
 
     render();
-    const deep = location.hash.match(/^#van-(\d+)$/);            // opened from a shared link
-    if (deep && VANS.some(v => v.id === +deep[1])) {
-      openDetail(+deep[1], false);
-      // Photos finishing loading move things, so land once, after they have.
-      const land = () => detail.scrollIntoView({ block: 'start', behavior: 'auto' });
-      document.readyState === 'complete' ? land() : addEventListener('load', land, { once: true });
-    }
   })();
   // Ownership journey: while the stage is locked the page stays still and each scroll moves one step.
   (() => {
