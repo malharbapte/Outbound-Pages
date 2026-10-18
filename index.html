@@ -869,25 +869,6 @@
     }, { passive: false });
 
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; last = null; }).observe(strip);
-
-    // Real posts, if the scheduled job has fetched any (scripts/fetch_instagram.py writes instagram.json).
-    // Until then the placeholder tiles stay, and a failed fetch never empties the strip.
-    fetch('instagram.json', { cache: 'no-cache' })
-      .then(r => r.ok ? r.json() : null)
-      .then(feed => {
-        const posts = feed && feed.posts;
-        if (!posts || !posts.length) return;
-        const fill = (tile, post) => {
-          tile.href = post.link;
-          tile.target = '_blank';
-          tile.rel = 'noopener';
-          tile.setAttribute('aria-label', post.caption || 'Instagram post');
-          tile.innerHTML = `<img src="${post.image}" alt="" loading="lazy" draggable="false">`;
-        };
-        originals.forEach((tile, i) => fill(tile, posts[i % posts.length]));
-        [...track.children].slice(originals.length).forEach((tile, i) => fill(tile, posts[i % posts.length]));
-      })
-      .catch(() => {});
   })();
   // FAQ: one answer open at a time, opening and closing at a steady height.
   (() => {
