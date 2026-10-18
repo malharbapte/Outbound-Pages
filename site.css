@@ -176,7 +176,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* Stock card: the photo and name on top, then a Tyre panel with the price and three short lines (suspension, water,
    electrical). Everything inside is sized from the card's own width (cqw), so one card design serves all three views. */
-.stock-card { position: relative; flex: none; width: 31.28rem; aspect-ratio: 825.69 / 800; container-type: inline-size;
+.stock-card { position: relative; flex: none; width: 31.28rem; aspect-ratio: 825.69 / 850; container-type: inline-size;
               display: grid; grid-template-rows: 1fr auto; background: var(--tyre); color: var(--bone); text-decoration: none; overflow: hidden;
               transition: transform .3s ease, box-shadow .3s ease; }
 .stock-card:hover { transform: translateY(-.3rem); box-shadow: 0 .76rem 1.52rem rgba(11, 10, 7, .25); }
@@ -185,7 +185,7 @@ h1, h2, h3, p { margin: 0; }
 .stock-photo img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transition: transform .6s ease; user-select: none; -webkit-user-drag: none; }
 .stock-card:hover .stock-photo img { transform: scale(1.05); }
 .stock-photo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(rgba(11, 10, 7, 0), rgba(11, 10, 7, .85)); }
-.stock-title { position: absolute; left: 5.5cqw; right: 5.5cqw; bottom: 4.2cqw; z-index: 1; }
+.stock-title { position: absolute; left: 5.5cqw; right: 5.5cqw; bottom: 4.2cqw; z-index: 1; display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqw; }
 .stock-layout { display: flex; align-items: center; gap: 2.18cqw; font: 600 2.18cqw/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--bone); }
 .stock-layout::before { content: ""; width: 1.45cqw; height: 1.45cqw; border-radius: 1.5px; background: var(--olive); }
 .stock-name { margin-top: 1.45cqw; font: 700 9.69cqw/1 var(--oswald); letter-spacing: .01em; color: #fff; }
@@ -193,15 +193,22 @@ h1, h2, h3, p { margin: 0; }
 .stock-badge { position: absolute; left: 0; top: 3.15cqw; z-index: 2; background: var(--orange); color: #fff; font: 400 2.91cqw/1 var(--poppins);
                padding: 1.21cqw 4.6cqw 1.21cqw 2.66cqw; clip-path: polygon(0 0, 100% 0, calc(100% - 2.42cqw) 50%, 100% 100%, 0 100%); }
 
-/* The panel: price first, then one line each. Label on the left third, the fact on the right two thirds. */
-.stock-specs { margin: 0; }
-.stock-specs .price { display: flex; align-items: baseline; justify-content: space-between; gap: 3cqw; padding: 3.2cqw 5.5cqw; background: rgba(139, 155, 77, .14); }
-.stock-specs .price dt { font: 600 2.4cqw/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--olive); }
-.stock-specs .price dd { margin: 0; font: 500 8.2cqw/1 var(--oswald); color: var(--bone); white-space: nowrap; }
-.stock-specs .price s { margin-left: 2.2cqw; font: 300 3cqw/1 var(--poppins); color: #bcbec0; }
-.stock-specs .line { display: grid; grid-template-columns: 33.333% 1fr; align-items: baseline; padding: 2.3cqw 5.5cqw; border-top: 1px solid rgba(244, 241, 234, .14); }
-.stock-specs .line dt { font: 400 2.3cqw/1.2 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: #bcbec0; }
-.stock-specs .line dd { margin: 0; font: 400 3.15cqw/1.25 var(--poppins); color: var(--bone); }
+/* Below the photo: three icon lines in the left two-thirds, four figures (ATM, Tare, Length, Sleeps) in the right third. */
+.stock-body { display: grid; grid-template-columns: 2fr 1fr; }
+.stock-facts { list-style: none; margin: 0; padding: 3.4cqw 3cqw 3.4cqw 5.5cqw; display: grid; gap: 2.6cqw; align-content: start; }
+.stock-facts li { display: grid; grid-template-columns: 6cqw 1fr; column-gap: 2.8cqw; align-items: start; }
+.stock-facts svg { grid-row: 1 / span 2; width: 6cqw; height: 6cqw; margin-top: .6cqw; fill: none; stroke: var(--olive); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.stock-facts .lab, .stock-nums dt { font: 400 2.2cqw/1.2 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: #bcbec0; }
+.stock-facts .txt { font: 400 3.05cqw/1.25 var(--poppins); color: var(--bone); margin-top: .6cqw; }
+.stock-nums { margin: 0; padding: 3.4cqw 4cqw 3.4cqw 3.6cqw; display: grid; grid-template-columns: 1fr 1fr; gap: 3.2cqw 2cqw; align-content: start; background: rgba(139, 155, 77, .1); border-left: 1px solid rgba(244, 241, 234, .14); }
+.stock-nums dd { margin: 1.3cqw 0 0; font: 500 5.4cqw/1 var(--oswald); color: var(--bone); white-space: nowrap; }
+.stock-nums dd small { margin-left: .7cqw; font: 500 .34em/1 var(--poppins); letter-spacing: .04em; color: #bcbec0; }
+.stock-nums dd.na { color: #6f6d68; }
+/* Price sits on the photo, level with the name. */
+.stock-pricebox { text-align: right; flex: none; }
+.stock-pricebox .lab { display: block; margin-bottom: 1.3cqw; font: 600 2.4cqw/1 var(--poppins); letter-spacing: .12em; text-transform: uppercase; color: var(--bone); opacity: .85; }
+.stock-price { display: block; font: 500 9cqw/1 var(--oswald); color: var(--bone); white-space: nowrap; }
+.stock-pricebox s { display: block; margin-top: 1.2cqw; font: 300 2.8cqw/1 var(--poppins); color: #d6d3cc; }
 
 /* Sliding view: one full-bleed row that moves continuously, with the progress line along the bottom. */
 .stock-panel[data-view="slide"] .stock-viewport { overflow: hidden; padding: 4.04rem 0 4.03rem 3.56rem; cursor: grab; touch-action: pan-y; }
