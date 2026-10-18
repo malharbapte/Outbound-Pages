@@ -27,3 +27,6 @@
   }, { passive: true });
   apply();
 })();
+
+/* Design aid, not part of the page: add ?grid to any address to draw the rule-of-thirds guide lines. */
+if (/[?&]grid\b/.test(location.search)) document.body.classList.add('show-grid');
