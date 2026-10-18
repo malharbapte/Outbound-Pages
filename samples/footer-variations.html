@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Footer: six variations</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  /* SAMPLE ONLY. The real footer's content and columns, six ways to dress it: D1-D3 use the diamond, N1-N3 do not.
+     The page around each footer is white so you can judge each one as it would sit at the end of a page. */
+  .intro { padding: 4rem 0 1.5rem; }
+  .intro h1 { font: 700 2.6rem/1.1 var(--oswald); }
+  .intro p { margin-top: .8rem; max-width: 50rem; font: 400 .95rem/1.5 var(--poppins); color: var(--warm-grey); text-wrap: pretty; }
+  .v { padding: 3rem 0 0; }
+  .v .cap { padding-bottom: 1rem; }
+  .v .cap .tag { display: block; font: 600 .75rem/1 var(--poppins); letter-spacing: .14em; text-transform: uppercase; color: var(--olive); }
+  .v .cap h2 { margin-top: .5rem; font: 700 1.7rem/1.1 var(--oswald); }
+  .v .cap p { margin-top: .4rem; max-width: 52rem; font: 400 .92rem/1.5 var(--poppins); text-wrap: pretty; }
+  .group { margin-top: 3rem; padding: 1.2rem 0; background: var(--bone); font: 700 1.1rem/1 var(--poppins); letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ---- a diamond, as the site draws it: a rounded square turned 45 degrees ---- */
+  .d { display: inline-block; flex: none; width: .72rem; height: .72rem; border-radius: 2px; rotate: 45deg; background: var(--olive); }
+  .d.o { background: none; box-shadow: inset 0 0 0 1.5px var(--olive); }
+  .d.b { background: var(--bone); }
+
+  .site-footer { padding-top: 2.6rem; }
+
+  /* ===================== D1. Waypoints: a road of diamonds across the top, diamond bullets on the labels ===================== */
+  .d1 .way { position: relative; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.6rem; }
+  .d1 .way::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: rgba(244,241,234,.22); }
+  .d1 .way .d { position: relative; z-index: 1; width: .8rem; height: .8rem; box-shadow: 0 0 0 .5rem var(--tyre); }
+  .d1 .way .d.o { background: var(--tyre); border: 1.5px solid var(--olive); box-sizing: border-box; }
+  .d1 .way .d.big { width: 1.25rem; height: 1.25rem; }
+  .d1 .foot-label { display: flex; align-items: center; gap: .7rem; }
+  .d1 .foot-label::before { content: ""; width: .5rem; height: .5rem; border-radius: 1.5px; rotate: 45deg; background: var(--olive); }
+
+  /* ===================== D2. Lattice: outlined diamonds fading in from the right edge ===================== */
+  .d2 { isolation: isolate; }
+  .d2 .lattice { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+                 -webkit-mask-image: linear-gradient(to left, #000 0, rgba(0,0,0,.55) 38%, transparent 78%); mask-image: linear-gradient(to left, #000 0, rgba(0,0,0,.55) 38%, transparent 78%); }
+  .d2 .lattice svg { width: 100%; height: 100%; }
+  .d2 .foot-cols { position: relative; }
+
+  /* ===================== D3. Sign-off: a big tagline between two diamonds, a cropped diamond behind it ===================== */
+  .d3 { padding-top: 0; }
+  .d3 .sign { position: relative; overflow: hidden; padding: 3.2rem 0 3rem; border-bottom: 1px solid rgba(244,241,234,.16); margin-bottom: 2.6rem; }
+  .d3 .sign .container { position: relative; display: flex; align-items: center; gap: 1.6rem; }
+  .d3 .sign h3 { font: 700 3.18rem/1.05 var(--oswald); color: var(--bone); text-wrap: balance; }
+  .d3 .sign h3 span { color: var(--olive); }
+  .d3 .sign .d { width: 1.1rem; height: 1.1rem; }
+  .d3 .big { position: absolute; right: -9rem; top: 50%; width: 26rem; height: 26rem; translate: 0 -50%; rotate: 45deg; border-radius: 1.2rem; box-shadow: inset 0 0 0 1.5px rgba(139,155,77,.55); }
+  .d3 .big::after { content: ""; position: absolute; inset: 4.2rem; border-radius: .8rem; box-shadow: inset 0 0 0 1.5px rgba(139,155,77,.28); }
+
+  /* ===================== N1. Wordmark: a huge outlined OUTBOUND cropped by the bottom edge ===================== */
+  .n1 { padding-bottom: 0; }
+  .n1 .mark { margin-top: 3rem; text-align: center; overflow: hidden; line-height: .74; user-select: none; pointer-events: none; }
+  .n1 .mark span { display: block; font: 700 21vw/.8 var(--oswald); letter-spacing: .02em; color: transparent; -webkit-text-stroke: 1.5px rgba(244,241,234,.22); translate: 0 18%; }
+  .n1 .legal-row { position: relative; z-index: 1; margin-top: 2.6rem; padding-bottom: 1.2rem; }
+
+  /* ===================== N2. Call to action first: an olive band, then the columns ===================== */
+  .n2 { padding-top: 0; }
+  .n2 .cta { background: var(--olive); color: var(--bone); padding: 2.6rem 0; }
+  .n2 .cta .container { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .n2 .cta h3 { font: 700 2.6rem/1.05 var(--oswald); }
+  .n2 .cta p { margin-top: .4rem; font: 500 1.05rem/1.3 var(--poppins); opacity: .92; }
+  .n2 .cta .acts { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+  .n2 .cta a.tel { font: 600 1.3rem/1 var(--poppins); color: var(--bone); text-decoration: none; }
+  .n2 .cta .btn { background: var(--tyre); color: var(--bone); --wipe: var(--bone); --wipe-text: var(--tyre); }
+  .n2 .foot-cols { padding-top: 2.6rem; }
+
+  /* ===================== N3. Ridgeline: a mountain silhouette and a dashed road ===================== */
+  .n3 { padding-top: 0; }
+  .n3 .ridge { display: block; width: 100%; height: auto; color: #1b1a15; margin-bottom: -1px; }
+  .n3 .road { margin: 2.4rem 0 0; border-top: 2px dashed rgba(139,155,77,.55); }
+  .n3 .foot-cols { padding-top: 1.4rem; }
+  .n3 .legal-row { padding-top: 1.4rem; }
+
+  .legal-row { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; font: 300 .91rem/1.2 var(--poppins); color: var(--bone); }
+  .legal-row a { text-decoration: none; }
+  .legal-row a:hover { color: var(--olive); }
+  .foot-spacer { height: 2rem; }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a class="logo" href="../index.html"><img src="../assets/outbound-logo-tight.png" alt="Outbound RVs" width="740" height="147"></a>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="../index.html#drive">CARAVANS</a></li>
+        <li><a href="#">SUPPORT</a></li>
+        <li><a href="../contact.html">CONTACT</a></li>
+        <li><a href="../about.html">ABOUT</a></li>
+        <li><a href="#">REVIEWS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="intro"><div class="container">
+    <h1>Footer: six variations</h1>
+    <p>The footer's content is unchanged (manufacturer, contact, address, hours, legal). Three variations use the diamond, three do not. The Wonderland logo here is also the fixed one: it was being squeezed sideways by the page's image rule and now keeps its own shape.</p>
+  </div></section>
+
+  <div class="group"><div class="container">With the diamond</div></div>
+
+  <section class="v"><div class="container cap"><span class="tag">D1</span><h2>Waypoints</h2><p>A road of five diamonds runs across the top, like the Ownership journey's steps: four outlined, the middle one filled. Each label gets a small diamond bullet, the same one the FAQ uses. Smallest change, most consistent with the site.</p></div>
+    <div id="d1"></div></section>
+
+  <section class="v"><div class="container cap"><span class="tag">D2</span><h2>Lattice</h2><p>A field of outlined diamonds fades in from the right edge, with a few filled olive ones. Texture without touching the content, which stays on the left and centre.</p></div>
+    <div id="d2"></div></section>
+
+  <section class="v"><div class="container cap"><span class="tag">D3</span><h2>Sign-off</h2><p>A big headline closes the page between two diamonds, with a large cropped diamond outline behind it. The loudest of the three, and the only one that adds new words, which are placeholder wording.</p></div>
+    <div id="d3"></div></section>
+
+  <div class="group"><div class="container">Without the diamond</div></div>
+
+  <section class="v"><div class="container cap"><span class="tag">N1</span><h2>Wordmark</h2><p>A huge outlined OUTBOUND, cropped by the bottom of the page. Pure type, no new shapes: the brand name becomes the texture.</p></div>
+    <div id="n1"></div></section>
+
+  <section class="v"><div class="container cap"><span class="tag">N2</span><h2>Call to action first</h2><p>An olive band leads, with a question, the phone number and a button to the stock; the usual black columns sit beneath. The most commercial of the six, and it puts the page's goal at the very end.</p></div>
+    <div id="n2"></div></section>
+
+  <section class="v"><div class="container cap"><span class="tag">N3</span><h2>Ridgeline</h2><p>A quiet mountain silhouette along the top edge and a dashed road above the columns, echoing the logo's peaks and the open-road idea. Illustration instead of geometry.</p></div>
+    <div id="n3"></div></section>
+
+  <div class="foot-spacer"></div>
+</main>
+
+<script>
+  const SOC = `<div class="socials">
+    <a class="social" href="#" aria-label="Instagram"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+    <a class="social" href="#" aria-label="Facebook"><svg class="ic solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 8.4h2.3V5.2h-2.6c-2.2 0-3.6 1.5-3.6 3.8v1.9H8.2v3.2h2.4V21h3.3v-6.9h2.5l.4-3.2h-2.9V9.3c0-.6.2-.9.6-.9z"/></svg></a></div>`;
+  const cols = (withLegal = true) => `<div class="container foot-cols">
+      <div class="foot-brand"><p class="foot-label">Caravan Manufacturer</p>
+        <a class="foot-logo" href="#"><img src="../assets/wonderland-line-white.png" alt="Wonderland RV" width="700" height="100"></a>
+        ${withLegal ? `<p class="foot-legal"><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a><span>© 2026 Outbound RVs. All rights reserved.</span></p>` : ''}</div>
+      <div class="foot-reach"><p class="foot-label">Reach us at:</p>${SOC}
+        <a class="contact-row" href="tel:0399586708"><span class="mini"><svg class="ic solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.2 3.5h3l1.5 3.8-2 1.3a12 12 0 0 0 5.7 5.7l1.3-2 3.8 1.5v3a1.8 1.8 0 0 1-2 1.8A16.5 16.5 0 0 1 4.4 5.5a1.8 1.8 0 0 1 1.8-2z"/></svg></span>03 9958 6708</a>
+        <a class="contact-row" href="mailto:sales@outboundrvs.com.au"><span class="mini"><svg class="ic " viewBox="0 0 24 24" aria-hidden="true"><rect x="2.6" y="5" width="18.8" height="14" rx="2"/><path d="m3.4 6.6 8.6 6.4 8.6-6.4"/></svg></span>sales@outboundrvs.com.au</a></div>
+      <div class="foot-find"><p class="foot-label">Address</p><p class="foot-text">Unit 58B Lara Way,<br>Campbellfield, VIC&nbsp;3061</p>
+        <p class="foot-label foot-label-2">Trading Hours</p><p class="foot-text foot-small">Weekdays - 9 am to 5&nbsp;pm<br>Saturday - Appointments&nbsp;Only<br>Sunday - Closed</p></div></div>`;
+  const legalRow = `<div class="container legal-row"><span><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></span><span>© 2026 Outbound RVs. All rights reserved.</span></div>`;
+
+  // D1
+  document.getElementById('d1').innerHTML = `<footer class="site-footer d1"><div class="container way"><i class="d o"></i><i class="d o"></i><i class="d big"></i><i class="d o"></i><i class="d o"></i></div>${cols()}</footer>`;
+
+  // D2: a lattice of diamonds, drawn once as a pattern
+  const tile = 120;
+  document.getElementById('d2').innerHTML = `<footer class="site-footer d2"><div class="lattice"><svg aria-hidden="true"><defs><pattern id="lat" width="${tile}" height="${tile}" patternUnits="userSpaceOnUse">
+      <rect x="${tile/2 - 22}" y="${tile/2 - 22}" width="44" height="44" rx="4" transform="rotate(45 ${tile/2} ${tile/2})" fill="none" stroke="rgba(244,241,234,.14)" stroke-width="1.5"/></pattern></defs>
+      <rect width="100%" height="100%" fill="url(#lat)"/>
+      <g fill="#8b9b4d" opacity=".55"><rect x="86%" y="22%" width="26" height="26" rx="3" style="transform-box:fill-box;transform-origin:center;rotate:45deg"/><rect x="74%" y="62%" width="18" height="18" rx="3" style="transform-box:fill-box;transform-origin:center;rotate:45deg"/><rect x="93%" y="68%" width="30" height="30" rx="3" style="transform-box:fill-box;transform-origin:center;rotate:45deg"/></g></svg></div>${cols()}</footer>`;
+
+  // D3
+  document.getElementById('d3').innerHTML = `<footer class="site-footer d3"><div class="sign"><i class="big"></i><div class="container"><i class="d"></i><h3>Your journey <span>starts here.</span></h3><i class="d"></i></div></div>${cols()}</footer>`;
+
+  // N1
+  document.getElementById('n1').innerHTML = `<footer class="site-footer n1">${cols(false)}<div class="legal-row container" style="margin-top:2.4rem"><span><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></span><span>© 2026 Outbound RVs. All rights reserved.</span></div><div class="mark" aria-hidden="true"><span>OUTBOUND</span></div></footer>`;
+
+  // N2
+  document.getElementById('n2').innerHTML = `<footer class="site-footer n2"><div class="cta"><div class="container"><div><h3>Ready to drive away?</h3><p>See what is on the floor now, or call and we will talk it through.</p></div>
+    <div class="acts"><a class="tel" href="tel:0399586708">03 9958 6708</a><a class="btn" href="../index.html#drive">See the stock</a></div></div></div>${cols()}</footer>`;
+
+  // N3: a ridgeline drawn from straight segments, in the footer's own near-black
+  document.getElementById('n3').innerHTML = `<footer class="site-footer n3"><svg class="ridge" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 150V96l90-34 70 22 120-58 80 44 110-70 100 64 90-30 120 76 80-40 110 50 90-62 100 42 80-30 70 48 80-38V150z"/></svg>
+    <div class="container"><div class="road"></div></div>${cols(false)}${legalRow}<div style="height:1.6rem"></div></footer>`;
+</script>
+<script src="../header.js"></script>
+</body>
+</html>
